@@ -1,0 +1,1 @@
+package com.uisrael.discount_service.model;
