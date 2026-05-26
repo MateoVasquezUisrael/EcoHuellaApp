@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EcoHuellaApp.Models
+namespace EcoHuellaApp.Domain.Models
 {
     public class Recoleccion
     {

@@ -1,4 +1,4 @@
-﻿using EcoHuellaApp.Models;
+﻿using EcoHuellaApp.Domain.Models;
 using SQLite;
 using System;
 using System.Collections.Generic;
