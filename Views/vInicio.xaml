@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaFront.Views.vInicio"
+             Title="Inicio"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource FondoPaginaEco}">
+
+    <Grid Padding="28"
+          RowDefinitions="*"
+          ColumnDefinitions="*">
+
+        <Border BackgroundColor="{StaticResource SuperficieEco}"
+                Stroke="{StaticResource BordeEco}"
+                StrokeThickness="1"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="360"
+                MaximumWidthRequest="430"
+                HeightRequest="640">
+
+            <Grid Padding="28,60"
+                  RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                  RowSpacing="24"
+                  VerticalOptions="Center">
+
+                <Image Grid.Row="0"
+                       Source="aldea_las_nubes.png"
+                       HeightRequest="125"
+                       WidthRequest="190"
+                       Aspect="AspectFit"
+                       HorizontalOptions="Center"
+                       SemanticProperties.Description="Logo de Aldea Las Nubes" />
+
+                <Label Grid.Row="1"
+                       Text="Cada pequeña acción&#10;suma para un gran cambio"
+                       Style="{StaticResource TextoFraseEco}" />
+
+                <Label Grid.Row="2"
+                       Text="Bienvenido a nuestra comunidad ecológica."
+                       Style="{StaticResource TextoCuerpoEco}" />
+
+                <Button Grid.Row="3"
+                        Text="Iniciar Sesión"
+                        Clicked="OnIniciarSesionClicked"
+                        HeightRequest="48"
+                        Margin="0,26,0,0"
+                        HorizontalOptions="Fill" />
+
+                <Button Grid.Row="4"
+                        Text="Entrar como invitado"
+                        Clicked="OnEntrarInvitadoClicked"
+                        Style="{StaticResource BotonSecundario}"
+                        HeightRequest="48"
+                        HorizontalOptions="Fill" />
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>
