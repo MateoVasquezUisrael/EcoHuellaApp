@@ -1,6 +1,7 @@
 ﻿using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace EcoHuellaApp.Domain.Models
@@ -12,6 +13,8 @@ namespace EcoHuellaApp.Domain.Models
 
         public DateTime Fecha { get; set; }
 
-        public int Cantidad { get; set; }
+        public int CantidadCubetas { get; set; }
+        [AllowNull]
+        public string? CoordenadasGPS { get; set; }
     }
 }
