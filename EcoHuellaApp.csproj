@@ -74,7 +74,17 @@
 	<ItemGroup>
 	  <Folder Include="Constants\" />
 	  <Folder Include="Data\" />
+	  <Folder Include="Domain\Interfaces\" />
 	  <Folder Include="Helpers\" />
+	  <Folder Include="Infrastructure\Extensions\" />
+	  <Folder Include="Infrastructure\Services\" />
+	  <Folder Include="Presentation\ViewModels\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Presentation\Views\CasaView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

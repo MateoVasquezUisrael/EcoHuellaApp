@@ -12,6 +12,6 @@ namespace EcoHuellaApp.Domain.Models
 
         public DateTime Fecha { get; set; }
 
-        public double PesoKg { get; set; }
+        public int Cantidad { get; set; }
     }
 }

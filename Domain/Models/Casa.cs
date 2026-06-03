@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SQLite;
 
-namespace EcoHuellaApp.Models
+namespace EcoHuellaApp.Domain.Models
 {
     public class Casa
     {
@@ -16,6 +16,6 @@ namespace EcoHuellaApp.Models
 
         public string Sector { get; set; }
 
-        public bool Activa { get; set; }
+        public bool Estado { get; set; }
     }
 }

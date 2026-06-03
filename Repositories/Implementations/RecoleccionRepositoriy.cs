@@ -1,12 +1,11 @@
 ﻿using EcoHuellaApp.Data;
-using EcoHuellaApp.Models;
-
+using EcoHuellaApp.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 
-namespace EcoHuellaApp.Repositories
+namespace EcoHuellaApp.Repositories.Implementations
 {
     public class RecoleccionRepositoriy
     {

@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using EcoHuellaApp.Data;
-using EcoHuellaApp.Repositories;
+﻿using EcoHuellaApp.Data;
+using EcoHuellaApp.Domain.Models;
+using EcoHuellaApp.Presentation.Views;
+using EcoHuellaApp.Repositories.Implementations;
+using EcoHuellaApp.Repositories.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace EcoHuellaApp
 {
@@ -22,7 +25,8 @@ namespace EcoHuellaApp
             var database = new AppDatabase(dbPath);
 
             builder.Services.AddSingleton(database);
-
+            builder.Services.AddTransient<CasaView>();
+            builder.Services.AddSingleton<IRepositoryGeneric<Casa>,CasaRepository>();   
             builder.Services.AddSingleton<RecoleccionRepositoriy>();
 
 #if DEBUG

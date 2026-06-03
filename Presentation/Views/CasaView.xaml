@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaApp.Presentation.Views.CasaView"
+             Title="CasaView">
+    <ScrollView>
+        <VerticalStackLayout
+        Padding="20"
+        Spacing="10">
+
+            <Label
+            Text="Gestión de Casas"
+            FontSize="24"
+            HorizontalOptions="Center" />
+
+            <Entry
+            x:Name="txtNombreResponsable"
+            Placeholder="Nombre del responsable" />
+
+            <Entry
+            x:Name="txtDireccion"
+            Placeholder="Dirección" />
+
+            <Entry
+            x:Name="txtSector"
+            Placeholder="Sector" />
+
+            <HorizontalStackLayout>
+                <Label
+                Text="Activa"
+                VerticalOptions="Center" />
+
+                <Switch
+                x:Name="swEstado"
+                IsToggled="True" />
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout
+            HorizontalOptions="Center"
+            Spacing="10">
+
+                <Button
+                x:Name="btnGuardar"
+                Text="Guardar"
+                Clicked="btnGuardar_Clicked" />
+
+                <Button
+                x:Name="btnActualizar"
+                Text="Actualizar"
+                Clicked="btnActualizar_Clicked" />
+
+                <Button
+                x:Name="btnEliminar"
+                Text="Eliminar"
+                Clicked="btnEliminar_Clicked" />
+            </HorizontalStackLayout>
+
+            <CollectionView
+            x:Name="cvCasas"
+            SelectionMode="Single"
+            SelectionChanged="cvCasas_SelectionChanged">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="5">
+                            <VerticalStackLayout>
+
+                                <Label
+                                Text="{Binding NombreResponsable}"
+                                FontAttributes="Bold" />
+
+                                <Label
+                                Text="{Binding Direccion}" />
+
+                                <Label
+                                Text="{Binding Sector}" />
+
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
