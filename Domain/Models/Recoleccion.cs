@@ -11,10 +11,12 @@ namespace EcoHuellaApp.Domain.Models
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
 
-        public DateTime Fecha { get; set; }
+        public DateTime? Fecha { get; set; }
 
-        public int CantidadCubetas { get; set; }
-        [AllowNull]
-        public string? CoordenadasGPS { get; set; }
+        public double Latitud { get; set; }
+
+        public double Longitud { get; set; }
+
+        public bool Estado{  get; set; }
     }
 }

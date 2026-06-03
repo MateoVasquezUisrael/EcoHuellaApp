@@ -16,7 +16,7 @@ namespace EcoHuellaApp
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");   
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
             //path de base de datos
@@ -25,9 +25,14 @@ namespace EcoHuellaApp
             var database = new AppDatabase(dbPath);
 
             builder.Services.AddSingleton(database);
+            //se manda la view y el repo por ahora. Supongo luego se hara lo mismo con el ViewModel y los servicios.
+            //casa
             builder.Services.AddTransient<CasaView>();
-            builder.Services.AddSingleton<IRepositoryGeneric<Casa>,CasaRepository>();   
-            builder.Services.AddSingleton<RecoleccionRepositoriy>();
+            builder.Services.AddSingleton<IRepositoryGeneric<Casa>,CasaRepository>();  
+            //recoleccion
+            builder.Services.AddTransient<RecoleccionView>();
+            builder.Services.AddSingleton<IRepositoryGeneric<Recoleccion>,RecoleccionRepository>();
+
 
 #if DEBUG
             builder.Logging.AddDebug();

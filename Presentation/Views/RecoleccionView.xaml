@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaApp.Presentation.Views.RecoleccionView"
+             Title="RecoleccionView">
+    <VerticalStackLayout>
+        <ScrollView>
+            <VerticalStackLayout
+        Padding="20"
+        Spacing="10">
+
+                <Label
+            Text="Registro de Recolección"
+            FontSize="24"
+            HorizontalOptions="Center"/>
+
+                <DatePicker
+            x:Name="dpFecha"/>
+
+                <Label
+            Text="Latitud"/>
+
+                <Entry
+            x:Name="txtLatitud"
+            IsReadOnly="True"/>
+
+                <Label
+            Text="Longitud"/>
+
+                <Entry
+            x:Name="txtLongitud"
+            IsReadOnly="True"/>
+
+                <Button
+            x:Name="btnUbicacion"
+            Text="Obtener Ubicación"
+            Clicked="btnUbicacion_Clicked"/>
+
+                <HorizontalStackLayout
+            HorizontalOptions="Center"
+            Spacing="10">
+
+                    <Button
+                x:Name="btnGuardar"
+                Text="Guardar"
+                Clicked="btnGuardar_Clicked"/>
+
+                    <Button
+                x:Name="btnActualizar"
+                Text="Actualizar"
+                Clicked="btnActualizar_Clicked"/>
+
+                    <Button
+                x:Name="btnEliminar"
+                Text="Eliminar"
+                Clicked="btnEliminar_Clicked"/>
+
+                </HorizontalStackLayout>
+
+                <CollectionView
+            x:Name="cvRecolecciones"
+            SelectionMode="Single"
+            SelectionChanged="cvRecolecciones_SelectionChanged">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+
+                            <Frame Margin="5">
+
+                                <VerticalStackLayout>
+
+                                    <Label
+                                FontAttributes="Bold"
+                                Text="{Binding Fecha}" />
+
+                                    <Label
+                                Text="{Binding Latitud}" />
+
+                                    <Label
+                                Text="{Binding Longitud}" />
+
+                                </VerticalStackLayout>
+
+                            </Frame>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </VerticalStackLayout>
+</ContentPage>

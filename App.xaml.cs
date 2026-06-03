@@ -16,8 +16,9 @@ namespace EcoHuellaApp
         protected override Window CreateWindow(IActivationState? activationState)
         {
             var view = _services.GetRequiredService<CasaView>();
+            var view2 = _services.GetRequiredService<RecoleccionView>();
 
-            return new Window(view);
+            return new Window(new AppShell());
         }
     }
 }

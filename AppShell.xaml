@@ -3,12 +3,18 @@
     x:Class="EcoHuellaApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:EcoHuellaApp"
-    Title="EcoHuellaApp">
+    xmlns:views="clr-namespace:EcoHuellaApp.Presentation.Views">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+
+        <ShellContent
+            Title="Casas"
+            ContentTemplate="{DataTemplate views:CasaView}" />
+
+        <ShellContent
+            Title="Recolección"
+            ContentTemplate="{DataTemplate views:RecoleccionView}" />
+        
+    </TabBar>
 
 </Shell>
