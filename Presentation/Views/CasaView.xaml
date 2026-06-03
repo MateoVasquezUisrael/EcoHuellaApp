@@ -53,6 +53,11 @@
                 x:Name="btnEliminar"
                 Text="Eliminar"
                 Clicked="btnEliminar_Clicked" />
+
+                <Button
+                Text="Probar Notificación"
+                Clicked="BtnNotificacion_Clicked"/>
+                
             </HorizontalStackLayout>
 
             <CollectionView

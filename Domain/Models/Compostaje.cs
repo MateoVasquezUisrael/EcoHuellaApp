@@ -12,14 +12,14 @@ namespace EcoHuellaApp.Domain.Models
 
         public DateTime FechaIngreso { get; set; }
 
-        public DateTime? FechaSalida { get; set; }
+        public DateTime? FechaCosecha { get; set; }
 
-        public double PesoInicialKg { get; set; }
+        public double PesoKg { get; set; }
 
-        public double? PesoFinalKg { get; set; }
+        public double? PesoKgFinal { get; set;}
 
-        public string Biodigestor { get; set; }
+        public string Observaciones { get; set; }
 
-        public bool Finalizado { get; set; }
+        public bool Estado { get; set; }
     }
 }

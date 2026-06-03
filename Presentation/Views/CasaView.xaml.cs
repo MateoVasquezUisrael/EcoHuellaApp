@@ -1,5 +1,9 @@
 using EcoHuellaApp.Domain.Models;
 using EcoHuellaApp.Repositories.Interfaces;
+using Plugin.LocalNotification;
+using Plugin.LocalNotification.Core.Models;
+
+
 
 namespace EcoHuellaApp.Presentation.Views;
 
@@ -158,5 +162,20 @@ public partial class CasaView : ContentPage
         await CargarCasas();
 
         LimpiarFormulario();
+    }
+
+
+    private async void BtnNotificacion_Clicked(
+    object sender,
+    EventArgs e)
+    {
+        var request = new NotificationRequest
+        {
+            NotificationId = 100,
+            Title = "EcoHuella",
+            Description = "Prueba de notificación"
+        };
+
+        await LocalNotificationCenter.Current.Show(request);
     }
 }

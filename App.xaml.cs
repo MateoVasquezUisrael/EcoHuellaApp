@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using EcoHuellaApp.Presentation.Views;
+﻿using EcoHuellaApp.Presentation.Views;
+using Microsoft.Extensions.DependencyInjection;
+using Plugin.LocalNotification;
 
 namespace EcoHuellaApp
 {
@@ -11,6 +12,13 @@ namespace EcoHuellaApp
         {
             InitializeComponent();
             _services = services;
+
+            Task.Run(async () =>
+            {
+                await LocalNotificationCenter
+                    .Current
+                    .RequestNotificationPermission();
+            });
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
