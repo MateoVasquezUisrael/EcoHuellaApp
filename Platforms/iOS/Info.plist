@@ -28,5 +28,16 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+
+	<!-- Google Sign-In -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1063838909055-cbho8glot83btdjrq0l4j54f3ac04bq6</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
