@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1063838909055",
+    "project_id": "login-ecohuella",
+    "storage_bucket": "login-ecohuella.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063838909055:android:3a64aa60c19873c6e4f54a",
+        "android_client_info": {
+          "package_name": "com.companyname.ecohuellaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1063838909055-4v8poa3f58a4tvjep1s642orha862i3j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.companyname.ecohuellaapp",
+            "certificate_hash": "06c74de741d9ac32a4203daee16a119d883cb353"
+          }
+        },
+        {
+          "client_id": "1063838909055-pupvkn7ci37p5p3a7p02pg7j6buh5c14.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtg3FGiNg3cK4aMpup8_H1JUxcTx5Pj9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1063838909055-pupvkn7ci37p5p3a7p02pg7j6buh5c14.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1063838909055-cbho8glot83btdjrq0l4j54f3ac04bq6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.companyname.ecohuellaapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

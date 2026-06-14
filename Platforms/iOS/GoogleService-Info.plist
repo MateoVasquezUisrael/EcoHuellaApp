@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1063838909055-cbho8glot83btdjrq0l4j54f3ac04bq6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1063838909055-cbho8glot83btdjrq0l4j54f3ac04bq6</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1063838909055-4v8poa3f58a4tvjep1s642orha862i3j.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC4vuuUtjG4utOIwde_G7iHSNIR5vVi3HQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1063838909055</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.companyname.ecohuellaapp</string>
+	<key>PROJECT_ID</key>
+	<string>login-ecohuella</string>
+	<key>STORAGE_BUCKET</key>
+	<string>login-ecohuella.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1063838909055:ios:8557622a7396713de4f54a</string>
+</dict>
+</plist>
