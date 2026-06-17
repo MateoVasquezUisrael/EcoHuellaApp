@@ -1,14 +1,30 @@
 ﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+    App.xaml — Recursos globales de la aplicación
+    ─────────────────────────────────────────────
+    MODIFICADO POR: Módulo Login
+    CAMBIOS:        Se agregaron los converters del módulo Login como
+                    StaticResource globales. El código original de los
+                    colaboradores (Colors.xaml, Styles.xaml) NO fue modificado.
+-->
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:EcoHuellaApp"
+             xmlns:conv="clr-namespace:EcoHuellaApp.Presentation.Converters"
              x:Class="EcoHuellaApp.App">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!-- ── Recursos existentes de otros colaboradores ── -->
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- ── Agregado por módulo Login ── -->
+            <!-- Disponibles en toda la app con {StaticResource NombreClave} -->
+            <conv:InverseBoolConverter   x:Key="InverseBool"/>
+            <conv:BoolToStringConverter  x:Key="BoolToStr"/>
+            <conv:StringNotEmptyConverter x:Key="StringNotEmpty"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:EcoHuellaApp.Presentation.ViewModels"
+    x:DataType="vm:MainViewModel"
+    x:Class="EcoHuellaApp.Presentation.Views.MainPage"
+    Title="Inicio"
+    BackgroundColor="{AppThemeBinding Light=White, Dark=#1A1A2E}">
+
+    <VerticalStackLayout Padding="32" Spacing="16" VerticalOptions="Center">
+
+        <!-- Encabezado de bienvenida -->
+        <Label Text="{Binding Bienvenida}"
+               FontSize="22" FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="{StaticResource Primary}"/>
+
+        <!-- Rol del usuario -->
+        <Border StrokeShape="RoundRectangle 20"
+                BackgroundColor="{StaticResource Primary}"
+                Padding="12,6"
+                HorizontalOptions="Center"
+                IsVisible="{Binding RolUsuario,
+                            Converter={StaticResource StringNotEmpty}}">
+            <Label Text="{Binding RolUsuario}"
+                   FontSize="13" FontAttributes="Bold"
+                   TextColor="White"/>
+        </Border>
+
+        <!-- Email -->
+        <Label Text="{Binding EmailUsuario}"
+               FontSize="14"
+               HorizontalOptions="Center"
+               TextColor="{AppThemeBinding Light={StaticResource Gray500},
+                                           Dark={StaticResource Gray400}}"/>
+
+        <!-- Cerrar sesión -->
+        <Button Text="Cerrar sesión"
+                Command="{Binding LogoutCommand}"
+                BackgroundColor="#E53935"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="12"
+                HeightRequest="50"
+                Margin="0,32,0,0"
+                IsEnabled="{Binding IsNotBusy}"/>
+
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="{StaticResource Primary}"
+                           HorizontalOptions="Center"/>
+    </VerticalStackLayout>
+
+</ContentPage>
