@@ -1,7 +1,7 @@
 using EcoHuellaApp.Domain.Models;
-using EcoHuellaApp.Repositories.Interfaces;
 using Microsoft.Maui.Devices.Sensors;
 using Microsoft.Maui.ApplicationModel;
+using EcoHuellaApp.Domain.Interfaces;
 
 namespace EcoHuellaApp.Presentation.Views;
 
@@ -36,12 +36,6 @@ public partial class RecoleccionView : ContentPage
 
         dpFecha.Date =
             _recoleccionSeleccionada.Fecha;
-
-        txtLatitud.Text =
-            _recoleccionSeleccionada.Latitud.ToString();
-
-        txtLongitud.Text =
-            _recoleccionSeleccionada.Longitud.ToString();
     }
     private async void btnUbicacion_Clicked(
     object sender,
@@ -81,13 +75,6 @@ public partial class RecoleccionView : ContentPage
         var recoleccion = new Recoleccion
         {
             Fecha = dpFecha.Date,
-
-            Latitud =
-                double.Parse(txtLatitud.Text),
-
-            Longitud =
-                double.Parse(txtLongitud.Text),
-
             Estado = true
         };
 
@@ -109,11 +96,6 @@ public partial class RecoleccionView : ContentPage
         _recoleccionSeleccionada.Fecha =
             dpFecha.Date;
 
-        _recoleccionSeleccionada.Latitud =
-            double.Parse(txtLatitud.Text);
-
-        _recoleccionSeleccionada.Longitud =
-            double.Parse(txtLongitud.Text);
 
         await _repository.ActualizarAsync(
             _recoleccionSeleccionada);

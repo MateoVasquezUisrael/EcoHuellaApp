@@ -1,12 +1,12 @@
 ﻿using EcoHuellaApp.Data;
+using EcoHuellaApp.Domain.Interfaces;
 using EcoHuellaApp.Domain.Models;
-using EcoHuellaApp.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 
-namespace EcoHuellaApp.Repositories.Implementations
+namespace EcoHuellaApp.Infrastructure.Repositories
 {
     public class CasaRepository : IRepositoryGeneric<Casa>
     {

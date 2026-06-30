@@ -5,9 +5,6 @@ using EcoHuellaApp.Infrastructure.Repositories;
 using EcoHuellaApp.Infrastructure.Services;
 using EcoHuellaApp.Presentation.ViewModels;
 using EcoHuellaApp.Presentation.Views;
-using EcoHuellaApp.Repositories;
-using EcoHuellaApp.Repositories.Implementations;
-using EcoHuellaApp.Repositories.Interfaces;
 using Microsoft.Extensions.Logging;
 using Plugin.LocalNotification;
 
@@ -17,6 +14,7 @@ namespace EcoHuellaApp
     {
         public static MauiApp CreateMauiApp()
         {
+            SQLitePCL.Batteries.Init();
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -29,6 +27,7 @@ namespace EcoHuellaApp
 
             // ── Base de datos compartida ───────────────────────────────────────
             var dbPath = Path.Combine(FileSystem.AppDataDirectory, "ecoHuella.bd3");
+            Console.WriteLine(dbPath);
             var database = new AppDatabase(dbPath);
             builder.Services.AddSingleton(database);
 

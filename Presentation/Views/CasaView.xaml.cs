@@ -1,5 +1,5 @@
+using EcoHuellaApp.Domain.Interfaces;
 using EcoHuellaApp.Domain.Models;
-using EcoHuellaApp.Repositories.Interfaces;
 using Plugin.LocalNotification;
 using Plugin.LocalNotification.Core.Models;
 

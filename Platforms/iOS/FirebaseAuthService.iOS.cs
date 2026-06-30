@@ -6,6 +6,7 @@ using Google.SignIn;
 using DomainCode = EcoHuellaApp.Domain.Models.AuthErrorCode;
 using FirebaseCode = Firebase.Auth.AuthErrorCode;
 
+
 namespace EcoHuellaApp.Platforms.iOS
 {
     /// <summary>

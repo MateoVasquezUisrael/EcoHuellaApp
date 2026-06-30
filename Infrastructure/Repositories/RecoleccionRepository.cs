@@ -1,12 +1,14 @@
 ﻿using EcoHuellaApp.Data;
 using EcoHuellaApp.Domain.Models;
-using EcoHuellaApp.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SQLitePCL;
+using SQLiteNetExtensionsAsync.Extensions;
+using EcoHuellaApp.Domain.Interfaces;
 
 
-namespace EcoHuellaApp.Repositories.Implementations
+namespace EcoHuellaApp.Infrastructure.Repositories
 {
     //TODO: meter los try y catchs
     public class RecoleccionRepository : IRepositoryGeneric<Recoleccion>
@@ -26,14 +28,25 @@ namespace EcoHuellaApp.Repositories.Implementations
                 .Where(r => r.Estado)
                 .OrderByDescending(r => r.Fecha)
                 .ToListAsync();
+
+     
         }
 
         public async Task<Recoleccion> ObtenerPorId(int id)
         {
-            return await _database.Database
+                var recoleccion = await _database.Database
                 .Table<Recoleccion>()
                 .Where(r => r.Id == id)
                 .FirstOrDefaultAsync();
+
+
+                if (recoleccion != null)
+                {
+                    await _database.Database.GetChildrenAsync(recoleccion);
+                }
+
+                return recoleccion;
+
         }
 
         public async Task ActualizarAsync(Recoleccion entity)

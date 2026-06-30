@@ -31,14 +31,10 @@
 
 	<ItemGroup>
 		<!-- Ícono -->
-		<MauiIcon Include="Resources\AppIcon\appicon.png"
-		          ForegroundFile="Resources\AppIcon\appiconfg.png"
-		          Color="#000000" />
+		<MauiIcon Include="Resources\AppIcon\appicon.png" ForegroundFile="Resources\AppIcon\appiconfg.png" Color="#000000" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.png"
-		                  Color="#000000"
-		                  BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#000000" BaseSize="128,128" />
 
 		<!-- Imágenes -->
 		<MauiImage Include="Resources\Images\*" />
@@ -53,11 +49,18 @@
 
 	<!-- ── Paquetes compartidos todas las plataformas ────────────────────────── -->
 	<ItemGroup>
+		<PackageReference Include="BruTile.MbTiles" Version="6.0.0" />
+		<PackageReference Include="Mapsui.Maui" Version="5.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.8" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.70" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.71" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Plugin.LocalNotification" Version="14.1.0" />
+		<PackageReference Include="SQLiteNetExtensions" Version="2.1.0" />
+		<PackageReference Include="SQLiteNetExtensions.Async" Version="2.1.0" />
+		<PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.11" />
+		<PackageReference Include="SQLitePCLRaw.lib.e_sqlite3.android" Version="2.1.11" />
 	</ItemGroup>
 
 	<!-- ── Paquetes Android ──────────────────────────────────────────────────── -->
@@ -110,10 +113,7 @@
 	<ItemGroup>
 		<Folder Include="Constants\" />
 		<Folder Include="Data\" />
-		<Folder Include="Helpers\" />
-		<Folder Include="Domain\Interfaces\" />
 		<Folder Include="Infrastructure\Services\" />
-		<Folder Include="Infrastructure\Repositories\" />
 		<Folder Include="Infrastructure\Extensions\" />
 		<Folder Include="Presentation\Converters\" />
 		<Folder Include="Presentation\ViewModels\" />
