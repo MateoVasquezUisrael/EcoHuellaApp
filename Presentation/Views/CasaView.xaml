@@ -25,6 +25,23 @@
             x:Name="txtSector"
             Placeholder="Sector" />
 
+            <Entry
+            x:Name="txtLatitud"
+            Placeholder="Latitud"
+            IsReadOnly="True"
+            Keyboard="Numeric" />
+
+            <Entry
+            x:Name="txtLongitud"
+            Placeholder="Longitud"
+            IsReadOnly="True"
+            Keyboard="Numeric" />
+
+            <Button
+            x:Name="btnSeleccionarUbicacion"
+            Text="Seleccionar en mapa"
+            Clicked="btnSeleccionarUbicacion_Clicked" />
+
             <HorizontalStackLayout>
                 <Label
                 Text="Activa"

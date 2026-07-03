@@ -3,92 +3,115 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EcoHuellaApp.Presentation.Views.RecoleccionView"
              Title="RecoleccionView">
-    <VerticalStackLayout>
-        <ScrollView>
-            <VerticalStackLayout
-        Padding="20"
-        Spacing="10">
-
-                <Label
-            Text="Registro de Recolección"
-            FontSize="24"
-            HorizontalOptions="Center"/>
-
-                <DatePicker
-            x:Name="dpFecha"/>
-
-                <Label
-            Text="Latitud"/>
-
-                <Entry
-            x:Name="txtLatitud"
-            IsReadOnly="True"/>
-
-                <Label
-            Text="Longitud"/>
-
-                <Entry
-            x:Name="txtLongitud"
-            IsReadOnly="True"/>
-
-                <Button
-            x:Name="btnUbicacion"
-            Text="Obtener Ubicación"
-            Clicked="btnUbicacion_Clicked"/>
-
-                <HorizontalStackLayout
-            HorizontalOptions="Center"
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="20"
             Spacing="10">
 
-                    <Button
-                x:Name="btnGuardar"
-                Text="Guardar"
-                Clicked="btnGuardar_Clicked"/>
+            <Label
+                Text="Registro de Recolección"
+                FontSize="24"
+                HorizontalOptions="Center" />
 
-                    <Button
-                x:Name="btnActualizar"
-                Text="Actualizar"
-                Clicked="btnActualizar_Clicked"/>
+            <DatePicker
+                x:Name="dpFecha" />
 
-                    <Button
-                x:Name="btnEliminar"
-                Text="Eliminar"
-                Clicked="btnEliminar_Clicked"/>
+            <Label
+                Text="Casa" />
+            <Picker
+                x:Name="pkCasa"
+                Title="Seleccione una casa" />
 
-                </HorizontalStackLayout>
+            <Label
+                Text="Punto de Recolección" />
+            <Picker
+                x:Name="pkPuntoRecoleccion"
+                Title="Seleccione un punto de recolección" />
 
-                <CollectionView
-            x:Name="cvRecolecciones"
-            SelectionMode="Single"
-            SelectionChanged="cvRecolecciones_SelectionChanged">
+            <Button
+                x:Name="btnVerMapa"
+                Text="Ver en mapa"
+                Clicked="btnVerMapa_Clicked" />
 
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
+            <Label
+                Text="Cantidad de cubetas/baldes" />
+            <Entry
+                x:Name="txtCantidadCubetas"
+                Placeholder="Cantidad de cubetas"
+                Keyboard="Numeric"
+                TextChanged="txtCantidadCubetas_TextChanged" />
 
-                            <Frame Margin="5">
+            <Label
+                Text="Litros estimados" />
+            <Entry
+                x:Name="txtLitrosEstimados"
+                IsReadOnly="True"
+                Keyboard="Numeric" />
 
-                                <VerticalStackLayout>
+            <Label
+                Text="Masa estimada (kg)" />
+            <Entry
+                x:Name="txtMasaEstimada"
+                IsReadOnly="True"
+                Keyboard="Numeric" />
 
-                                    <Label
-                                FontAttributes="Bold"
-                                Text="{Binding Fecha}" />
+            <HorizontalStackLayout
+                HorizontalOptions="Center"
+                Spacing="10">
 
-                                    <Label
-                                Text="{Binding Latitud}" />
+                <Button
+                    x:Name="btnGuardar"
+                    Text="Guardar"
+                    Clicked="btnGuardar_Clicked" />
 
-                                    <Label
-                                Text="{Binding Longitud}" />
+                <Button
+                    x:Name="btnActualizar"
+                    Text="Actualizar"
+                    Clicked="btnActualizar_Clicked" />
 
-                                </VerticalStackLayout>
+                <Button
+                    x:Name="btnEliminar"
+                    Text="Eliminar"
+                    Clicked="btnEliminar_Clicked" />
 
-                            </Frame>
+            </HorizontalStackLayout>
 
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
+            <CollectionView
+                x:Name="cvRecolecciones"
+                SelectionMode="Single"
+                SelectionChanged="cvRecolecciones_SelectionChanged">
 
-                </CollectionView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="5">
+                            <VerticalStackLayout>
 
-            </VerticalStackLayout>
-        </ScrollView>
-    </VerticalStackLayout>
+                                <Label
+                                    Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}"
+                                    FontAttributes="Bold" />
+
+                                <Label
+                                    Text="{Binding Casa.Direccion, StringFormat='Casa: {0}'}" />
+
+                                <Label
+                                    Text="{Binding PuntoRecoleccion.Direccion, StringFormat='Punto: {0}'}" />
+
+                                <Label
+                                    Text="{Binding CantidadCubetas, StringFormat='Cubetas: {0}'}" />
+
+                                <Label
+                                    Text="{Binding LitrosEstimados, StringFormat='Litros: {0}'}" />
+
+                                <Label
+                                    Text="{Binding MasaEstimada, StringFormat='Masa: {0} kg'}" />
+
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

@@ -7,6 +7,7 @@ using EcoHuellaApp.Presentation.ViewModels;
 using EcoHuellaApp.Presentation.Views;
 using Microsoft.Extensions.Logging;
 using Plugin.LocalNotification;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace EcoHuellaApp
 {
@@ -18,6 +19,7 @@ namespace EcoHuellaApp
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseSkiaSharp()
                 .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
@@ -38,8 +40,18 @@ namespace EcoHuellaApp
             builder.Services.AddTransient<CasaView>();
             builder.Services.AddSingleton<IRepositoryGeneric<Casa>, CasaRepository>();
 
+            // ── Módulo Puntos de Recolección ──────────────────────────────────
+            builder.Services.AddTransient<PuntoRecoleccionView>();
+            builder.Services.AddSingleton<IRepositoryGeneric<PuntoRecoleccion>, PuntoRecoleccionRepository>();
+
+            // ── Módulo Mapas ──────────────────────────────────────────────────
+            builder.Services.AddSingleton<OfflineMapTileService>();
+            builder.Services.AddTransient<MapPage>();
+            builder.Services.AddTransient<LocationPickerPage>();
+
             // ── Módulo Recolección ────────────────────────────────────────────
             builder.Services.AddTransient<RecoleccionView>();
+            builder.Services.AddTransient<RecoleccionMapPage>();
             builder.Services.AddSingleton<IRepositoryGeneric<Recoleccion>, RecoleccionRepository>();
             builder.Services.AddSingleton<RecoleccionRepository>();
 

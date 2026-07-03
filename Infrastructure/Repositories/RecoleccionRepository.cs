@@ -23,13 +23,12 @@ namespace EcoHuellaApp.Infrastructure.Repositories
 
         public async Task<List<Recoleccion>> ObtenerTodosAsync()
         {
-            return await _database.Database
-                .Table<Recoleccion>()
-                .Where(r => r.Estado)
-                .OrderByDescending(r => r.Fecha)
-                .ToListAsync();
+            var recolecciones = await _database.Database
+                .GetAllWithChildrenAsync<Recoleccion>(r => r.Estado);
 
-     
+            return recolecciones
+                .OrderByDescending(r => r.Fecha)
+                .ToList();
         }
 
         public async Task<Recoleccion> ObtenerPorId(int id)

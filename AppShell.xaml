@@ -19,8 +19,16 @@
             ContentTemplate="{DataTemplate views:CasaView}" />
 
         <ShellContent
+            Title="Puntos de Recolección"
+            ContentTemplate="{DataTemplate views:PuntoRecoleccionView}" />
+
+        <ShellContent
             Title="Recolección"
             ContentTemplate="{DataTemplate views:RecoleccionView}" />
+
+        <ShellContent
+            Title="Mapa"
+            ContentTemplate="{DataTemplate views:MapPage}" />
 
     </TabBar>
 

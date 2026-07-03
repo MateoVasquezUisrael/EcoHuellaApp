@@ -17,6 +17,7 @@ namespace EcoHuellaApp.Data
                 _connection = new SQLiteAsyncConnection(_dbPath);
 
                 _connection.CreateTableAsync<Casa>().Wait();
+                _connection.CreateTableAsync<PuntoRecoleccion>().Wait();
                 _connection.CreateTableAsync<Recoleccion>().Wait();
                 _connection.CreateTableAsync<Compostaje>().Wait();
             }

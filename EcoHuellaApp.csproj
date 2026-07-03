@@ -107,13 +107,24 @@
 		<MauiXaml Update="Presentation\Views\RecoleccionView.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Presentation\Views\PuntoRecoleccionView.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Presentation\Views\MapPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Presentation\Views\LocationPickerPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Presentation\Views\RecoleccionMapPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	</ItemGroup>
 
 	<!-- ── Carpetas del proyecto ─────────────────────────────────────────────── -->
 	<ItemGroup>
 		<Folder Include="Constants\" />
 		<Folder Include="Data\" />
-		<Folder Include="Infrastructure\Services\" />
 		<Folder Include="Infrastructure\Extensions\" />
 		<Folder Include="Presentation\Converters\" />
 		<Folder Include="Presentation\ViewModels\" />

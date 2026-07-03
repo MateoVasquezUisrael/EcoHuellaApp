@@ -10,7 +10,7 @@ namespace EcoHuellaApp.Domain.Models
     public class PuntoRecoleccion
     {
         //punto de recolección, la unión  de este y Casa dan una Recolección
-        //TODO: se necesita conseguir la latitud y longitud de la dirección
+        //la latitud y longitud se obtienen mediante el selector de mapa offline
         //el estado de esta entidad es true = activo, false = inactivo
         [PrimaryKey, AutoIncrement]
         public int Id {  get; set; }

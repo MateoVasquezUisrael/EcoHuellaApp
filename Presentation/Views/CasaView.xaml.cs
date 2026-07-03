@@ -1,5 +1,6 @@
 using EcoHuellaApp.Domain.Interfaces;
 using EcoHuellaApp.Domain.Models;
+using EcoHuellaApp.Infrastructure.Services;
 using Plugin.LocalNotification;
 using Plugin.LocalNotification.Core.Models;
 
@@ -11,11 +12,16 @@ public partial class CasaView : ContentPage
 {
 
     private readonly IRepositoryGeneric<Casa> _repository;
+    private readonly OfflineMapTileService _tileService;
     private Casa _casaSeleccionada;
-    public CasaView(IRepositoryGeneric<Casa> repository)
+
+    public CasaView(
+        IRepositoryGeneric<Casa> repository,
+        OfflineMapTileService tileService)
 	{
         InitializeComponent();
         _repository = repository;
+        _tileService = tileService;
 
         _ = CargarCasas();
     }
@@ -45,6 +51,12 @@ public partial class CasaView : ContentPage
         txtSector.Text =
             _casaSeleccionada.Sector;
 
+        txtLatitud.Text =
+            _casaSeleccionada.Latitud.ToString();
+
+        txtLongitud.Text =
+            _casaSeleccionada.Longitud.ToString();
+
         swEstado.IsToggled =
             _casaSeleccionada.Estado;
     }
@@ -60,7 +72,9 @@ public partial class CasaView : ContentPage
                 NombreResponsable = txtNombreResponsable.Text,
                 Direccion = txtDireccion.Text,
                 Sector = txtSector.Text,
-                Estado = swEstado.IsToggled
+                Estado = swEstado.IsToggled,
+                Latitud = double.TryParse(txtLatitud.Text, out var lat) ? lat : 0,
+                Longitud = double.TryParse(txtLongitud.Text, out var lon) ? lon : 0
             };
 
             await _repository.GuardarRegistroAsync(nuevaCasa);
@@ -93,12 +107,32 @@ public partial class CasaView : ContentPage
         txtNombreResponsable.Text = "";
         txtDireccion.Text = "";
         txtSector.Text = "";
+        txtLatitud.Text = string.Empty;
+        txtLongitud.Text = string.Empty;
 
         swEstado.IsToggled = true;
 
         _casaSeleccionada = null;
 
         cvCasas.SelectedItem = null;
+    }
+
+    private async void btnSeleccionarUbicacion_Clicked(
+        object sender,
+        EventArgs e)
+    {
+        var picker = new LocationPickerPage(_tileService);
+
+        picker.Disappearing += (s, args) =>
+        {
+            if (picker.Latitud.HasValue && picker.Longitud.HasValue)
+            {
+                txtLatitud.Text = picker.Latitud.Value.ToString();
+                txtLongitud.Text = picker.Longitud.Value.ToString();
+            }
+        };
+
+        await Navigation.PushModalAsync(picker);
     }
 
     private async void btnActualizar_Clicked(
@@ -123,6 +157,12 @@ public partial class CasaView : ContentPage
 
         _casaSeleccionada.Sector =
             txtSector.Text;
+
+        _casaSeleccionada.Latitud =
+            double.TryParse(txtLatitud.Text, out var latUpdate) ? latUpdate : 0;
+
+        _casaSeleccionada.Longitud =
+            double.TryParse(txtLongitud.Text, out var lonUpdate) ? lonUpdate : 0;
 
         _casaSeleccionada.Estado =
             swEstado.IsToggled;
