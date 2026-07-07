@@ -1,6 +1,6 @@
 using EcoHuellaApp.Data;
 using EcoHuellaApp.Domain.Interfaces;
-using EcoHuellaApp.Domain.Models;
+using EcoHuellaApp.Domain.Models.Recoleccion;
 using System;
 using System.Collections.Generic;
 using System.Text;

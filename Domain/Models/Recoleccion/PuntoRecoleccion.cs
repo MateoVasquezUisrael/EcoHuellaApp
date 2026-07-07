@@ -1,11 +1,12 @@
 ﻿using SQLite;
-using SQLiteNetExtensions;
-using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SQLiteNetExtensions;
+using SQLiteNetExtensions.Attributes;
 
-namespace EcoHuellaApp.Domain.Models
+
+namespace EcoHuellaApp.Domain.Models.Recoleccion
 {
     public class PuntoRecoleccion
     {

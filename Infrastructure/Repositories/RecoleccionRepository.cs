@@ -1,12 +1,11 @@
 ﻿using EcoHuellaApp.Data;
-using EcoHuellaApp.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using SQLitePCL;
 using SQLiteNetExtensionsAsync.Extensions;
 using EcoHuellaApp.Domain.Interfaces;
-
+using EcoHuellaApp.Domain.Models.Recoleccion;
 
 namespace EcoHuellaApp.Infrastructure.Repositories
 {

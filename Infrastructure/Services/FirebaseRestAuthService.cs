@@ -37,8 +37,8 @@ namespace EcoHuellaApp.Infrastructure.Services
         private const string DesktopClientId =
             "1063838909055-6438an0trotnc6b2hfb75auge7drodrk.apps.googleusercontent.com";
 
-        //private const string DesktopClientSecret =
-          // "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";
+        private const string DesktopClientSecret =
+          "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";
 
         private const string GoogleTokenUrl =
             "https://oauth2.googleapis.com/token";
@@ -303,7 +303,7 @@ namespace EcoHuellaApp.Infrastructure.Services
             {
                 ["code"]          = code,
                 ["client_id"]     = DesktopClientId,
-               // ["client_secret"] = DesktopClientSecret,// Sin client_secret: PKCE para Desktop es un flujo de cliente público
+                ["client_secret"] = DesktopClientSecret,// Sin client_secret: PKCE para Desktop es un flujo de cliente público
                 ["redirect_uri"]  = redirectUri,
                 ["grant_type"]    = "authorization_code",
                 ["code_verifier"] = verifier

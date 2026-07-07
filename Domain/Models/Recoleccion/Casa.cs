@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using EcoHuellaApp.Domain.Models.Recoleccion;
 using SQLite;
 using SQLiteNetExtensions;
 using SQLiteNetExtensions.Attributes;
 
-namespace EcoHuellaApp.Domain.Models
+
+
+namespace EcoHuellaApp.Domain.Models.Recoleccion
 {
 //Entidad asociada al proceso de recolección; se llama casa, pero puede ser más grande como una urbanización
 //el estado de esta entidad es true = activo, false = inactivo

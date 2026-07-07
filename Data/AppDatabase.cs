@@ -1,8 +1,6 @@
 ﻿using EcoHuellaApp.Domain.Models;
 using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using EcoHuellaApp.Domain.Models.Recoleccion;
 
 namespace EcoHuellaApp.Data
 {

@@ -1,4 +1,4 @@
-using EcoHuellaApp.Domain.Models;
+using EcoHuellaApp.Domain.Models.Recoleccion;
 using EcoHuellaApp.Infrastructure.Services;
 using Mapsui;
 using Mapsui.Layers;

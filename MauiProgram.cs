@@ -1,6 +1,6 @@
 ﻿using EcoHuellaApp.Data;
 using EcoHuellaApp.Domain.Interfaces;
-using EcoHuellaApp.Domain.Models;
+using EcoHuellaApp.Domain.Models.Recoleccion;
 using EcoHuellaApp.Infrastructure.Repositories;
 using EcoHuellaApp.Infrastructure.Services;
 using EcoHuellaApp.Presentation.ViewModels;
@@ -8,7 +8,6 @@ using EcoHuellaApp.Presentation.Views;
 using Microsoft.Extensions.Logging;
 using Plugin.LocalNotification;
 using SkiaSharp.Views.Maui.Controls.Hosting;
-
 namespace EcoHuellaApp
 {
     public static class MauiProgram

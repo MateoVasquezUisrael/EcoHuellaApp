@@ -1,5 +1,5 @@
 using EcoHuellaApp.Domain.Interfaces;
-using EcoHuellaApp.Domain.Models;
+using EcoHuellaApp.Domain.Models.Recoleccion;
 using EcoHuellaApp.Helpers;
 using EcoHuellaApp.Infrastructure.Services;
 using System.Collections.ObjectModel;
