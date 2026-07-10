@@ -22,10 +22,10 @@ namespace EcoHuellaApp.Domain.Models.Recoleccion
         [ForeignKey(typeof(Casa))]
         public int CasaId {  get; set; }
         [ManyToOne]
-        public Casa Casa { get; set; }
+        public Casa? Casa { get; set; }
         [ForeignKey(typeof(PuntoRecoleccion))]
         public int PuntoRecoleccionId {  get; set; }
         [ManyToOne]
-        public PuntoRecoleccion PuntoRecoleccion { get; set; }
+        public PuntoRecoleccion? PuntoRecoleccion { get; set; }
     }
 }
