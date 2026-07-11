@@ -19,7 +19,7 @@ namespace EcoHuellaApp.Domain.Models.Recoleccion
         public string Direccion { get; set; }
         public double Latitud {  get; set; }
         public double Longitud { get; set; }
-        public bool Estado { get; set; }
+        public bool Estado { get; set; } //true es activo, false es inactivo
 
         [OneToMany]
         public List<Recoleccion>? Recolecciones { get; set; } 

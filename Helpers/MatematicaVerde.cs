@@ -34,6 +34,11 @@ namespace EcoHuellaApp.Helpers
 
         public double CalcularMetanoEnCompost(double MasaCarbono)
         {
+            /// <summary>
+            /// Método encargado de calcular el metano dentro 
+            /// del compostaje anaeróbico en base a https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/5_Volume5/V5_4_Ch4_Bio_Treat.pdf
+            /// </summary>
+
             double calculo = MasaCarbono * ConstantesMatematicaVerde.ConstanteFactorEmisionMetano;
 
             return calculo;

@@ -11,8 +11,8 @@ namespace EcoHuellaApp.Domain.Models.ProcesoDegradacion
         [PrimaryKey, AutoIncrement, Indexed]
         public int Id { get; set; }
         public double CapacidadMaxima {  get; set; } //la señora Lorena dice que siempre tienden a ser 400Kg
-        public bool Estado {  get; set; } //1 es activo, 0 es inactivo
-
+        public bool Estado {  get; set; } //ture es activo, false es inactivo
+        
         [OneToMany]
         public List<ProcesoBiodigestor>? Procesos { get; set; }
     }

@@ -14,4 +14,5 @@ public static class ConstantesMatematicaVerde
     public const double ConstanteConversionCarbonoMetano = 1.333; //constante de conversión de Caarbono a Metano
     public const double FactorCorreccionVertedero = 1.0;
     public const double ConstanteFactorEmisionMetano = 0.004; //equivalente a 4g/kg de Metano por Kg en base a https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/5_Volume5/V5_4_Ch4_Bio_Treat.pdf
+    public const double PotencialCalentamientoMetano = 27.9; //constante usada para convertir metano en CO2
 }
