@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Gms.Auth.Api.SignIn;
+using Android.Gms.Common.Apis;
 using Firebase.Auth;
 using AGms = Android.Gms.Tasks;
 
@@ -66,7 +67,7 @@ namespace EcoHuellaApp.Platforms.Android
             int requestCode, Result resultCode, Intent? data)
         {
             System.Diagnostics.Debug.WriteLine(
-                $"[GoogleSignIn] HandleActivityResult called. requestCode={requestCode}, expected={RequestCode}, resultCode={resultCode}, tcsIsNull={_tcs is null}");
+                $"[GoogleSignIn] HandleActivityResult called. requestCode={requestCode}, expected={RequestCode}, resultCode={resultCode}, tcsIsNull={_tcs is null}, clientIsNull={_client is null}");
 
             if (requestCode != RequestCode || _tcs is null)
             {
@@ -75,11 +76,42 @@ namespace EcoHuellaApp.Platforms.Android
                 return;
             }
 
-            if (resultCode != Result.Ok)
+            // Robustez: si el proceso fue destruido y recreado, el cliente puede ser null.
+            if (_client is null && data is not null)
             {
                 System.Diagnostics.Debug.WriteLine(
-                    "[GoogleSignIn] Result was not OK. Treating as cancelled/error.");
-                _tcs.TrySetResult(null);
+                    "[GoogleSignIn] Client was null on result arrival. Reinitializing from current activity.");
+                var activity = Platform.CurrentActivity;
+                if (activity is not null)
+                    Initialize(activity);
+            }
+
+            if (resultCode != Result.Ok)
+            {
+                // Intentar obtener el código de error exacto de Google Sign-In.
+                string errorDetail = "ResultCode=" + resultCode;
+                try
+                {
+                    var task = GoogleSignIn.GetSignedInAccountFromIntent(data);
+                    if (task != null && task.Exception is ApiException apiEx)
+                    {
+                        int statusCode = apiEx.StatusCode;
+                        string statusMessage = GetStatusCodeMessage(statusCode);
+                        errorDetail = $"GoogleSignInStatusCode={statusCode} ({statusMessage})";
+                    }
+                    else if (task?.Exception != null)
+                    {
+                        errorDetail = $"Exception={task.Exception.GetType().Name}: {task.Exception.Message}";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorDetail += $"; Error reading status: {ex.GetType().Name}: {ex.Message}";
+                }
+
+                System.Diagnostics.Debug.WriteLine(
+                    "[GoogleSignIn] Result was not OK. " + errorDetail);
+                _tcs.TrySetException(new Exception($"Google Sign-In cancelado/error. {errorDetail}"));
                 return;
             }
 
@@ -149,6 +181,24 @@ namespace EcoHuellaApp.Platforms.Android
             {
                 System.Diagnostics.Debug.WriteLine($"[GoogleSignIn] SignOut: {ex.Message}");
             }
+        }
+
+        private static string GetStatusCodeMessage(int statusCode)
+        {
+            // Códigos de error comunes de Google Sign-In.
+            // Ver: https://developers.google.com/android/reference/com/google/android/gms/auth/api/signin/GoogleSignInStatusCodes
+            return statusCode switch
+            {
+                12500 => "SIGN_IN_FAILED",
+                12501 => "SIGN_IN_CANCELLED",
+                12502 => "SIGN_IN_CURRENTLY_IN_PROGRESS",
+                10    => "DEVELOPER_ERROR",
+                8     => "INTERNAL_ERROR",
+                7     => "NETWORK_ERROR",
+                16    => "API_NOT_CONNECTED",
+                22    => "TIMEOUT",
+                _     => $"UNKNOWN_CODE_{statusCode}"
+            };
         }
     }
 

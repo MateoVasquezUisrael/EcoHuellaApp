@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1063838909055-23mrjor1595m13g4v1dev34ioo36d4tf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.companyname.ecohuellaapp",
+            "certificate_hash": "892d9df87e0a6068daeef0a2b61d94d1340880f4"
+          }
+        },
+        {
           "client_id": "1063838909055-4v8poa3f58a4tvjep1s642orha862i3j.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

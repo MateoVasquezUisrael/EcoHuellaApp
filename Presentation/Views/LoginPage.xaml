@@ -153,7 +153,8 @@
             <Border StrokeShape="RoundRectangle 14"
                     Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark=#333}"
                     BackgroundColor="{AppThemeBinding Light=White, Dark=#242424}"
-                    Margin="0,16,0,0">
+                    Margin="0,16,0,0"
+                    IsVisible="{OnPlatform Android=True, Default=True}">
                 <Button Text="  Continuar con Google"
                         Command="{Binding SignInWithGoogleCommand}"
                         BackgroundColor="Transparent"

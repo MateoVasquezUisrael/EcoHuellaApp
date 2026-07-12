@@ -86,6 +86,9 @@ namespace EcoHuellaApp.Presentation.ViewModels
 
                 if (!result.IsSuccess)
                 {
+                    System.Diagnostics.Debug.WriteLine(
+                        $"[LoginViewModel] Google sign-in failed. ErrorCode={result.ErrorCode}, Message={result.ErrorMessage}");
+
                     // Cancelación silenciosa del selector de cuentas
                     if (result.ErrorCode == AuthErrorCode.Cancelled &&
                         string.IsNullOrEmpty(result.ErrorMessage))

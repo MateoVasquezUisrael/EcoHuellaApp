@@ -93,7 +93,8 @@ namespace EcoHuellaApp.Platforms.Android
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("[FirebaseAuth.Android] GoogleSignIn exception: " + ex);
-                return AuthResult.Fail("Error inesperado al iniciar sesión con Google.", AuthErrorCode.Unknown);
+                var detailedMessage = $"Google Sign-In error: {ex.GetType().Name}: {ex.Message}";
+                return AuthResult.Fail(detailedMessage, AuthErrorCode.Unknown);
             }
         }
 
