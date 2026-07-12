@@ -1,5 +1,7 @@
 using EcoHuellaApp.Domain.Models.ProcesoDegradacion;
 using EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui.Controls;
 
 namespace EcoHuellaApp.Presentation.Views;
 
@@ -13,7 +15,7 @@ public partial class ProcesosFinalizadosView : ContentPage
         InitializeComponent();
         _biodigestorId = biodigestorId;
 
-        var services = Application.Current?.Handler?.MauiContext?.Services;
+        var services = Microsoft.Maui.Controls.Application.Current?.Handler?.MauiContext?.Services;
 
         _procesoRepository = services?.GetRequiredService<ProcesoBiodigestorRepository>()
             ?? throw new InvalidOperationException("No se pudo resolver el repositorio de procesos.");

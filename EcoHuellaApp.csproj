@@ -134,6 +134,7 @@
 		<Folder Include="Constants\" />
 		<Folder Include="Data\" />
 		<Folder Include="Infrastructure\Extensions\" />
+		<Folder Include="Infrastructure\Repositories\ProcesoComposteraArtesanal\" />
 		<Folder Include="Presentation\Converters\" />
 		<Folder Include="Presentation\ViewModels\" />
 		<Folder Include="Presentation\Views\" />

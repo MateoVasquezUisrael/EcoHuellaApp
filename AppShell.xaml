@@ -31,6 +31,14 @@
             ContentTemplate="{DataTemplate views:BiodigestoresView}" />
 
         <ShellContent
+            Title="Composteras"
+            ContentTemplate="{DataTemplate views:ComposterasArtesanalesView}" />
+
+        <ShellContent
+            Title="Sacos"
+            ContentTemplate="{DataTemplate views:SacosCompostView}" />
+
+        <ShellContent
             Title="Mapa"
             ContentTemplate="{DataTemplate views:MapPage}" />
 

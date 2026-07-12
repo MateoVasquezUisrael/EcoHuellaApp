@@ -2,8 +2,12 @@
 using EcoHuellaApp.Domain.Interfaces;
 using EcoHuellaApp.Domain.Models.Recoleccion;
 using EcoHuellaApp.Domain.Models.ProcesoDegradacion;
+using EcoHuellaApp.Domain.Models.ProcesoComposteraArtesanal;
+using EcoHuellaApp.Domain.Models.Ventas;
 using EcoHuellaApp.Infrastructure.Repositories;
 using EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion;
+using EcoHuellaApp.Infrastructure.Repositories.ProcesoComposteraArtesanal;
+using EcoHuellaApp.Infrastructure.Repositories.Ventas;
 using EcoHuellaApp.Infrastructure.Services;
 using EcoHuellaApp.Presentation.ViewModels;
 using EcoHuellaApp.Presentation.Views;
@@ -66,6 +70,18 @@ namespace EcoHuellaApp
             builder.Services.AddSingleton<ProcesoBiodigestorRepository>();
             builder.Services.AddSingleton<IRepositoryGeneric<EntradasProcesoBiodigestor>, EntradasProcesoBiodigestorRepository>();
             builder.Services.AddSingleton<EntradasProcesoBiodigestorRepository>();
+
+            // ── Módulo Proceso Compostera Artesanal ───────────────────────────
+            builder.Services.AddTransient<ComposterasArtesanalesView>();
+            builder.Services.AddSingleton<IRepositoryGeneric<ComposteraArtesanal>, ComposteraArtesanalRepository>();
+            builder.Services.AddSingleton<ComposteraArtesanalRepository>();
+            builder.Services.AddSingleton<IRepositoryGeneric<AccionCompostera>, AccionComposteraRepository>();
+            builder.Services.AddSingleton<AccionComposteraRepository>();
+
+            // ── Módulo Sacos de Compost ───────────────────────────────────────
+            builder.Services.AddTransient<SacosCompostView>();
+            builder.Services.AddSingleton<IRepositoryGeneric<SacosCompost>, SacosCompostRepository>();
+            builder.Services.AddSingleton<SacosCompostRepository>();
 
 #if DEBUG
             builder.Logging.AddDebug();

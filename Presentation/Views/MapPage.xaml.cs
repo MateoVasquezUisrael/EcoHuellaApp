@@ -6,6 +6,7 @@ using Mapsui.Extensions;
 using Mapsui.Layers;
 using Mapsui.Projections;
 using Mapsui.Styles;
+using Microsoft.Maui.Controls;
 
 namespace EcoHuellaApp.Presentation.Views
 {

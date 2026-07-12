@@ -35,7 +35,11 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Margin="5">
+                        <Border StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark=#242424}"
+                                Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark=#333}"
+                                Margin="5"
+                                Padding="10">
                             <Grid ColumnDefinitions="*,Auto,Auto">
 
                                 <VerticalStackLayout Grid.Column="0">
@@ -57,7 +61,7 @@
                                     Margin="5,0" />
 
                             </Grid>
-                        </Frame>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
 
@@ -90,14 +94,18 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Margin="5">
+                        <Border StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark=#242424}"
+                                Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark=#333}"
+                                Margin="5"
+                                Padding="10">
                             <VerticalStackLayout>
 
                                 <Label
                                     Text="{Binding FechaIngreso, StringFormat='Fecha: {0:dd/MM/yyyy}'}" />
 
                             </VerticalStackLayout>
-                        </Frame>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
 

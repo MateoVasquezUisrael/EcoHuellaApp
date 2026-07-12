@@ -22,11 +22,27 @@
           }
         },
         {
+          "client_id": "1063838909055-38g34fujro0g1ccg5qrljbst938gljft.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.companyname.ecohuellaapp",
+            "certificate_hash": "f5ae396f82ff654ce2834985c4b147a1081af2e8"
+          }
+        },
+        {
           "client_id": "1063838909055-4v8poa3f58a4tvjep1s642orha862i3j.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.companyname.ecohuellaapp",
             "certificate_hash": "06c74de741d9ac32a4203daee16a119d883cb353"
+          }
+        },
+        {
+          "client_id": "1063838909055-migj99gvt3gpf8eqj89q3s7fukso1up7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.companyname.ecohuellaapp",
+            "certificate_hash": "578a7ff85dc5df77c8062da0b7afc7bd3955a7b2"
           }
         },
         {

@@ -24,7 +24,11 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Margin="5">
+                        <Border StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark=#242424}"
+                                Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark=#333}"
+                                Margin="5"
+                                Padding="10">
                             <VerticalStackLayout>
 
                                 <Label
@@ -50,7 +54,7 @@
                                     Text="{Binding CarbonoEvitado, StringFormat='Carbono evitado: {0:F2} kg CO2e'}" />
 
                             </VerticalStackLayout>
-                        </Frame>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
 
