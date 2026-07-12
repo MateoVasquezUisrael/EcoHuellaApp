@@ -33,7 +33,7 @@ namespace EcoHuellaApp
                 });
 
             // ── Base de datos compartida ───────────────────────────────────────
-            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "ecoHuella.bd3");
+            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "ecoHuella_v2.bd3");
             Console.WriteLine(dbPath);
             var database = new AppDatabase(dbPath);
             builder.Services.AddSingleton(database);

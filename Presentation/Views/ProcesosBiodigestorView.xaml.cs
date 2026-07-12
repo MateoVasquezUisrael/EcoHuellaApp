@@ -81,7 +81,12 @@ public partial class ProcesosBiodigestorView : ContentPage
             $"Proceso #{_procesoSeleccionado.Id} registrado el día " +
             $"{_procesoSeleccionado.FechaInicio:dd/MM/yyyy}";
 
-        btnGuardarEntrada.IsEnabled = true;
+        btnGuardarEntrada.IsEnabled = !_procesoSeleccionado.EstadoLlenado;
+
+        if (_procesoSeleccionado.EstadoLlenado)
+        {
+            lblProcesoSeleccionado.Text += " (lleno - no se aceptan más entradas)";
+        }
 
         await CargarEntradasAsync();
     }
@@ -106,8 +111,10 @@ public partial class ProcesosBiodigestorView : ContentPage
         var nuevoProceso = new ProcesoBiodigestor
         {
             FechaInicio = DateTime.Now,
+            FechaEstimadaFinProceso = DateTime.Now.AddDays(42),
             BiodigestorId = _biodigestorId,
-            Estado = true,
+            EstadoLlenado = false,
+            EstadoFinalizado = false,
             MetanoEvitado = 0,
             CarbonoEvitado = 0
         };
@@ -131,6 +138,16 @@ public partial class ProcesosBiodigestorView : ContentPage
             return;
         }
 
+        if (_procesoSeleccionado.EstadoLlenado)
+        {
+            await DisplayAlert(
+                "Proceso lleno",
+                "Este proceso ya está marcado como lleno. No se aceptan más entradas.",
+                "Aceptar");
+
+            return;
+        }
+
         var nuevaEntrada = new EntradasProcesoBiodigestor
         {
             FechaIngreso = dpFechaIngreso.Date ?? DateTime.Today,
@@ -143,6 +160,43 @@ public partial class ProcesosBiodigestorView : ContentPage
         dpFechaIngreso.Date = DateTime.Today;
 
         await CargarEntradasAsync();
+    }
+
+    private async void btnMarcarLleno_Clicked(
+        object sender,
+        EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is ProcesoBiodigestor proceso)
+        {
+            bool respuesta = await DisplayAlert(
+                "Confirmar",
+                "¿Desea marcar este proceso como lleno? No se podrán agregar más entradas.",
+                "Sí",
+                "No");
+
+            if (!respuesta)
+                return;
+
+            try
+            {
+                proceso.EstadoLlenado = true;
+                await _procesoRepository.GuardarRegistroAsync(proceso);
+
+                await CargarProcesosAsync();
+
+                if (_procesoSeleccionado?.Id == proceso.Id)
+                {
+                    btnGuardarEntrada.IsEnabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert(
+                    "Error",
+                    ex.Message,
+                    "Aceptar");
+            }
+        }
     }
 
     private async void btnFinalizarProceso_Clicked(

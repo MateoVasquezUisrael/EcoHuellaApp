@@ -51,10 +51,26 @@
                                     <Label
                                         Text="{Binding FechaInicio, StringFormat='Inicio: {0:dd/MM/yyyy HH:mm}'}" />
 
+                                    <Label
+                                        Text="{Binding FechaEstimadaFinProceso, StringFormat='Fin estimado: {0:dd/MM/yyyy}'}" />
+
+                                    <Label
+                                        Text="Lleno"
+                                        TextColor="Red"
+                                        FontAttributes="Bold"
+                                        IsVisible="{Binding EstadoLlenado}" />
+
                                 </VerticalStackLayout>
 
                                 <Button
                                     Grid.Column="1"
+                                    Text="Marcar lleno"
+                                    CommandParameter="{Binding .}"
+                                    Clicked="btnMarcarLleno_Clicked"
+                                    Margin="5,0" />
+
+                                <Button
+                                    Grid.Column="2"
                                     Text="Finalizar"
                                     CommandParameter="{Binding .}"
                                     Clicked="btnFinalizarProceso_Clicked"

@@ -34,7 +34,8 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
         {
             try
             {
-                entity.Estado = false;
+                entity.EstadoLlenado = true;
+                entity.EstadoFinalizado = true;
                 await _database.Database.UpdateAsync(entity);
             }
             catch (Exception ex)
@@ -64,7 +65,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
             {
                 var proceso = await _database.Database
                     .Table<ProcesoBiodigestor>()
-                    .Where(p => p.Id == id && p.Estado)
+                    .Where(p => p.Id == id && !p.EstadoFinalizado)
                     .FirstOrDefaultAsync();
 
                 if (proceso != null)
@@ -86,7 +87,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
             try
             {
                 var procesos = await _database.Database
-                    .GetAllWithChildrenAsync<ProcesoBiodigestor>(p => p.Estado);
+                    .GetAllWithChildrenAsync<ProcesoBiodigestor>(p => !p.EstadoFinalizado);
 
                 return procesos
                     .OrderByDescending(p => p.FechaInicio)
@@ -105,7 +106,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
             {
                 var proceso = await _database.Database
                     .Table<ProcesoBiodigestor>()
-                    .Where(p => p.Id == procesoId && p.Estado)
+                    .Where(p => p.Id == procesoId && !p.EstadoFinalizado)
                     .FirstOrDefaultAsync();
 
                 if (proceso is null)
@@ -120,7 +121,8 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
                 proceso.MetanoEvitado = matematicaVerde.CalcularMetanoEvitado(masaCarbono);
                 proceso.CarbonoEvitado = matematicaVerde.ConversionMetanoCarbono(masaCarbono);
                 proceso.FechaCierre = DateTime.Now;
-                proceso.Estado = false;
+                proceso.EstadoLlenado = true;
+                proceso.EstadoFinalizado = true;
 
                 await _database.Database.UpdateAsync(proceso);
                 Status = string.Format("Proceso finalizado: {0}", proceso);
@@ -138,7 +140,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
             {
                 var query = _database.Database
                     .Table<ProcesoBiodigestor>()
-                    .Where(p => !p.Estado);
+                    .Where(p => p.EstadoFinalizado);
 
                 if (biodigestorId.HasValue)
                     query = query.Where(p => p.BiodigestorId == biodigestorId.Value);

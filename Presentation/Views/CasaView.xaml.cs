@@ -6,7 +6,6 @@ using Plugin.LocalNotification;
 using Plugin.LocalNotification.Core.Models;
 
 
-
 namespace EcoHuellaApp.Presentation.Views;
 
 public partial class CasaView : ContentPage
