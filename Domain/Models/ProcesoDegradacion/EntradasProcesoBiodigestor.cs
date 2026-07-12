@@ -16,9 +16,6 @@ namespace EcoHuellaApp.Domain.Models.ProcesoDegradacion
         [NotNull]
         public bool Estado { get; set; } = true;
 
-        public double BaldesIngresados { get; set; } //se dice cuantos baldes se ingresaron ese día
-
-        public double MasaBaldes { get; set; } //calculamos directamente
 
         [ForeignKey(typeof(ProcesoBiodigestor))]
         public int ProcesoBiodigestorId { get; set; }

@@ -131,22 +131,15 @@ public partial class ProcesosBiodigestorView : ContentPage
             return;
         }
 
-        int baldes = int.TryParse(txtBaldesIngresados.Text, out var b) ? b : 0;
-        var matematicaVerde = new MatematicaVerde();
-        double masa = matematicaVerde.CalcularMasa(baldes);
-
         var nuevaEntrada = new EntradasProcesoBiodigestor
         {
             FechaIngreso = dpFechaIngreso.Date ?? DateTime.Today,
-            BaldesIngresados = baldes,
-            MasaBaldes = masa,
             ProcesoBiodigestorId = _procesoSeleccionado.Id,
             Estado = true
         };
 
         await _entradasRepository.GuardarRegistroAsync(nuevaEntrada);
 
-        txtBaldesIngresados.Text = string.Empty;
         dpFechaIngreso.Date = DateTime.Today;
 
         await CargarEntradasAsync();

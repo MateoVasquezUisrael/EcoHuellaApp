@@ -79,11 +79,6 @@
                 x:Name="dpFechaIngreso"
                 Format="dd/MM/yyyy" />
 
-            <Entry
-                x:Name="txtBaldesIngresados"
-                Placeholder="Cantidad de baldes ingresados"
-                Keyboard="Numeric" />
-
             <Button
                 x:Name="btnGuardarEntrada"
                 Text="Guardar Entrada"
@@ -100,12 +95,6 @@
 
                                 <Label
                                     Text="{Binding FechaIngreso, StringFormat='Fecha: {0:dd/MM/yyyy}'}" />
-
-                                <Label
-                                    Text="{Binding BaldesIngresados, StringFormat='Baldes: {0}'}" />
-
-                                <Label
-                                    Text="{Binding MasaBaldes, StringFormat='Masa: {0:F2} kg'}" />
 
                             </VerticalStackLayout>
                         </Frame>

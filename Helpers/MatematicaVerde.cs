@@ -61,5 +61,11 @@ namespace EcoHuellaApp.Helpers
             return calculo;
         }
 
+        public double PerdidaMasa(double MasaCarbono)
+        {
+            double calculo = MasaCarbono * ConstantesMatematicaVerde.PerdidaVolumen;
+
+            return calculo;
+        }
     }
 }

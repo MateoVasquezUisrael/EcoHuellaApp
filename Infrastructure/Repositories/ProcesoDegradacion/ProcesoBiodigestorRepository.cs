@@ -114,14 +114,9 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
                 await _database.Database.GetChildrenAsync(proceso);
 
                 var matematicaVerde = new MatematicaVerde();
-                double masaTotalEntradas = proceso.Entradas?
-                    .Where(e => e.Estado)
-                    .Sum(e => matematicaVerde.CalcularMasa((int)e.BaldesIngresados)) ?? 0;
+                double masaCarbono = proceso.Biodigestor?.CapacidadMaxima ?? 0;
 
-                double masaCarbono = masaTotalEntradas > 0
-                    ? masaTotalEntradas
-                    : proceso.Biodigestor?.CapacidadMaxima ?? 0;
-
+                proceso.MasaRestante = matematicaVerde.PerdidaMasa(masaCarbono);
                 proceso.MetanoEvitado = matematicaVerde.CalcularMetanoEvitado(masaCarbono);
                 proceso.CarbonoEvitado = matematicaVerde.ConversionMetanoCarbono(masaCarbono);
                 proceso.FechaCierre = DateTime.Now;

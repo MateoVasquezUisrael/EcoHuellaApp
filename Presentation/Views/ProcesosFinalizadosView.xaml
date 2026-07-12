@@ -41,6 +41,9 @@
                                     Text="{Binding FechaCierre, StringFormat='Cierre: {0:dd/MM/yyyy HH:mm}'}" />
 
                                 <Label
+                                    Text="{Binding MasaRestante, StringFormat='Masa restante: {0:F2} kg'}" />
+
+                                <Label
                                     Text="{Binding MetanoEvitado, StringFormat='Metano evitado: {0:F2} kg'}" />
 
                                 <Label

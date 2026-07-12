@@ -6,8 +6,11 @@ namespace EcoHuellaApp.Helpers;
 public static class ConstantesMatematicaVerde
 {
     //--------------- necesario para el cálculo de masa de residuos orgánicos ----------------------------------
-    public const double DensidadResiduosOrganicos = 0.30; //contenidos presurtizados de basura orgánica necesarios en el cálculo de masa; se mide en kg/L.
+    public const double DensidadResiduosOrganicos = 0.30; //contenidos presurizados de basura orgánica necesarios en el cálculo de masa; se mide en kg/L.
     public const int VolumenBaldes = 20; //se mide el litros
+
+    //--------------- datos sobre pérdida de masa tras proceso de biodiesdtor
+    public const double PerdidaVolumen = 0.6777; // 1-1/3: es la perdida de masa del biodigestor
 
     //--------------- necesario para el cálculo de metano en vertedero y en compost en base al IPCC
     public const double CarbonoOrganicoDegradable = 0.15;
