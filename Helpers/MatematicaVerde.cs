@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 using EcoHuellaApp.Helpers;
-using KotlinX.Android.Extensions;
 
 namespace EcoHuellaApp.Helpers
 {
-    public class MatematicaVerde
+    public class  MatematicaVerde
     {
         public double CalcularMasa(int cantidadesBaldes)
         {
 
             /// <summary>
-            /// La ecuación nos devuelve la masa de residuos orgánicos asentados. Se hace multiplicando la cantidad de baldes de una recolección por el volumen cosntante usado
-            /// por Aldea Las Nubes por la densidad calculada dada por la Secrertaria de AMbiente de Quito.
+            /// La ecuación nos devuelve la masa de residuos orgánicos asentados. Se hace multiplicando la cantidad de baldes de una recolección por el volumen constante usado
+            /// por Aldea Las Nubes por la densidad calculada dada por la Secrertaria de Ambiente de Quito.
             /// </summary>
             double calculo = cantidadesBaldes * ConstantesMatematicaVerde.VolumenBaldes * ConstantesMatematicaVerde.DensidadResiduosOrganicos;
 
@@ -43,5 +42,24 @@ namespace EcoHuellaApp.Helpers
 
             return calculo;
         }
+
+        public double CalcularMetanoEvitado(double MasaCarbono)
+        {
+            ///<summary>
+            ///Calcula el metano evitado basado en el metano que se genera en el compost y el potencial de emtano en vertedero.
+            ///</summary>
+            
+            double calculo = CalcularMetanoEnVertadero(MasaCarbono) - CalcularMetanoEnCompost(MasaCarbono);
+
+            return calculo;
+        }
+
+        public double ConversionMetanoCarbono(double MasaCarbono)
+        {
+            double calculo = CalcularMetanoEvitado(MasaCarbono) * ConstantesMatematicaVerde.PotencialCalentamientoMetano;
+
+            return calculo;
+        }
+
     }
 }

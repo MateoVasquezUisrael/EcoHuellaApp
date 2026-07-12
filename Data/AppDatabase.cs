@@ -1,6 +1,7 @@
 ﻿using EcoHuellaApp.Domain.Models;
 using SQLite;
 using EcoHuellaApp.Domain.Models.Recoleccion;
+using EcoHuellaApp.Domain.Models.ProcesoDegradacion;
 
 namespace EcoHuellaApp.Data
 {
@@ -17,7 +18,9 @@ namespace EcoHuellaApp.Data
                 _connection.CreateTableAsync<Casa>().Wait();
                 _connection.CreateTableAsync<PuntoRecoleccion>().Wait();
                 _connection.CreateTableAsync<Recoleccion>().Wait();
-                _connection.CreateTableAsync<Compostaje>().Wait();
+                _connection.CreateTableAsync<Biodigestor>().Wait();
+                _connection.CreateTableAsync<ProcesoBiodigestor>().Wait();
+                _connection.CreateTableAsync<EntradasProcesoBiodigestor>().Wait();
             }
             catch (Exception ex)
             {

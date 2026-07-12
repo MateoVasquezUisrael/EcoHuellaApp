@@ -25,16 +25,23 @@ namespace EcoHuellaApp.Platforms.Android
 
         public static void Initialize(Activity activity)
         {
+            System.Diagnostics.Debug.WriteLine(
+                "[GoogleSignIn] Initialize called for activity: " + activity?.LocalClassName);
+
             var options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultSignIn)
                 .RequestIdToken(WebClientId)
                 .RequestEmail()
                 .Build();
 
             _client = GoogleSignIn.GetClient(activity, options);
+            System.Diagnostics.Debug.WriteLine("[GoogleSignIn] Client created with WebClientId.");
         }
 
         public static Task<AuthCredential?> SignInAsync(Activity activity)
         {
+            System.Diagnostics.Debug.WriteLine(
+                "[GoogleSignIn] SignInAsync called. Client is null: " + (_client is null));
+
             if (_client is null)
                 Initialize(activity);
 
@@ -44,6 +51,8 @@ namespace EcoHuellaApp.Platforms.Android
             _client!.SignOut()
                 .AddOnCompleteListener(new GsiCompleteListener(_ =>
                 {
+                    System.Diagnostics.Debug.WriteLine(
+                        "[GoogleSignIn] Starting SignInHubActivity with RequestCode " + RequestCode);
                     activity.StartActivityForResult(_client.SignInIntent, RequestCode);
                 }));
 
@@ -56,10 +65,20 @@ namespace EcoHuellaApp.Platforms.Android
         public static void HandleActivityResult(
             int requestCode, Result resultCode, Intent? data)
         {
-            if (requestCode != RequestCode || _tcs is null) return;
+            System.Diagnostics.Debug.WriteLine(
+                $"[GoogleSignIn] HandleActivityResult called. requestCode={requestCode}, expected={RequestCode}, resultCode={resultCode}, tcsIsNull={_tcs is null}");
+
+            if (requestCode != RequestCode || _tcs is null)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    "[GoogleSignIn] Ignoring activity result (wrong request code or no pending TCS).");
+                return;
+            }
 
             if (resultCode != Result.Ok)
             {
+                System.Diagnostics.Debug.WriteLine(
+                    "[GoogleSignIn] Result was not OK. Treating as cancelled/error.");
                 _tcs.TrySetResult(null);
                 return;
             }
@@ -71,6 +90,9 @@ namespace EcoHuellaApp.Platforms.Android
                 {
                     try
                     {
+                        System.Diagnostics.Debug.WriteLine(
+                            "[GoogleSignIn] Account retrieved. IdToken empty: " + string.IsNullOrEmpty(account?.IdToken));
+
                         if (string.IsNullOrEmpty(account?.IdToken))
                         {
                             innerTcs.TrySetException(
@@ -78,10 +100,12 @@ namespace EcoHuellaApp.Platforms.Android
                             return;
                         }
                         var credential = GoogleAuthProvider.GetCredential(account.IdToken, null);
+                        System.Diagnostics.Debug.WriteLine("[GoogleSignIn] Firebase credential created.");
                         innerTcs.TrySetResult(credential);
                     }
                     catch (Exception ex)
                     {
+                        System.Diagnostics.Debug.WriteLine("[GoogleSignIn] Exception in success handler: " + ex);
                         innerTcs.TrySetException(ex);
                     }
                 }))
@@ -96,9 +120,17 @@ namespace EcoHuellaApp.Platforms.Android
             innerTcs.Task.ContinueWith(t =>
             {
                 if (t.IsFaulted)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        "[GoogleSignIn] innerTcs faulted: " + t.Exception?.InnerException?.Message);
                     _tcs.TrySetException(t.Exception!.InnerException ?? t.Exception);
+                }
                 else
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        "[GoogleSignIn] innerTcs completed. Credential is null: " + (t.Result is null));
                     _tcs.TrySetResult(t.Result);
+                }
             });
         }
 

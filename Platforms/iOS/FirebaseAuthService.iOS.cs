@@ -3,6 +3,7 @@ using EcoHuellaApp.Domain.Models;
 using Firebase.Auth;
 using Foundation;
 using Google.SignIn;
+using GIDSignIn = Google.SignIn.SignIn;
 using DomainCode = EcoHuellaApp.Domain.Models.AuthErrorCode;
 using FirebaseCode = Firebase.Auth.AuthErrorCode;
 
@@ -70,12 +71,14 @@ namespace EcoHuellaApp.Platforms.iOS
                     return Task.FromResult(AuthResult.Fail(
                         "No hay UIViewController activo.", DomainCode.Unknown));
 
-                var configuration = new GIDConfiguration(iOSClientId);
+                // Google Sign-In SDK v9: la configuración se asigna a SharedInstance
+                // y el sign-in se inicia solo con el viewController presentador.
+                GIDSignIn.SharedInstance.Configuration =
+                    new Configuration(iOSClientId);
 
                 // GIDSignIn abre ASWebAuthenticationSession.
                 // El callback llega en el hilo principal.
-                GIDSignIn.SharedInstance.SignIn(
-                    configuration,
+                GIDSignIn.SharedInstance.SignInWithPresentingViewController(
                     topVc,
                     async (signInResult, nsError) =>
                     {
@@ -145,7 +148,7 @@ namespace EcoHuellaApp.Platforms.iOS
 
             // Cerrar también la sesión de Google para que el picker
             // vuelva a mostrarse en el próximo inicio de sesión
-            GIDSignIn.SharedInstance.SignOut();
+            GIDSignIn.SharedInstance.SignOutUser();
 
             return Task.FromResult(
                 error is null

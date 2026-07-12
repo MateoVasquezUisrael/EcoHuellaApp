@@ -76,14 +76,24 @@ namespace EcoHuellaApp.Presentation.ViewModels
             {
                 SuccessMessage = string.Empty;
 
+                System.Diagnostics.Debug.WriteLine(
+                    "[LoginViewModel] SignInWithGoogleAsync started.");
+
                 var result = await _authService.SignInWithGoogleAsync();
+
+                System.Diagnostics.Debug.WriteLine(
+                    $"[LoginViewModel] Auth result: IsSuccess={result.IsSuccess}, ErrorCode={result.ErrorCode}, ErrorMessage={result.ErrorMessage}");
 
                 if (!result.IsSuccess)
                 {
                     // Cancelación silenciosa del selector de cuentas
                     if (result.ErrorCode == AuthErrorCode.Cancelled &&
                         string.IsNullOrEmpty(result.ErrorMessage))
+                    {
+                        System.Diagnostics.Debug.WriteLine(
+                            "[LoginViewModel] Google sign-in cancelled by user.");
                         return;
+                    }
 
                     SetError(result.ErrorMessage ?? "Error al iniciar sesión con Google.");
                     return;

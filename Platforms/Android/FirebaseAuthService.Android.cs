@@ -61,26 +61,38 @@ namespace EcoHuellaApp.Platforms.Android
                 var activity = Platform.CurrentActivity
                     ?? throw new InvalidOperationException("No hay Activity activa.");
 
+                System.Diagnostics.Debug.WriteLine(
+                    "[FirebaseAuth.Android] SignInWithGoogleAsync started. Activity: " + activity.LocalClassName);
+
                 // null = usuario cancela explícitamente  sin error
                 // GoogleSignInException = error real (config, red, etc.)
                 var credential = await GoogleSignInService.SignInAsync(activity);
 
+                System.Diagnostics.Debug.WriteLine(
+                    "[FirebaseAuth.Android] Credential obtained. IsNull: " + (credential is null));
+
                 if (credential is null)
                     return AuthResult.Fail(string.Empty, AuthErrorCode.Cancelled);
 
+                System.Diagnostics.Debug.WriteLine(
+                    "[FirebaseAuth.Android] Calling Firebase SignInWithCredential...");
                 await RunFirebaseTask(
                     _auth.SignInWithCredential(credential));
+
+                System.Diagnostics.Debug.WriteLine(
+                    "[FirebaseAuth.Android] Firebase sign-in completed. CurrentUser is null: " + (_auth.CurrentUser is null));
 
                 return MapUserResult(_auth.CurrentUser);
             }
             
             catch (FirebaseAuthInvalidCredentialsException)
             {
+                System.Diagnostics.Debug.WriteLine("[FirebaseAuth.Android] FirebaseAuthInvalidCredentialsException");
                 return AuthResult.Fail("Credencial de Google inválida.", AuthErrorCode.InvalidCredentials);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("[FirebaseAuth.Android] GoogleSignIn: " + ex);
+                System.Diagnostics.Debug.WriteLine("[FirebaseAuth.Android] GoogleSignIn exception: " + ex);
                 return AuthResult.Fail("Error inesperado al iniciar sesión con Google.", AuthErrorCode.Unknown);
             }
         }

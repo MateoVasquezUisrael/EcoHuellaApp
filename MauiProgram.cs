@@ -1,7 +1,9 @@
 ﻿using EcoHuellaApp.Data;
 using EcoHuellaApp.Domain.Interfaces;
 using EcoHuellaApp.Domain.Models.Recoleccion;
+using EcoHuellaApp.Domain.Models.ProcesoDegradacion;
 using EcoHuellaApp.Infrastructure.Repositories;
+using EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion;
 using EcoHuellaApp.Infrastructure.Services;
 using EcoHuellaApp.Presentation.ViewModels;
 using EcoHuellaApp.Presentation.Views;
@@ -53,6 +55,17 @@ namespace EcoHuellaApp
             builder.Services.AddTransient<RecoleccionMapPage>();
             builder.Services.AddSingleton<IRepositoryGeneric<Recoleccion>, RecoleccionRepository>();
             builder.Services.AddSingleton<RecoleccionRepository>();
+
+            // ── Módulo Proceso de Degradación ─────────────────────────────────
+            builder.Services.AddTransient<BiodigestoresView>();
+            builder.Services.AddTransient<ProcesosBiodigestorView>();
+            builder.Services.AddTransient<ProcesosFinalizadosView>();
+            builder.Services.AddSingleton<IRepositoryGeneric<Biodigestor>, BiodigestorRepository>();
+            builder.Services.AddSingleton<BiodigestorRepository>();
+            builder.Services.AddSingleton<IRepositoryGeneric<ProcesoBiodigestor>, ProcesoBiodigestorRepository>();
+            builder.Services.AddSingleton<ProcesoBiodigestorRepository>();
+            builder.Services.AddSingleton<IRepositoryGeneric<EntradasProcesoBiodigestor>, EntradasProcesoBiodigestorRepository>();
+            builder.Services.AddSingleton<EntradasProcesoBiodigestorRepository>();
 
 #if DEBUG
             builder.Logging.AddDebug();

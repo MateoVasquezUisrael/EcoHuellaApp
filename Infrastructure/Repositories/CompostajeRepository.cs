@@ -7,34 +7,7 @@ using System.Text;
 
 namespace EcoHuellaApp.Infrastructure.Repositories
 {
-    public class CompostajeRepository : IRepositoryGeneric<Compostaje>
+    public class CompostajeRepository
     {
-        //instancia de la datbase que debe existir aquí, esto se manda al mauiapp porque... Injección de Dependencias.
-        private AppDatabase _database;
-
-        public Task ActualizarAsync(Compostaje entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task BorrarRegistroAsync(Compostaje entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task GuardarRegistroAsync(Compostaje entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Compostaje> ObtenerPorId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Compostaje>> ObtenerTodosAsync()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

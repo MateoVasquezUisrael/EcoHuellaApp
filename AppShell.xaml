@@ -27,6 +27,10 @@
             ContentTemplate="{DataTemplate views:RecoleccionView}" />
 
         <ShellContent
+            Title="Biodigestores"
+            ContentTemplate="{DataTemplate views:BiodigestoresView}" />
+
+        <ShellContent
             Title="Mapa"
             ContentTemplate="{DataTemplate views:MapPage}" />
 

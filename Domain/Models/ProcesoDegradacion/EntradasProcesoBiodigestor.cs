@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using SQLiteNetExtensions.Attributes;
 
+
 namespace EcoHuellaApp.Domain.Models.ProcesoDegradacion
 {
     public class EntradasProcesoBiodigestor
@@ -12,8 +13,16 @@ namespace EcoHuellaApp.Domain.Models.ProcesoDegradacion
         public int Id { get; set; }
         [NotNull]
         public DateTime FechaIngreso { get; set; }
+        [NotNull]
+        public bool Estado { get; set; } = true;
+
+        public double BaldesIngresados { get; set; } //se dice cuantos baldes se ingresaron ese día
+
+        public double MasaBaldes { get; set; } //calculamos directamente
+
         [ForeignKey(typeof(ProcesoBiodigestor))]
         public int ProcesoBiodigestorId { get; set; }
+
 
         [ManyToOne(foreignKey:nameof(ProcesoBiodigestorId), inverseProperty: nameof(ProcesoBiodigestor.Entradas))]
         public ProcesoBiodigestor? Proceso { get; set; }
