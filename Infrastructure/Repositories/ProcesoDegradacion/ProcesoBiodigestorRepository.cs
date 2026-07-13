@@ -49,8 +49,16 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
         {
             try
             {
-                await _database.Database.InsertAsync(entity);
-                Status = string.Format("Dato ingresado: {0}", entity);
+                if (entity.Id == 0)
+                {
+                    await _database.Database.InsertAsync(entity);
+                    Status = string.Format("Dato ingresado: {0}", entity);
+                }
+                else
+                {
+                    await _database.Database.UpdateAsync(entity);
+                    Status = string.Format("Dato actualizado: {0}", entity);
+                }
             }
             catch (Exception ex)
             {
