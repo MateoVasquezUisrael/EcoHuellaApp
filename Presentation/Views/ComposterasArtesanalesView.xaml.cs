@@ -83,7 +83,7 @@ public partial class ComposterasArtesanalesView : ContentPage
         {
             System.Diagnostics.Debug.WriteLine(
                 $"[ComposterasArtesanalesView] Error al guardar compostera: {ex}");
-            await DisplayAlert(
+            await DisplayAlertAsync(
                 "Error",
                 "No se pudo guardar la compostera. Intenta de nuevo.",
                 "Aceptar");
@@ -98,7 +98,7 @@ public partial class ComposterasArtesanalesView : ContentPage
         {
             if (_composteraSeleccionada == null)
             {
-                await DisplayAlert(
+                await DisplayAlertAsync(
                     "Aviso",
                     "Seleccione una compostera primero.",
                     "Aceptar");
@@ -108,7 +108,7 @@ public partial class ComposterasArtesanalesView : ContentPage
 
             if (pickerTipoAccion.SelectedIndex < 0)
             {
-                await DisplayAlert(
+                await DisplayAlertAsync(
                     "Aviso",
                     "Seleccione el tipo de acción.",
                     "Aceptar");
@@ -118,7 +118,7 @@ public partial class ComposterasArtesanalesView : ContentPage
 
             if (pickerTipoElemento.SelectedIndex < 0)
             {
-                await DisplayAlert(
+                await DisplayAlertAsync(
                     "Aviso",
                     "Seleccione el tipo de elemento.",
                     "Aceptar");
@@ -146,7 +146,7 @@ public partial class ComposterasArtesanalesView : ContentPage
         {
             System.Diagnostics.Debug.WriteLine(
                 $"[ComposterasArtesanalesView] Error al guardar acción: {ex}");
-            await DisplayAlert(
+            await DisplayAlertAsync(
                 "Error",
                 "No se pudo guardar la acción. Intenta de nuevo.",
                 "Aceptar");

@@ -96,6 +96,7 @@
                 <Picker.Items>
                     <x:String>Lixiviado</x:String>
                     <x:String>Compost</x:String>
+                    <x:String>Forraje Verde</x:String>
                 </Picker.Items>
             </Picker>
 

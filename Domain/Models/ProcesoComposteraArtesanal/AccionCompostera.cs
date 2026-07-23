@@ -20,6 +20,7 @@ namespace EcoHuellaApp.Domain.Models.ProcesoComposteraArtesanal
     {
         public const string LIXIVIADO = "Lixiviado";
         public const string COMPOST = "Compost";
+        public const string FORRAJEVERDE = "Forraje Verde";
     }
 
     public class AccionCompostera
