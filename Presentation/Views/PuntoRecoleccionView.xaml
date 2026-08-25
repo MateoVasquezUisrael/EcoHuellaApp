@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EcoHuellaApp.Presentation.ViewModels"
+             xmlns:models="clr-namespace:EcoHuellaApp.Domain.Models.Recoleccion"
              x:Class="EcoHuellaApp.Presentation.Views.PuntoRecoleccionView"
+             x:DataType="vm:PuntoRecoleccionViewModel"
              Title="PuntoRecoleccionView">
     <ScrollView>
         <VerticalStackLayout
@@ -14,25 +17,24 @@
                 HorizontalOptions="Center" />
 
             <Entry
-                x:Name="txtDireccion"
+                Text="{Binding Direccion}"
                 Placeholder="Dirección" />
 
             <Entry
-                x:Name="txtLatitud"
+                Text="{Binding Latitud}"
                 Placeholder="Latitud"
                 IsReadOnly="True"
                 Keyboard="Numeric" />
 
             <Entry
-                x:Name="txtLongitud"
+                Text="{Binding Longitud}"
                 Placeholder="Longitud"
                 IsReadOnly="True"
                 Keyboard="Numeric" />
 
             <Button
-                x:Name="btnSeleccionarUbicacion"
                 Text="Seleccionar en mapa"
-                Clicked="btnSeleccionarUbicacion_Clicked" />
+                Command="{Binding SeleccionarUbicacionCommand}" />
 
             <HorizontalStackLayout>
                 <Label
@@ -40,8 +42,7 @@
                     VerticalOptions="Center" />
 
                 <Switch
-                    x:Name="swEstado"
-                    IsToggled="True" />
+                    IsToggled="{Binding Estado}" />
             </HorizontalStackLayout>
 
             <HorizontalStackLayout
@@ -49,29 +50,36 @@
                 Spacing="10">
 
                 <Button
-                    x:Name="btnGuardar"
                     Text="Guardar"
-                    Clicked="btnGuardar_Clicked" />
+                    Command="{Binding GuardarCommand}" />
 
                 <Button
-                    x:Name="btnActualizar"
                     Text="Actualizar"
-                    Clicked="btnActualizar_Clicked" />
+                    Command="{Binding ActualizarCommand}" />
 
                 <Button
-                    x:Name="btnEliminar"
                     Text="Eliminar"
-                    Clicked="btnEliminar_Clicked" />
+                    Command="{Binding EliminarCommand}" />
 
             </HorizontalStackLayout>
 
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               HorizontalOptions="Center"
+                               Margin="0,4,0,0"/>
+
+            <Label Text="{Binding ErrorMessage}"
+                   IsVisible="{Binding HasError}"
+                   TextColor="#C0392B"
+                   FontSize="13"/>
+
             <CollectionView
-                x:Name="cvPuntosRecoleccion"
-                SelectionMode="Single"
-                SelectionChanged="cvPuntosRecoleccion_SelectionChanged">
+                ItemsSource="{Binding Puntos}"
+                SelectedItem="{Binding PuntoSeleccionado}"
+                SelectionMode="Single">
 
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:PuntoRecoleccion">
                         <Frame Margin="5">
                             <VerticalStackLayout>
 

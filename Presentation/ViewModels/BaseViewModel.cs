@@ -32,6 +32,23 @@ namespace EcoHuellaApp.Presentation.ViewModels
         protected void SetError(string message) => ErrorMessage = message;
         protected void ClearError()             => ErrorMessage = string.Empty;
 
+        /// <summary>Página visible actualmente — único punto de acceso a la UI para diálogos/navegación modal.</summary>
+        protected static Page? PaginaActual() =>
+            Application.Current?.Windows is { Count: > 0 } windows ? windows[0].Page : null;
+
+        protected async Task MostrarAvisoAsync(string mensaje, string titulo = "Aviso")
+        {
+            var pagina = PaginaActual();
+            if (pagina is not null)
+                await pagina.DisplayAlertAsync(titulo, mensaje, "Aceptar");
+        }
+
+        protected async Task<bool> ConfirmarAsync(string mensaje, string titulo = "Confirmar")
+        {
+            var pagina = PaginaActual();
+            return pagina is not null && await pagina.DisplayAlertAsync(titulo, mensaje, "Sí", "No");
+        }
+
         /// <summary>
         /// Wrapper estándar para comandos async.
         /// Maneja automáticamente: IsBusy=true/false, captura de excepciones,

@@ -43,10 +43,12 @@ namespace EcoHuellaApp
 
             // ── Módulo Casas ──────────────────────────────────────────────────
             builder.Services.AddTransient<CasaView>();
+            builder.Services.AddTransient<CasaViewModel>();
             builder.Services.AddSingleton<IRepositoryGeneric<Casa>, CasaRepository>();
 
             // ── Módulo Puntos de Recolección ──────────────────────────────────
             builder.Services.AddTransient<PuntoRecoleccionView>();
+            builder.Services.AddTransient<PuntoRecoleccionViewModel>();
             builder.Services.AddSingleton<IRepositoryGeneric<PuntoRecoleccion>, PuntoRecoleccionRepository>();
 
             // ── Módulo Mapas ──────────────────────────────────────────────────
@@ -56,6 +58,7 @@ namespace EcoHuellaApp
 
             // ── Módulo Recolección ────────────────────────────────────────────
             builder.Services.AddTransient<RecoleccionView>();
+            builder.Services.AddTransient<RecoleccionViewModel>();
             builder.Services.AddTransient<RecoleccionMapPage>();
             builder.Services.AddSingleton<IRepositoryGeneric<Recoleccion>, RecoleccionRepository>();
             builder.Services.AddSingleton<RecoleccionRepository>();
@@ -80,6 +83,7 @@ namespace EcoHuellaApp
 
             // ── Módulo Sacos de Compost ───────────────────────────────────────
             builder.Services.AddTransient<SacosCompostView>();
+            builder.Services.AddTransient<SacosCompostViewModel>();
             builder.Services.AddSingleton<IRepositoryGeneric<SacosCompost>, SacosCompostRepository>();
             builder.Services.AddSingleton<SacosCompostRepository>();
 

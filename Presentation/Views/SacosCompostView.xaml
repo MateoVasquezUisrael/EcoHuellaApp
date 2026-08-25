@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EcoHuellaApp.Presentation.ViewModels"
+             xmlns:models="clr-namespace:EcoHuellaApp.Domain.Models.Ventas"
              x:Class="EcoHuellaApp.Presentation.Views.SacosCompostView"
+             x:DataType="vm:SacosCompostViewModel"
              Title="Sacos de Compost">
     <ScrollView>
         <VerticalStackLayout
@@ -20,13 +23,22 @@
                 FontSize="18" />
 
             <DatePicker
-                x:Name="dpFechaRegistro"
+                Date="{Binding FechaRegistro}"
                 Format="dd/MM/yyyy" />
 
             <Button
-                x:Name="btnGuardarSaco"
                 Text="Guardar Saco"
-                Clicked="btnGuardarSaco_Clicked" />
+                Command="{Binding GuardarSacoCommand}" />
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               HorizontalOptions="Center"
+                               Margin="0,4,0,0"/>
+
+            <Label Text="{Binding ErrorMessage}"
+                   IsVisible="{Binding HasError}"
+                   TextColor="#C0392B"
+                   FontSize="13"/>
 
             <!-- Lista de sacos disponibles -->
             <Label
@@ -35,12 +47,12 @@
                 FontSize="18" />
 
             <CollectionView
-                x:Name="cvSacosDisponibles"
-                SelectionMode="Single"
-                SelectionChanged="cvSacosDisponibles_SelectionChanged">
+                ItemsSource="{Binding SacosDisponibles}"
+                SelectedItem="{Binding SacoSeleccionado}"
+                SelectionMode="Single">
 
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:SacosCompost">
                         <Border StrokeShape="RoundRectangle 10"
                                 BackgroundColor="{AppThemeBinding Light=White, Dark=#242424}"
                                 Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark=#333}"
@@ -68,17 +80,15 @@
 
             <!-- Formulario uso/venta -->
             <Label
-                x:Name="lblUsoTitulo"
                 Text="Usar / vender saco"
                 FontAttributes="Bold"
                 FontSize="18"
-                IsVisible="False" />
+                IsVisible="{Binding IsFormularioUsoVisible}" />
 
             <Picker
-                x:Name="pickerMotivo"
                 Title="Motivo"
-                SelectedIndexChanged="pickerMotivo_SelectedIndexChanged"
-                IsVisible="False">
+                SelectedItem="{Binding MotivoSeleccionado}"
+                IsVisible="{Binding IsFormularioUsoVisible}">
                 <Picker.Items>
                     <x:String>Venta</x:String>
                     <x:String>Consumo</x:String>
@@ -86,15 +96,14 @@
             </Picker>
 
             <Entry
-                x:Name="txtClienteVenta"
+                Text="{Binding ClienteVenta}"
                 Placeholder="Cliente (solo para venta)"
-                IsVisible="False" />
+                IsVisible="{Binding IsClienteVisible}" />
 
             <Button
-                x:Name="btnConfirmarUso"
                 Text="Confirmar uso / venta"
-                Clicked="btnConfirmarUso_Clicked"
-                IsVisible="False" />
+                Command="{Binding ConfirmarUsoCommand}"
+                IsVisible="{Binding IsFormularioUsoVisible}" />
 
             <!-- Lista de sacos usados/vendidos -->
             <Label
@@ -103,11 +112,11 @@
                 FontSize="18" />
 
             <CollectionView
-                x:Name="cvSacosUsados"
+                ItemsSource="{Binding SacosUsados}"
                 SelectionMode="None">
 
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:SacosCompost">
                         <Border StrokeShape="RoundRectangle 10"
                                 BackgroundColor="{AppThemeBinding Light=White, Dark=#242424}"
                                 Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark=#333}"

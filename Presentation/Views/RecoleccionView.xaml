@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EcoHuellaApp.Presentation.ViewModels"
+             xmlns:models="clr-namespace:EcoHuellaApp.Domain.Models.Recoleccion"
              x:Class="EcoHuellaApp.Presentation.Views.RecoleccionView"
+             x:DataType="vm:RecoleccionViewModel"
              Title="RecoleccionView">
     <ScrollView>
         <VerticalStackLayout
@@ -14,44 +17,46 @@
                 HorizontalOptions="Center" />
 
             <DatePicker
-                x:Name="dpFecha" />
+                Date="{Binding Fecha}" />
 
             <Label
                 Text="Casa" />
             <Picker
-                x:Name="pkCasa"
-                Title="Seleccione una casa" />
+                Title="Seleccione una casa"
+                ItemsSource="{Binding Casas}"
+                ItemDisplayBinding="{Binding Direccion}"
+                SelectedItem="{Binding CasaSeleccionada}" />
 
             <Label
                 Text="Punto de Recolección" />
             <Picker
-                x:Name="pkPuntoRecoleccion"
-                Title="Seleccione un punto de recolección" />
+                Title="Seleccione un punto de recolección"
+                ItemsSource="{Binding Puntos}"
+                ItemDisplayBinding="{Binding Direccion}"
+                SelectedItem="{Binding PuntoSeleccionado}" />
 
             <Button
-                x:Name="btnVerMapa"
                 Text="Ver en mapa"
-                Clicked="btnVerMapa_Clicked" />
+                Command="{Binding VerMapaCommand}" />
 
             <Label
                 Text="Cantidad de cubetas/baldes" />
             <Entry
-                x:Name="txtCantidadCubetas"
+                Text="{Binding CantidadCubetas}"
                 Placeholder="Cantidad de cubetas"
-                Keyboard="Numeric"
-                TextChanged="txtCantidadCubetas_TextChanged" />
+                Keyboard="Numeric" />
 
             <Label
                 Text="Litros estimados" />
             <Entry
-                x:Name="txtLitrosEstimados"
+                Text="{Binding LitrosEstimados}"
                 IsReadOnly="True"
                 Keyboard="Numeric" />
 
             <Label
                 Text="Masa estimada (kg)" />
             <Entry
-                x:Name="txtMasaEstimada"
+                Text="{Binding MasaEstimada}"
                 IsReadOnly="True"
                 Keyboard="Numeric" />
 
@@ -60,29 +65,36 @@
                 Spacing="10">
 
                 <Button
-                    x:Name="btnGuardar"
                     Text="Guardar"
-                    Clicked="btnGuardar_Clicked" />
+                    Command="{Binding GuardarCommand}" />
 
                 <Button
-                    x:Name="btnActualizar"
                     Text="Actualizar"
-                    Clicked="btnActualizar_Clicked" />
+                    Command="{Binding ActualizarCommand}" />
 
                 <Button
-                    x:Name="btnEliminar"
                     Text="Eliminar"
-                    Clicked="btnEliminar_Clicked" />
+                    Command="{Binding EliminarCommand}" />
 
             </HorizontalStackLayout>
 
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               HorizontalOptions="Center"
+                               Margin="0,4,0,0"/>
+
+            <Label Text="{Binding ErrorMessage}"
+                   IsVisible="{Binding HasError}"
+                   TextColor="#C0392B"
+                   FontSize="13"/>
+
             <CollectionView
-                x:Name="cvRecolecciones"
-                SelectionMode="Single"
-                SelectionChanged="cvRecolecciones_SelectionChanged">
+                ItemsSource="{Binding Recolecciones}"
+                SelectedItem="{Binding RecoleccionSeleccionada}"
+                SelectionMode="Single">
 
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:Recoleccion">
                         <Frame Margin="5">
                             <VerticalStackLayout>
 
