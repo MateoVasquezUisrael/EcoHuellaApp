@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaApp.Presentation.Views.ProcesosBiodigestorView"
+             Title="Procesos del biodigestor"
+             BackgroundColor="{StaticResource BackgroundSoft}">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <Border Style="{StaticResource EcoHeader}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Procesos del biodigestor"
+                           Style="{StaticResource Headline}"
+                           TextColor="White" />
+                    <Label x:Name="lblInfoBiodigestor"
+                           TextColor="#E8F5E9"
+                           FontSize="14" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource EcoCard}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Control del proceso"
+                           Style="{StaticResource SubHeadline}" />
+                    <Label Text="Desde aquí puedes iniciar un proceso, registrar entradas y cerrar el ciclo cuando termine."
+                           TextColor="{StaticResource MutedText}"
+                           FontSize="13" />
+                    <Button x:Name="btnIniciarProceso"
+                            Text="Iniciar nuevo proceso"
+                            Clicked="btnIniciarProceso_Clicked" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource EcoCard}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Procesos activos"
+                           Style="{StaticResource SubHeadline}" />
+
+                    <CollectionView x:Name="cvProcesos"
+                                    SelectionMode="Single"
+                                    SelectionChanged="cvProcesos_SelectionChanged">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border StrokeShape="RoundRectangle 16"
+                                        BackgroundColor="White"
+                                        Stroke="{StaticResource LightGreen}"
+                                        Margin="0,6"
+                                        Padding="14">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label Text="{Binding Id, StringFormat='Proceso #{0}'}"
+                                               FontAttributes="Bold"
+                                               FontSize="16" />
+                                        <Label Text="{Binding FechaInicio, StringFormat='Inicio: {0:dd/MM/yyyy HH:mm}'}"
+                                               TextColor="{StaticResource MutedText}" />
+                                        <Label Text="{Binding FechaEstimadaFinProceso, StringFormat='Fin estimado: {0:dd/MM/yyyy}'}"
+                                               TextColor="{StaticResource MutedText}" />
+                                        <Label Text="Estado: lleno"
+                                               TextColor="{StaticResource DangerRed}"
+                                               FontAttributes="Bold"
+                                               IsVisible="{Binding EstadoLlenado}" />
+                                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                            <Button Text="Marcar lleno"
+                                                    CommandParameter="{Binding .}"
+                                                    Clicked="btnMarcarLleno_Clicked"
+                                                    Style="{StaticResource BotonSecundario}" />
+                                            <Button Grid.Column="1"
+                                                    Text="Finalizar"
+                                                    CommandParameter="{Binding .}"
+                                                    Clicked="btnFinalizarProceso_Clicked" />
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource EcoCard}">
+                <VerticalStackLayout Spacing="12">
+                    <Label x:Name="lblProcesoSeleccionado"
+                           Text="Ningún proceso seleccionado"
+                           FontAttributes="Bold"
+                           FontSize="16"
+                           TextColor="{StaticResource DarkGreen}" />
+                    <Label Text="Entrada del proceso seleccionado"
+                           TextColor="{StaticResource MutedText}"
+                           FontSize="13" />
+
+                    <Border Style="{StaticResource CampoFormulario}">
+                        <DatePicker x:Name="dpFechaIngreso"
+                                    Format="dd/MM/yyyy" />
+                    </Border>
+
+                    <Button x:Name="btnGuardarEntrada"
+                            Text="Guardar entrada"
+                            Clicked="btnGuardarEntrada_Clicked" />
+
+                    <CollectionView x:Name="cvEntradas"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border StrokeShape="RoundRectangle 14"
+                                        BackgroundColor="White"
+                                        Stroke="{StaticResource Gray200}"
+                                        Margin="0,5"
+                                        Padding="12">
+                                    <Label Text="{Binding FechaIngreso, StringFormat='Fecha: {0:dd/MM/yyyy}'}" />
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

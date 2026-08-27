@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaApp.Presentation.Views.SacosCompostView"
+             Title="Sacos de compost"
+             BackgroundColor="{StaticResource BackgroundSoft}">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <Border Style="{StaticResource EcoHeader}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Sacos de compost"
+                           Style="{StaticResource Headline}"
+                           TextColor="White" />
+                    <Label Text="Registra sacos disponibles y controla su venta o consumo."
+                           TextColor="#E8F5E9"
+                           FontSize="14" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource EcoCard}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Nuevo saco"
+                           Style="{StaticResource SubHeadline}" />
+                    <Border Style="{StaticResource CampoFormulario}">
+                        <DatePicker x:Name="dpFechaRegistro"
+                                    Format="dd/MM/yyyy" />
+                    </Border>
+                    <Button x:Name="btnGuardarSaco"
+                            Text="Guardar saco"
+                            Clicked="btnGuardarSaco_Clicked" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource EcoCard}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Sacos disponibles"
+                           Style="{StaticResource SubHeadline}" />
+                    <CollectionView x:Name="cvSacosDisponibles"
+                                    SelectionMode="Single"
+                                    SelectionChanged="cvSacosDisponibles_SelectionChanged">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border StrokeShape="RoundRectangle 16"
+                                        BackgroundColor="White"
+                                        Stroke="{StaticResource LightGreen}"
+                                        Margin="0,6"
+                                        Padding="14">
+                                    <VerticalStackLayout Spacing="5">
+                                        <Label Text="{Binding Id, StringFormat='Saco #{0}'}"
+                                               FontAttributes="Bold"
+                                               FontSize="16" />
+                                        <Label Text="{Binding Fecha, StringFormat='Registrado: {0:dd/MM/yyyy}'}"
+                                               TextColor="{StaticResource MutedText}" />
+                                        <Label Text="Disponible"
+                                               TextColor="{StaticResource DarkGreen}"
+                                               FontAttributes="Bold" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource EcoCard}">
+                <VerticalStackLayout Spacing="12">
+                    <Label x:Name="lblUsoTitulo"
+                           Text="Usar o vender saco"
+                           Style="{StaticResource SubHeadline}"
+                           IsVisible="False" />
+
+                    <Border Style="{StaticResource CampoFormulario}" IsVisible="{Binding Source={x:Reference pickerMotivo}, Path=IsVisible}">
+                        <Picker x:Name="pickerMotivo"
+                                Title="Motivo"
+                                SelectedIndexChanged="pickerMotivo_SelectedIndexChanged"
+                                IsVisible="False">
+                            <Picker.Items>
+                                <x:String>Venta</x:String>
+                                <x:String>Consumo</x:String>
+                            </Picker.Items>
+                        </Picker>
+                    </Border>
+
+                    <Border Style="{StaticResource CampoFormulario}" IsVisible="{Binding Source={x:Reference txtClienteVenta}, Path=IsVisible}">
+                        <Entry x:Name="txtClienteVenta"
+                               Placeholder="Cliente (solo para venta)"
+                               IsVisible="False" />
+                    </Border>
+
+                    <Button x:Name="btnConfirmarUso"
+                            Text="Confirmar uso o venta"
+                            Clicked="btnConfirmarUso_Clicked"
+                            IsVisible="False" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource EcoCard}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Sacos usados o vendidos"
+                           Style="{StaticResource SubHeadline}" />
+                    <CollectionView x:Name="cvSacosUsados"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border StrokeShape="RoundRectangle 16"
+                                        BackgroundColor="White"
+                                        Stroke="{StaticResource Gray200}"
+                                        Margin="0,6"
+                                        Padding="14">
+                                    <VerticalStackLayout Spacing="5">
+                                        <Label Text="{Binding Id, StringFormat='Saco #{0}'}"
+                                               FontAttributes="Bold"
+                                               FontSize="16" />
+                                        <Label Text="{Binding Fecha, StringFormat='Registrado: {0:dd/MM/yyyy}'}"
+                                               TextColor="{StaticResource MutedText}" />
+                                        <Label Text="{Binding Motivo, StringFormat='Motivo: {0}'}"
+                                               TextColor="{StaticResource MutedText}" />
+                                        <Label Text="{Binding ClienteVenta, StringFormat='Cliente: {0}'}"
+                                               IsVisible="{Binding ClienteVenta, Converter={StaticResource StringNotEmpty}}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

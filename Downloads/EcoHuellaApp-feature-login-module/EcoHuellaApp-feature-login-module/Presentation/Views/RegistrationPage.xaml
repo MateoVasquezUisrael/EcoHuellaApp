@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EcoHuellaApp.Presentation.ViewModels"
+             x:Class="EcoHuellaApp.Presentation.Views.RegistrationPage"
+             x:DataType="vm:RegistrationViewModel" Shell.NavBarIsVisible="False"
+             SafeAreaEdges="All" BackgroundColor="{StaticResource BackgroundSoft}">
+    <ScrollView HorizontalScrollBarVisibility="Never">
+        <Grid Padding="20,28,20,32">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#EDF8F2" Offset="0" />
+                    <GradientStop Color="#FAFCFB" Offset="0.55" />
+                    <GradientStop Color="#E8F7F5" Offset="1" />
+                </LinearGradientBrush>
+            </Grid.Background>
+            <VerticalStackLayout Spacing="20" MaximumWidthRequest="390" HorizontalOptions="Center">
+                <Border Background="{StaticResource HeaderGradientBrush}" Stroke="Transparent"
+                        StrokeShape="RoundRectangle 32" Padding="24,26">
+                    <VerticalStackLayout Spacing="9">
+                        <Image Source="eco_leaf.svg" WidthRequest="62" HeightRequest="62"
+                               HorizontalOptions="Center" />
+                        <Label Text="NUEVO MIEMBRO" TextColor="{StaticResource AccentTurquoise}"
+                               FontFamily="OpenSansSemibold" FontSize="11" CharacterSpacing="1.5"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="Crea tu cuenta" TextColor="White" FontFamily="OpenSansSemibold"
+                               FontSize="29" HorizontalTextAlignment="Center" />
+                        <Label Text="Completa tus datos para empezar"
+                               TextColor="#D9FFF1" FontSize="14" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Style="{StaticResource EcoCard}" Padding="24">
+                    <VerticalStackLayout Spacing="13">
+                        <Label Text="Datos personales" TextColor="{StaticResource DarkGreen}"
+                               FontFamily="OpenSansSemibold" FontSize="22" />
+                        <Label Text="Los campos marcados con * son obligatorios."
+                               Style="{StaticResource EcoSubtitle}" FontSize="12" />
+                        <Label Text="Nombre completo *" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" />
+                        <Border Style="{StaticResource CampoFormulario}">
+                            <Entry Text="{Binding FullName}" Placeholder="Tu nombre y apellido"
+                                   Style="{StaticResource EntradaFormulario}" />
+                        </Border>
+                        <Label Text="Correo electrónico *" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" />
+                        <Border Style="{StaticResource CampoFormulario}">
+                            <Entry Text="{Binding Email}" Placeholder="nombre@correo.com" Keyboard="Email"
+                                   Style="{StaticResource EntradaFormulario}" />
+                        </Border>
+                        <Label Text="Contraseña *" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" />
+                        <Border Style="{StaticResource CampoFormulario}">
+                            <Entry Text="{Binding Password}" Placeholder="Mínimo 8 caracteres" IsPassword="True"
+                                   Style="{StaticResource EntradaFormulario}" />
+                        </Border>
+                        <Label Text="Confirmar contraseña *" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" />
+                        <Border Style="{StaticResource CampoFormulario}">
+                            <Entry Text="{Binding ConfirmPassword}" Placeholder="Repite tu contraseña" IsPassword="True"
+                                   Style="{StaticResource EntradaFormulario}" />
+                        </Border>
+                        <Label Text="Las contraseñas no coinciden."
+                               IsVisible="{Binding ShowPasswordMismatch}"
+                               TextColor="{StaticResource DangerRed}"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="12" />
+                        <Label Text="Organización (opcional)" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" />
+                        <Border Style="{StaticResource CampoFormulario}">
+                            <Entry Text="{Binding Organization}" Placeholder="Nombre de tu organización"
+                                   Style="{StaticResource EntradaFormulario}" />
+                        </Border>
+                        <Border IsVisible="{Binding HasError}" BackgroundColor="#FDEDEC" Stroke="#E74C3C"
+                                StrokeShape="RoundRectangle 12" Padding="12,10">
+                            <Label Text="{Binding ErrorMessage}" TextColor="#C0392B" FontSize="13" />
+                        </Border>
+                        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                                           Color="{StaticResource PrimaryGreen}" />
+                        <Button Text="Registrarse" Command="{Binding RegisterCommand}" HeightRequest="52"
+                                Margin="0,6,0,0" IsEnabled="{Binding IsNotBusy}" />
+                        <Button Text="Ya tengo una cuenta" Command="{Binding BackToLoginCommand}"
+                                Style="{StaticResource BotonSecundario}" HeightRequest="50"
+                                IsEnabled="{Binding IsNotBusy}" />
+                        <Label Text="Al registrarte aceptas el uso responsable de tus datos para la gestión ambiental."
+                               TextColor="{StaticResource MutedText}" FontSize="11"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

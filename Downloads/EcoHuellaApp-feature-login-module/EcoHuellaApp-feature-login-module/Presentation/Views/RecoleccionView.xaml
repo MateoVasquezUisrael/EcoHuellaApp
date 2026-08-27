@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaApp.Presentation.Views.RecoleccionView"
+             Title="Registrar entrega"
+             BackgroundColor="{StaticResource BackgroundSoft}">
+    <ScrollView>
+        <Grid Padding="12" MaximumWidthRequest="430" HorizontalOptions="Center">
+            <Border Style="{StaticResource EcoCard}" Padding="0">
+                <VerticalStackLayout Spacing="0">
+                    <Border Style="{StaticResource EcoHeader}">
+                        <VerticalStackLayout Spacing="3">
+                            <Label Text="REGISTRAR ENTREGA" TextColor="White" FontFamily="OpenSansSemibold" FontSize="21" />
+                            <Label Text="Guarda residuos orgánicos usando casas y puntos registrados" TextColor="#D9FFF1" FontSize="12" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <VerticalStackLayout Padding="18" Spacing="14">
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="Datos de la entrega" Style="{StaticResource EcoTitle}" FontSize="22" />
+                                <Label Text="Selecciona la fecha, origen y punto de recolección. Los litros y la masa se calculan según la cantidad de cubetas." Style="{StaticResource EcoSubtitle}" />
+
+                                <Label Text="Fecha" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" />
+                                <Border Style="{StaticResource CampoFormulario}">
+                                    <DatePicker x:Name="dpFecha" />
+                                </Border>
+
+                                <Label Text="Casa / responsable" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" />
+                                <Border Style="{StaticResource CampoFormulario}">
+                                    <Picker x:Name="pkCasa" Title="Seleccione una casa" />
+                                </Border>
+
+                                <Label Text="Punto de recolección" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" />
+                                <Border Style="{StaticResource CampoFormulario}">
+                                    <Picker x:Name="pkPuntoRecoleccion" Title="Seleccione un punto" />
+                                </Border>
+
+                                <Button x:Name="btnVerMapa"
+                                        Text="Ver ubicación en mapa"
+                                        Clicked="btnVerMapa_Clicked"
+                                        Style="{StaticResource BotonSecundario}" />
+
+                                <Label Text="Cantidad de cubetas / baldes" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" />
+                                <Border Style="{StaticResource CampoFormulario}">
+                                    <Entry x:Name="txtCantidadCubetas"
+                                           Placeholder="Ej. 3"
+                                           Keyboard="Numeric"
+                                           TextChanged="txtCantidadCubetas_TextChanged"
+                                           Style="{StaticResource EntradaFormulario}" />
+                                </Border>
+
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                                    <VerticalStackLayout Spacing="6">
+                                        <Label Text="Litros estimados" Style="{StaticResource EcoSubtitle}" />
+                                        <Border Style="{StaticResource CampoFormulario}">
+                                            <Entry x:Name="txtLitrosEstimados"
+                                                   IsReadOnly="True"
+                                                   Keyboard="Numeric"
+                                                   Style="{StaticResource EntradaFormulario}" />
+                                        </Border>
+                                    </VerticalStackLayout>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="6">
+                                        <Label Text="Masa estimada (kg)" Style="{StaticResource EcoSubtitle}" />
+                                        <Border Style="{StaticResource CampoFormulario}">
+                                            <Entry x:Name="txtMasaEstimada"
+                                                   IsReadOnly="True"
+                                                   Keyboard="Numeric"
+                                                   Style="{StaticResource EntradaFormulario}" />
+                                        </Border>
+                                    </VerticalStackLayout>
+                                </Grid>
+
+                                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                                    <Button x:Name="btnGuardar"
+                                            Text="Guardar entrega"
+                                            Clicked="btnGuardar_Clicked" />
+                                    <Button Grid.Column="1"
+                                            x:Name="btnActualizar"
+                                            Text="Actualizar"
+                                            Clicked="btnActualizar_Clicked"
+                                            Style="{StaticResource BotonSecundario}" />
+                                    <Button Grid.Row="1"
+                                            Grid.ColumnSpan="2"
+                                            x:Name="btnEliminar"
+                                            Text="Eliminar entrega"
+                                            Clicked="btnEliminar_Clicked"
+                                            Style="{StaticResource BotonSecundario}"
+                                            TextColor="{StaticResource DangerRed}" />
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Label Text="Historial de entregas" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="18" />
+
+                        <CollectionView x:Name="cvRecolecciones"
+                                        SelectionMode="Single"
+                                        SelectionChanged="cvRecolecciones_SelectionChanged">
+                            <CollectionView.EmptyView>
+                                <Label Text="Aún no hay entregas registradas." Style="{StaticResource EcoSubtitle}" HorizontalTextAlignment="Center" />
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource EcoCard}" Margin="0,0,0,10">
+                                        <VerticalStackLayout Spacing="4">
+                                            <Label Text="{Binding Fecha, StringFormat='Entrega del {0:dd/MM/yyyy}'}"
+                                                   TextColor="{StaticResource TextDark}"
+                                                   FontFamily="OpenSansSemibold"
+                                                   FontSize="16" />
+                                            <Label Text="{Binding Casa.Direccion, StringFormat='Casa: {0}'}" Style="{StaticResource EcoSubtitle}" />
+                                            <Label Text="{Binding PuntoRecoleccion.Direccion, StringFormat='Punto: {0}'}" Style="{StaticResource EcoSubtitle}" />
+                                            <Label Text="{Binding CantidadCubetas, StringFormat='Cubetas: {0}'}" TextColor="{StaticResource DeepTeal}" />
+                                            <Label Text="{Binding MasaEstimada, StringFormat='Masa estimada: {0} kg'}" TextColor="{StaticResource PrimaryGreen}" FontFamily="OpenSansSemibold" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </ScrollView>
+</ContentPage>

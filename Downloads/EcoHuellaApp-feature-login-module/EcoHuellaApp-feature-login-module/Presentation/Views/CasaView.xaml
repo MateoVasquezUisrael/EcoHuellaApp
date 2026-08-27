@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaApp.Presentation.Views.CasaView"
+             Title="Casas"
+             BackgroundColor="{StaticResource BackgroundSoft}">
+    <ScrollView>
+        <Grid Padding="12" MaximumWidthRequest="430" HorizontalOptions="Center">
+            <Border Style="{StaticResource EcoCard}" Padding="0">
+                <VerticalStackLayout Spacing="0">
+                    <Border Style="{StaticResource EcoHeader}">
+                        <VerticalStackLayout Spacing="3">
+                            <Label Text="CASAS" TextColor="White" FontFamily="OpenSansSemibold" FontSize="22" />
+                            <Label Text="Registra hogares o responsables de entrega" TextColor="#D9FFF1" FontSize="12" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <VerticalStackLayout Padding="18" Spacing="14">
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="Datos del responsable" Style="{StaticResource EcoTitle}" FontSize="22" />
+                                <Label Text="Estos datos alimentan el registro de entregas. Primero guarda casas, luego podrás asociarlas a una recolección." Style="{StaticResource EcoSubtitle}" />
+
+                                <Border Style="{StaticResource CampoFormulario}">
+                                    <Entry x:Name="txtNombreResponsable" Placeholder="Nombre del responsable" Style="{StaticResource EntradaFormulario}" />
+                                </Border>
+                                <Border Style="{StaticResource CampoFormulario}">
+                                    <Entry x:Name="txtDireccion" Placeholder="Dirección" Style="{StaticResource EntradaFormulario}" />
+                                </Border>
+                                <Border Style="{StaticResource CampoFormulario}">
+                                    <Entry x:Name="txtSector" Placeholder="Sector" Style="{StaticResource EntradaFormulario}" />
+                                </Border>
+
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                                    <Border Style="{StaticResource CampoFormulario}">
+                                        <Entry x:Name="txtLatitud" Placeholder="Latitud" IsReadOnly="True" Keyboard="Numeric" Style="{StaticResource EntradaFormulario}" />
+                                    </Border>
+                                    <Border Grid.Column="1" Style="{StaticResource CampoFormulario}">
+                                        <Entry x:Name="txtLongitud" Placeholder="Longitud" IsReadOnly="True" Keyboard="Numeric" Style="{StaticResource EntradaFormulario}" />
+                                    </Border>
+                                </Grid>
+
+                                <Button x:Name="btnSeleccionarUbicacion"
+                                        Text="Seleccionar ubicación en mapa"
+                                        Clicked="btnSeleccionarUbicacion_Clicked"
+                                        Style="{StaticResource BotonSecundario}" />
+
+                                <Border Style="{StaticResource StatusActivo}">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Text="Casa activa" TextColor="{StaticResource DeepTeal}" FontFamily="OpenSansSemibold" VerticalTextAlignment="Center" />
+                                        <Switch Grid.Column="1" x:Name="swEstado" IsToggled="True" />
+                                    </Grid>
+                                </Border>
+
+                                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                                    <Button x:Name="btnGuardar" Text="Guardar casa" Clicked="btnGuardar_Clicked" />
+                                    <Button Grid.Column="1" x:Name="btnActualizar" Text="Actualizar" Clicked="btnActualizar_Clicked" Style="{StaticResource BotonSecundario}" />
+                                    <Button Grid.Row="1" Grid.ColumnSpan="2" x:Name="btnEliminar" Text="Eliminar" Clicked="btnEliminar_Clicked" Style="{StaticResource BotonSecundario}" TextColor="{StaticResource DangerRed}" />
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Label Text="Casas registradas" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="18" />
+
+                        <CollectionView x:Name="cvCasas"
+                                        SelectionMode="Single"
+                                        SelectionChanged="cvCasas_SelectionChanged">
+                            <CollectionView.EmptyView>
+                                <Label Text="Aún no hay casas registradas." Style="{StaticResource EcoSubtitle}" HorizontalTextAlignment="Center" />
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource EcoCard}" Margin="0,0,0,10">
+                                        <VerticalStackLayout Spacing="4">
+                                            <Label Text="{Binding NombreResponsable}" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" FontSize="16" />
+                                            <Label Text="{Binding Direccion}" Style="{StaticResource EcoSubtitle}" />
+                                            <Label Text="{Binding Sector, StringFormat='Sector: {0}'}" TextColor="{StaticResource DeepTeal}" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </ScrollView>
+</ContentPage>

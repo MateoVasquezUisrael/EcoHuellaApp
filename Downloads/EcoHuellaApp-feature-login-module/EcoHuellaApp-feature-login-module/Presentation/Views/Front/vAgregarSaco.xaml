@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaApp.Presentation.Views.Front.vAgregarSaco"
+             Title="Agregar saco"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource BackgroundSoft}">
+    <Grid Padding="12" MaximumWidthRequest="430" HorizontalOptions="Center" WidthRequest="{OnIdiom Phone=-1, Desktop=430}">
+        <Border Style="{StaticResource EcoCard}" MaximumWidthRequest="430" HorizontalOptions="Fill" VerticalOptions="Fill" Padding="0">
+            <Grid RowDefinitions="Auto,*">
+                <Border Style="{StaticResource EcoHeader}">
+                    <VerticalStackLayout VerticalOptions="Center" Spacing="4">
+                        <Label Text="AGREGAR SACO" TextColor="White" FontFamily="OpenSansSemibold" FontSize="22" />
+                        <Label Text="Registra un saco disponible" TextColor="#D9FFF1" FontSize="12" />
+                    </VerticalStackLayout>
+                </Border>
+                <ScrollView Grid.Row="1" Margin="0,-18,0,0">
+                    <VerticalStackLayout Padding="18,0,18,20" Spacing="14">
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="12">
+                                <Label Text="Datos del saco" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="18" />
+                                <Label Text="Fecha de registro" Style="{StaticResource EcoSubtitle}" />
+                                <Border Style="{StaticResource CampoFormulario}">
+                                    <DatePicker x:Name="dpFechaRegistro" Format="dd/MM/yyyy" />
+                                </Border>
+                                <Button Text="Guardar saco" Clicked="GuardarSaco_Clicked" HeightRequest="52" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>
