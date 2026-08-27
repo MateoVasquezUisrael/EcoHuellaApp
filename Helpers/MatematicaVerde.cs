@@ -46,7 +46,7 @@ namespace EcoHuellaApp.Helpers
         public double CalcularMetanoEvitado(double MasaCarbono)
         {
             ///<summary>
-            ///Calcula el metano evitado basado en el metano que se genera en el compost y el potencial de emtano en vertedero.
+            ///Calcula el metano evitado basado en el metano que se genera en el compost y el potencial de metano en vertedero.
             ///</summary>
             
             double calculo = CalcularMetanoEnVertadero(MasaCarbono) - CalcularMetanoEnCompost(MasaCarbono);
