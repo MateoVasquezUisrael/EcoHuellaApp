@@ -74,6 +74,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories
                     uid = new { stringValue = usuario.Uid },
                     email = new { stringValue = usuario.Email },
                     nombre = new { stringValue = usuario.Nombre },
+                    organizacion = new { stringValue = usuario.Organizacion },
                     rol = new { stringValue = usuario.Rol.ToString() },
                     activo = new { booleanValue = usuario.Activo },
                     fechaCreacion = new { timestampValue = DateTime.UtcNow.ToString("O") }
@@ -161,6 +162,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories
                     Uid    = uid,
                     Email  = GetString(fields, "email"),
                     Nombre = GetString(fields, "nombre"),
+                    Organizacion = GetString(fields, "organizacion"),
                     Rol    = ParseRol(GetString(fields, "rol")),
                     Activo = GetBool(fields, "activo", defaultValue: true)
                 };

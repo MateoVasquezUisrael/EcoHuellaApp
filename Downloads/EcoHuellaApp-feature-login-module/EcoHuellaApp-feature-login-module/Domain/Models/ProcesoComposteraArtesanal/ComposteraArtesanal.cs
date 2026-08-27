@@ -19,5 +19,7 @@ namespace EcoHuellaApp.Domain.Models.ProcesoComposteraArtesanal
 
         [OneToMany]
         public List<AccionCompostera>? Acciones { get; set; }
+        [Ignore]
+        public string EstadoTexto => Estado ? "Activa" : "Inactiva";
     }
 }

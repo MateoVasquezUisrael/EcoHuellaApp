@@ -13,7 +13,7 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <VerticalStackLayout VerticalOptions="Center">
                             <Label Text="HISTORIAL" TextColor="White" FontFamily="OpenSansSemibold" FontSize="21" />
-                            <Label Text="Trazabilidad de entregas orgánicas" TextColor="#D9FFF1" FontSize="12" />
+                            <Label Text="Actividad completa del sistema" TextColor="#D9FFF1" FontSize="12" />
                         </VerticalStackLayout>
                         <Border Grid.Column="1" WidthRequest="46" HeightRequest="46" BackgroundColor="#2237D6D6" Stroke="{StaticResource AccentTurquoise}" StrokeShape="RoundRectangle 23" VerticalOptions="Center">
                             <Label Text="&#x1F464;" TextColor="{StaticResource AccentTurquoise}" FontSize="23" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
@@ -26,8 +26,8 @@
                         <Border Style="{StaticResource EcoCard}">
                             <Grid ColumnDefinitions="*,Auto">
                                 <VerticalStackLayout>
-                                    <Label Text="Entregas registradas" Style="{StaticResource EcoTitle}" FontSize="23" />
-                                    <Label Text="Consulta registros reales guardados en la aplicación." Style="{StaticResource EcoSubtitle}" />
+                                    <Label Text="Historial general" Style="{StaticResource EcoTitle}" FontSize="23" />
+                                    <Label Text="Consulta entregas, ubicaciones, procesos, biodigestores, composteras y sacos." Style="{StaticResource EcoSubtitle}" />
                                 </VerticalStackLayout>
                                 <Border Grid.Column="1" Style="{StaticResource StatusActivo}" VerticalOptions="Center">
                                     <Label Text="{Binding TotalRegistrosTexto}" TextColor="{StaticResource DeepTeal}" FontSize="11" />
@@ -35,39 +35,25 @@
                             </Grid>
                         </Border>
 
-                        <CollectionView ItemsSource="{Binding Recolecciones}" SelectionMode="None">
+                        <CollectionView ItemsSource="{Binding Registros}" SelectionMode="Single"
+                                        SelectionChanged="Registros_SelectionChanged">
                             <CollectionView.EmptyView>
                                 <Border Style="{StaticResource EcoCard}" Margin="0,8">
-                                    <Label Text="No hay entregas registradas todavía." TextColor="{StaticResource MutedText}" HorizontalTextAlignment="Center" />
+                                    <Label Text="No hay actividad registrada todavía." TextColor="{StaticResource MutedText}" HorizontalTextAlignment="Center" />
                                 </Border>
                             </CollectionView.EmptyView>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Border Style="{StaticResource EcoCard}" Margin="0,8">
                                         <VerticalStackLayout Spacing="10">
-                                            <Grid ColumnDefinitions="*,Auto">
-                                                <Label Text="{Binding Id, StringFormat='Entrega #{0}'}" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" FontSize="17" />
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                <Label Text="{Binding Titulo}" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" FontSize="17" />
                                                 <Border Grid.Column="1" Style="{StaticResource StatusActivo}">
-                                                    <Label Text="Activa" TextColor="{StaticResource DeepTeal}" FontSize="10" />
+                                                    <Label Text="{Binding Categoria}" TextColor="{StaticResource DeepTeal}" FontSize="10" />
                                                 </Border>
                                             </Grid>
-                                            <Grid ColumnDefinitions="*,*">
-                                                <VerticalStackLayout>
-                                                    <Label Text="Fecha" Style="{StaticResource EcoSubtitle}" />
-                                                    <Label Text="{Binding Fecha, StringFormat='{0:dd/MM/yyyy}'}" TextColor="{StaticResource TextDark}" />
-                                                </VerticalStackLayout>
-                                                <VerticalStackLayout Grid.Column="1">
-                                                    <Label Text="Kilos" Style="{StaticResource EcoSubtitle}" />
-                                                    <Label Text="{Binding MasaEstimada, StringFormat='{0:N1} kg'}" TextColor="{StaticResource PrimaryGreen}" FontFamily="OpenSansSemibold" />
-                                                </VerticalStackLayout>
-                                            </Grid>
-                                            <Label Text="{Binding CantidadCubetas, StringFormat='Cubetas: {0}'}" TextColor="{StaticResource TextDark}" />
-                                            <Label Text="{Binding LitrosEstimados, StringFormat='Litros estimados: {0:N1} L'}" TextColor="{StaticResource MutedText}" />
-                                            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
-                                                <Button Text="Ver" Clicked="Detalle_Clicked" Style="{StaticResource BotonSecundario}" FontSize="11" Padding="8" />
-                                                <Button Grid.Column="1" Text="Editar" Clicked="Editar_Clicked" Style="{StaticResource BotonSecundario}" FontSize="11" Padding="8" />
-                                                <Button Grid.Column="2" Text="Eliminar" Clicked="Eliminar_Clicked" Style="{StaticResource BotonSecundario}" TextColor="{StaticResource DangerRed}" FontSize="11" Padding="8" />
-                                            </Grid>
+                                            <Label Text="{Binding FechaTexto}" TextColor="{StaticResource PrimaryGreen}" FontFamily="OpenSansSemibold" />
+                                            <Label Text="{Binding Detalle}" Style="{StaticResource EcoSubtitle}" />
                                         </VerticalStackLayout>
                                     </Border>
                                 </DataTemplate>

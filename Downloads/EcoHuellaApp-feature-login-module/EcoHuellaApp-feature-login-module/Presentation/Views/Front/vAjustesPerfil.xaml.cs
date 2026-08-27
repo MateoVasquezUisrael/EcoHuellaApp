@@ -12,7 +12,6 @@ public partial class vAjustesPerfil : ContentPage
 
     public string Nombre { get; private set; } = "Usuario";
     public string Correo { get; private set; } = string.Empty;
-    public string Rol { get; private set; } = string.Empty;
     public string Estado { get; private set; } = string.Empty;
     public string Iniciales { get; private set; } = "U";
 
@@ -37,13 +36,11 @@ public partial class vAjustesPerfil : ContentPage
 
         Nombre = usuario?.Nombre ?? auth?.DisplayName ?? auth?.Email ?? "Usuario";
         Correo = usuario?.Email ?? auth?.Email ?? string.Empty;
-        Rol = usuario?.Rol.ToString() ?? auth?.Role ?? string.Empty;
         Estado = usuario?.Activo == false ? "Inactivo" : "Activo";
         Iniciales = ObtenerIniciales(Nombre);
 
         OnPropertyChanged(nameof(Nombre));
         OnPropertyChanged(nameof(Correo));
-        OnPropertyChanged(nameof(Rol));
         OnPropertyChanged(nameof(Estado));
         OnPropertyChanged(nameof(Iniciales));
     }
@@ -57,11 +54,6 @@ public partial class vAjustesPerfil : ContentPage
             .ToArray();
 
         return partes.Length == 0 ? "U" : string.Join(string.Empty, partes);
-    }
-
-    private async void EditarPerfil_Clicked(object? sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new vEditarPerfil());
     }
 
     private async void CambiarContrasena_Clicked(object? sender, EventArgs e)

@@ -24,7 +24,13 @@
                                 <VerticalStackLayout Spacing="5">
                                     <Label Text="{Binding Id, StringFormat='Saco #{0}'}" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" FontSize="17" />
                                     <Label Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}" TextColor="{StaticResource MutedText}" />
-                                    <Label Text="{Binding Estado, StringFormat='Disponible: {0}'}" TextColor="{StaticResource PrimaryGreen}" />
+                                    <Label Text="{Binding EstadoTexto, StringFormat='Estado: {0}'}" TextColor="{StaticResource PrimaryGreen}" FontAttributes="Bold">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding EstadoTexto}" Value="Vendido">
+                                                <Setter Property="TextColor" Value="{StaticResource DangerRed}" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
                                     <Label Text="{Binding Motivo, StringFormat='Motivo: {0}'}" TextColor="{StaticResource MutedText}" />
                                     <Label Text="{Binding ClienteVenta, StringFormat='Cliente: {0}'}" TextColor="{StaticResource MutedText}" />
                                 </VerticalStackLayout>

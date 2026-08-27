@@ -107,6 +107,22 @@ public partial class RecoleccionView : ContentPage
         CalcularLitrosYMasa();
     }
 
+    private void pkCasa_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        ActualizarTituloSelector(pkCasa, "Seleccionar casa");
+    }
+
+    private void pkPuntoRecoleccion_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        ActualizarTituloSelector(pkPuntoRecoleccion, "Seleccionar punto de recolección");
+    }
+
+    private static void ActualizarTituloSelector(Picker selector, string titulo)
+    {
+        selector.Title = selector.SelectedIndex >= 0 ? string.Empty : titulo;
+        selector.InvalidateMeasure();
+    }
+
     private void CalcularLitrosYMasa()
     {
         if (!int.TryParse(txtCantidadCubetas.Text, out var cantidad) || cantidad < 0)
@@ -141,6 +157,16 @@ public partial class RecoleccionView : ContentPage
 
         var mapPage = new RecoleccionMapPage(_tileService, casa, punto);
         await Navigation.PushModalAsync(mapPage);
+    }
+
+    private async void CrearCasa_Clicked(object? sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new CasaView(_casaRepository, _tileService));
+    }
+
+    private async void CrearPunto_Clicked(object? sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new PuntoRecoleccionView(_puntoRepository, _tileService));
     }
 
     private async void btnGuardar_Clicked(
@@ -197,6 +223,7 @@ public partial class RecoleccionView : ContentPage
 
         await CargarRecolecciones();
         LimpiarFormulario();
+        await Navigation.PopAsync();
     }
 
     private async void btnActualizar_Clicked(

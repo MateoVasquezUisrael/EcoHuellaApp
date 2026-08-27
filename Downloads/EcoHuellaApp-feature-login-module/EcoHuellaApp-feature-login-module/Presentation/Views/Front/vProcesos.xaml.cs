@@ -77,10 +77,32 @@ public partial class vProcesos : ContentPage
         OnPropertyChanged(nameof(ResumenGeneral));
     }
 
-    private async void AgregarSaco_Clicked(object? sender, EventArgs e) => await Navigation.PushAsync(new vAgregarSaco());
-    private async void HistorialSacos_Clicked(object? sender, EventArgs e) => await Navigation.PushAsync(new vHistorialSacos());
-    private async void AgregarCompostera_Clicked(object? sender, EventArgs e) => await Navigation.PushAsync(new vAgregarCompostera());
-    private async void HistorialComposteras_Clicked(object? sender, EventArgs e) => await Navigation.PushAsync(new vHistorialComposteras());
-    private async void AgregarProceso_Clicked(object? sender, EventArgs e) => await Navigation.PushAsync(new vAgregarProceso());
-    private async void HistorialProcesos_Clicked(object? sender, EventArgs e) => await Navigation.PushAsync(new vHistorialProcesos());
+    private async void AgregarSaco_Clicked(object? sender, EventArgs e) => await BackendNavigation.PushAsync<SacosCompostView>(this);
+    private async void HistorialSacos_Clicked(object? sender, EventArgs e)
+    {
+        var page = new vHistorialSacos();
+        NavegacionInferior.AgregarBotonPerfil(page);
+        await Navigation.PushAsync(page);
+    }
+    private async void AgregarCompostera_Clicked(object? sender, EventArgs e) => await BackendNavigation.PushAsync<ComposterasArtesanalesView>(this);
+    private async void HistorialComposteras_Clicked(object? sender, EventArgs e)
+    {
+        var page = new vHistorialComposteras();
+        NavegacionInferior.AgregarBotonPerfil(page);
+        await Navigation.PushAsync(page);
+    }
+
+    private async void HistorialProcesos_Clicked(object? sender, EventArgs e)
+    {
+        var page = new vHistorialProcesos();
+        NavegacionInferior.AgregarBotonPerfil(page);
+        await Navigation.PushAsync(page);
+    }
+
+    private async void AbrirBiodigestores_Clicked(object? sender, EventArgs e)
+    {
+        var page = new ProcesosBiodigestorView();
+        NavegacionInferior.AgregarBotonPerfil(page);
+        await Navigation.PushAsync(page);
+    }
 }

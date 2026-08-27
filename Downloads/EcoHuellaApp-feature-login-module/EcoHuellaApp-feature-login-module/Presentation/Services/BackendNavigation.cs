@@ -17,6 +17,9 @@ public static class BackendNavigation
             return;
         }
 
+        if (targetPage is ContentPage contentPage)
+            NavegacionInferior.AgregarBotonPerfil(contentPage);
+
         await currentPage.Navigation.PushAsync(targetPage);
     }
 }

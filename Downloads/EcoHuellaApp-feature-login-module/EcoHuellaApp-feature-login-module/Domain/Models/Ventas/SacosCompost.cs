@@ -24,5 +24,7 @@ namespace EcoHuellaApp.Domain.Models.Ventas
         public bool Estado { get; set; } //true es que está guardado y false que ya fue vendido o usado.
         public string? Motivo { get; set; } //Si el saco fue usado o vendido
         public string? ClienteVenta { get; set; } // puede insertarse solo si el motivo es venta
+        [Ignore]
+        public string EstadoTexto => Estado ? "Disponible" : Motivo == MotivosSaco.VENTA ? "Vendido" : "Usado";
     }
 }

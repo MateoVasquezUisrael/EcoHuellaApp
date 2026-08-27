@@ -24,7 +24,7 @@
                                 <VerticalStackLayout Spacing="5">
                                     <Label Text="{Binding Id, StringFormat='Compostera #{0}'}" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" FontSize="17" />
                                     <Label Text="{Binding PesoMaximo, StringFormat='Peso máximo: {0} kg'}" TextColor="{StaticResource MutedText}" />
-                                    <Label Text="{Binding Estado, StringFormat='Activa: {0}'}" TextColor="{StaticResource PrimaryGreen}" />
+                                    <Label Text="{Binding EstadoTexto, StringFormat='Estado: {0}'}" TextColor="{StaticResource PrimaryGreen}" FontAttributes="Bold" />
                                 </VerticalStackLayout>
                             </Border>
                         </DataTemplate>

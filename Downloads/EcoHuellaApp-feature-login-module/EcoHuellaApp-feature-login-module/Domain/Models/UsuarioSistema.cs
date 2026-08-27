@@ -20,6 +20,7 @@ namespace EcoHuellaApp.Domain.Models
         public string    Uid    { get; init; } = string.Empty;
         public string    Email  { get; init; } = string.Empty;
         public string    Nombre { get; init; } = string.Empty;
+        public string    Organizacion { get; init; } = string.Empty;
         public RolSistema Rol   { get; init; } = RolSistema.Usuario;
 
         /// <summary>

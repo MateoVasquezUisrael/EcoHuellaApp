@@ -26,9 +26,15 @@
                         <DatePicker x:Name="dpFechaRegistro"
                                     Format="dd/MM/yyyy" />
                     </Border>
-                    <Button x:Name="btnGuardarSaco"
-                            Text="Guardar saco"
-                            Clicked="btnGuardarSaco_Clicked" />
+                    <VerticalStackLayout Spacing="10">
+                        <Button x:Name="btnGuardarSaco"
+                                Text="Guardar saco"
+                                Clicked="btnGuardarSaco_Clicked" />
+                        <Button x:Name="btnHistorialSacos"
+                                Text="Historial de sacos usados"
+                                Clicked="btnHistorialSacos_Clicked"
+                                Style="{StaticResource SecondaryButtonStyle}" />
+                    </VerticalStackLayout>
                 </VerticalStackLayout>
             </Border>
 
@@ -36,9 +42,7 @@
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Sacos disponibles"
                            Style="{StaticResource SubHeadline}" />
-                    <CollectionView x:Name="cvSacosDisponibles"
-                                    SelectionMode="Single"
-                                    SelectionChanged="cvSacosDisponibles_SelectionChanged">
+                    <CollectionView x:Name="cvSacosDisponibles" SelectionMode="None">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Border StrokeShape="RoundRectangle 16"
@@ -46,7 +50,8 @@
                                         Stroke="{StaticResource LightGreen}"
                                         Margin="0,6"
                                         Padding="14">
-                                    <VerticalStackLayout Spacing="5">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                      <VerticalStackLayout Spacing="5">
                                         <Label Text="{Binding Id, StringFormat='Saco #{0}'}"
                                                FontAttributes="Bold"
                                                FontSize="16" />
@@ -55,70 +60,10 @@
                                         <Label Text="Disponible"
                                                TextColor="{StaticResource DarkGreen}"
                                                FontAttributes="Bold" />
-                                    </VerticalStackLayout>
-                                </Border>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </VerticalStackLayout>
-            </Border>
-
-            <Border Style="{StaticResource EcoCard}">
-                <VerticalStackLayout Spacing="12">
-                    <Label x:Name="lblUsoTitulo"
-                           Text="Usar o vender saco"
-                           Style="{StaticResource SubHeadline}"
-                           IsVisible="False" />
-
-                    <Border Style="{StaticResource CampoFormulario}" IsVisible="{Binding Source={x:Reference pickerMotivo}, Path=IsVisible}">
-                        <Picker x:Name="pickerMotivo"
-                                Title="Motivo"
-                                SelectedIndexChanged="pickerMotivo_SelectedIndexChanged"
-                                IsVisible="False">
-                            <Picker.Items>
-                                <x:String>Venta</x:String>
-                                <x:String>Consumo</x:String>
-                            </Picker.Items>
-                        </Picker>
-                    </Border>
-
-                    <Border Style="{StaticResource CampoFormulario}" IsVisible="{Binding Source={x:Reference txtClienteVenta}, Path=IsVisible}">
-                        <Entry x:Name="txtClienteVenta"
-                               Placeholder="Cliente (solo para venta)"
-                               IsVisible="False" />
-                    </Border>
-
-                    <Button x:Name="btnConfirmarUso"
-                            Text="Confirmar uso o venta"
-                            Clicked="btnConfirmarUso_Clicked"
-                            IsVisible="False" />
-                </VerticalStackLayout>
-            </Border>
-
-            <Border Style="{StaticResource EcoCard}">
-                <VerticalStackLayout Spacing="12">
-                    <Label Text="Sacos usados o vendidos"
-                           Style="{StaticResource SubHeadline}" />
-                    <CollectionView x:Name="cvSacosUsados"
-                                    SelectionMode="None">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Border StrokeShape="RoundRectangle 16"
-                                        BackgroundColor="White"
-                                        Stroke="{StaticResource Gray200}"
-                                        Margin="0,6"
-                                        Padding="14">
-                                    <VerticalStackLayout Spacing="5">
-                                        <Label Text="{Binding Id, StringFormat='Saco #{0}'}"
-                                               FontAttributes="Bold"
-                                               FontSize="16" />
-                                        <Label Text="{Binding Fecha, StringFormat='Registrado: {0:dd/MM/yyyy}'}"
-                                               TextColor="{StaticResource MutedText}" />
-                                        <Label Text="{Binding Motivo, StringFormat='Motivo: {0}'}"
-                                               TextColor="{StaticResource MutedText}" />
-                                        <Label Text="{Binding ClienteVenta, StringFormat='Cliente: {0}'}"
-                                               IsVisible="{Binding ClienteVenta, Converter={StaticResource StringNotEmpty}}" />
-                                    </VerticalStackLayout>
+                                      </VerticalStackLayout>
+                                      <Button Grid.Column="1" Text="Acciones" CommandParameter="{Binding .}"
+                                              Clicked="btnAccionesSaco_Clicked" VerticalOptions="Center" />
+                                    </Grid>
                                 </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

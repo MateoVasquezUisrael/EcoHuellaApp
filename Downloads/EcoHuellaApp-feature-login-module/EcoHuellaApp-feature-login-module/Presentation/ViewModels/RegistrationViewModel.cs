@@ -90,6 +90,7 @@ public partial class RegistrationViewModel : BaseViewModel
                 Uid = authUser.Uid,
                 Email = authUser.Email,
                 Nombre = FullName.Trim(),
+                Organizacion = Organization.Trim(),
                 Rol = RolSistema.Usuario,
                 Activo = true
             };

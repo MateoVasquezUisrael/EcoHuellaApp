@@ -54,7 +54,7 @@
 
                                 <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
                                     <Button x:Name="btnGuardar" Text="Guardar casa" Clicked="btnGuardar_Clicked" />
-                                    <Button Grid.Column="1" x:Name="btnActualizar" Text="Actualizar" Clicked="btnActualizar_Clicked" Style="{StaticResource BotonSecundario}" />
+                                    <Button Grid.Column="1" x:Name="btnActualizar" Text="Editar casa" Clicked="btnActualizar_Clicked" Style="{StaticResource BotonSecundario}" />
                                     <Button Grid.Row="1" Grid.ColumnSpan="2" x:Name="btnEliminar" Text="Eliminar" Clicked="btnEliminar_Clicked" Style="{StaticResource BotonSecundario}" TextColor="{StaticResource DangerRed}" />
                                 </Grid>
                             </VerticalStackLayout>

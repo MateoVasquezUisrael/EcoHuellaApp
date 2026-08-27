@@ -31,7 +31,7 @@
                                 </Border>
                                 <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                                     <Label Text="{Binding Nombre}" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" FontSize="22" HorizontalTextAlignment="Center" />
-                                    <Label Text="{Binding Rol}" TextColor="{StaticResource PrimaryGreen}" HorizontalTextAlignment="Center" />
+                                    <Label Text="{Binding Correo}" TextColor="{StaticResource MutedText}" HorizontalTextAlignment="Center" />
                                 </VerticalStackLayout>
                             </VerticalStackLayout>
                         </Border>
@@ -48,18 +48,12 @@
                                         <Label Text="{Binding Estado}" TextColor="{StaticResource DeepTeal}" FontSize="10" />
                                     </Border>
                                 </Grid>
-                                <BoxView HeightRequest="1" Color="{StaticResource BordeEco}" />
-                                <VerticalStackLayout>
-                                    <Label Text="Rol" Style="{StaticResource EcoSubtitle}" />
-                                    <Label Text="{Binding Rol}" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" />
-                                </VerticalStackLayout>
                             </VerticalStackLayout>
                         </Border>
 
                         <Border Style="{StaticResource EcoCard}">
                             <VerticalStackLayout Spacing="10">
                                 <Label Text="Opciones de cuenta" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="18" />
-                                <Button Text="Editar perfil" Clicked="EditarPerfil_Clicked" Style="{StaticResource BotonSecundario}" />
                                 <Button Text="Cambiar contraseña" Clicked="CambiarContrasena_Clicked" Style="{StaticResource BotonSecundario}" />
                                 <Button Text="Cerrar sesión" Clicked="CerrarSesion_Clicked" Style="{StaticResource BotonSecundario}" TextColor="{StaticResource DangerRed}" />
                             </VerticalStackLayout>

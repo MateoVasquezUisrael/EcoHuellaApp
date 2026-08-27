@@ -9,7 +9,7 @@
 
             <Border Style="{StaticResource EcoHeader}">
                 <VerticalStackLayout Spacing="6">
-                    <Label Text="Procesos del biodigestor"
+                    <Label Text="Procesos de biodigestor"
                            Style="{StaticResource Headline}"
                            TextColor="White" />
                     <Label x:Name="lblInfoBiodigestor"
@@ -37,8 +37,7 @@
                            Style="{StaticResource SubHeadline}" />
 
                     <CollectionView x:Name="cvProcesos"
-                                    SelectionMode="Single"
-                                    SelectionChanged="cvProcesos_SelectionChanged">
+                                    SelectionMode="None">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Border StrokeShape="RoundRectangle 16"
@@ -69,43 +68,6 @@
                                                     Clicked="btnFinalizarProceso_Clicked" />
                                         </Grid>
                                     </VerticalStackLayout>
-                                </Border>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </VerticalStackLayout>
-            </Border>
-
-            <Border Style="{StaticResource EcoCard}">
-                <VerticalStackLayout Spacing="12">
-                    <Label x:Name="lblProcesoSeleccionado"
-                           Text="Ningún proceso seleccionado"
-                           FontAttributes="Bold"
-                           FontSize="16"
-                           TextColor="{StaticResource DarkGreen}" />
-                    <Label Text="Entrada del proceso seleccionado"
-                           TextColor="{StaticResource MutedText}"
-                           FontSize="13" />
-
-                    <Border Style="{StaticResource CampoFormulario}">
-                        <DatePicker x:Name="dpFechaIngreso"
-                                    Format="dd/MM/yyyy" />
-                    </Border>
-
-                    <Button x:Name="btnGuardarEntrada"
-                            Text="Guardar entrada"
-                            Clicked="btnGuardarEntrada_Clicked" />
-
-                    <CollectionView x:Name="cvEntradas"
-                                    SelectionMode="None">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Border StrokeShape="RoundRectangle 14"
-                                        BackgroundColor="White"
-                                        Stroke="{StaticResource Gray200}"
-                                        Margin="0,5"
-                                        Padding="12">
-                                    <Label Text="{Binding FechaIngreso, StringFormat='Fecha: {0:dd/MM/yyyy}'}" />
                                 </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

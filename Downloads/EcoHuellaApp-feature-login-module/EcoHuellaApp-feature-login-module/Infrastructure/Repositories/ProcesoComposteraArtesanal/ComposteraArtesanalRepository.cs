@@ -103,5 +103,13 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoComposteraArtesanal
                 throw;
             }
         }
+
+        public async Task<List<ComposteraArtesanal>> ObtenerHistorialAsync()
+        {
+            return await _database.Database.Table<ComposteraArtesanal>()
+                .Where(c => c.UsuarioUid == UsuarioUid)
+                .OrderByDescending(c => c.Id)
+                .ToListAsync();
+        }
     }
 }

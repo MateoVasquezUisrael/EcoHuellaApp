@@ -30,17 +30,38 @@
                                 <Label Text="Gestión de residuos" Style="{StaticResource EcoTitle}" FontSize="26" />
                                 <Label Text="Registra residuos frescos y administra casas y puntos de recolección." Style="{StaticResource EcoSubtitle}" />
                                 <Button Text="+ Nueva entrega" Clicked="NuevaEntrega_Clicked" HeightRequest="52" />
-                                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
-                                    <Button Text="Casas" Clicked="Casas_Clicked" Style="{StaticResource BotonSecundario}" />
-                                    <Button Grid.Column="1" Text="Puntos de recolección" Clicked="Puntos_Clicked" Style="{StaticResource BotonSecundario}" />
-                                </Grid>
+                                <VerticalStackLayout Spacing="10">
+                                    <Button Text="Casas" Clicked="Casas_Clicked" Style="{StaticResource BotonSecundario}" HeightRequest="54" />
+                                    <Button
+                                            Text="Puntos de recolección"
+                                            Clicked="Puntos_Clicked"
+                                            Style="{StaticResource BotonSecundario}"
+                                            FontSize="13"
+                                            HeightRequest="54" />
+                                </VerticalStackLayout>
                             </VerticalStackLayout>
                         </Border>
 
                         <Border Style="{StaticResource EcoCard}">
                             <VerticalStackLayout Spacing="10">
-                                <Label Text="Información" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="18" />
-                                <Label Text="Los registros recientes y métricas reales se consultan desde Historial y Dashboard." Style="{StaticResource EcoSubtitle}" />
+                                <Label Text="Historial de entregas" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="18" />
+                                <CollectionView x:Name="cvHistorialEntregas" SelectionMode="None" MaximumHeightRequest="360">
+                                    <CollectionView.EmptyView>
+                                        <Label Text="No hay entregas registradas." Style="{StaticResource EcoSubtitle}" HorizontalTextAlignment="Center" />
+                                    </CollectionView.EmptyView>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Stroke="{StaticResource BordeEco}" StrokeShape="RoundRectangle 14" Padding="12" Margin="0,4">
+                                                <VerticalStackLayout Spacing="4">
+                                                    <Label Text="{Binding Fecha, StringFormat='Entrega del {0:dd/MM/yyyy}'}" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" />
+                                                    <Label Text="{Binding Casa.Direccion, StringFormat='Casa: {0}'}" Style="{StaticResource EcoSubtitle}" />
+                                                    <Label Text="{Binding PuntoRecoleccion.Direccion, StringFormat='Punto: {0}'}" Style="{StaticResource EcoSubtitle}" />
+                                                    <Label Text="{Binding CantidadCubetas, StringFormat='Cubetas: {0}'}" TextColor="{StaticResource PrimaryGreen}" />
+                                                </VerticalStackLayout>
+                                            </Border>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
                             </VerticalStackLayout>
                         </Border>
                     </VerticalStackLayout>

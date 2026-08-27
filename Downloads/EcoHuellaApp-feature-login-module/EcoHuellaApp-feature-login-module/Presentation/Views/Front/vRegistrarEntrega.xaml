@@ -32,7 +32,7 @@
                                 <Border Style="{StaticResource CampoFormulario}"><Entry Text="0.00" Placeholder="0.00 kg" Keyboard="Numeric" Style="{StaticResource EntradaFormulario}" /></Border>
                                 <Label Text="Tipo de residuo" Style="{StaticResource EcoSubtitle}" />
                                 <Border Style="{StaticResource CampoFormulario}">
-                                    <Picker Title="Orgánico" TextColor="{StaticResource TextDark}" TitleColor="{StaticResource MutedText}" BackgroundColor="Transparent">
+                                    <Picker SelectedIndex="0" TextColor="{StaticResource TextDark}" BackgroundColor="Transparent">
                                         <Picker.Items>
                                             <x:String>Orgánico</x:String>
                                             <x:String>Vegetal</x:String>

@@ -28,13 +28,25 @@
 
                                 <Label Text="Casa / responsable" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" />
                                 <Border Style="{StaticResource CampoFormulario}">
-                                    <Picker x:Name="pkCasa" Title="Seleccione una casa" />
+                                    <Picker x:Name="pkCasa"
+                                            Title="Seleccionar casa"
+                                            SelectedIndexChanged="pkCasa_SelectedIndexChanged" />
                                 </Border>
+                                <Button Text="+ Crear casa"
+                                        Clicked="CrearCasa_Clicked"
+                                        Style="{StaticResource BotonSecundario}"
+                                        HeightRequest="46" />
 
                                 <Label Text="Punto de recolección" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" />
                                 <Border Style="{StaticResource CampoFormulario}">
-                                    <Picker x:Name="pkPuntoRecoleccion" Title="Seleccione un punto" />
+                                    <Picker x:Name="pkPuntoRecoleccion"
+                                            Title="Seleccionar punto de recolección"
+                                            SelectedIndexChanged="pkPuntoRecoleccion_SelectedIndexChanged" />
                                 </Border>
+                                <Button Text="+ Crear punto de recolección"
+                                        Clicked="CrearPunto_Clicked"
+                                        Style="{StaticResource BotonSecundario}"
+                                        HeightRequest="46" />
 
                                 <Button x:Name="btnVerMapa"
                                         Text="Ver ubicación en mapa"

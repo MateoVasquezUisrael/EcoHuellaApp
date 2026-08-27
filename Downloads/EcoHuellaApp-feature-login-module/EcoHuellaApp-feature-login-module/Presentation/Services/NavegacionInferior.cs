@@ -16,6 +16,11 @@ public static class NavegacionInferior
         page.Loaded += AnimarEntrada;
     }
 
+    public static void AgregarBotonPerfil(ContentPage page)
+    {
+        // El acceso flotante al perfil fue retirado del diseño.
+    }
+
     private static void ConectarElemento(Element elemento, ContentPage page)
     {
         if (elemento is Label label)
@@ -110,6 +115,7 @@ public static class NavegacionInferior
             "Entregas" when page is not vGestionResiduos => new vGestionResiduos(),
             "Procesos" when page is not vProcesos => new vProcesos(),
             "Ajustes" when page is not vAjustesPerfil => new vAjustesPerfil(),
+            "Perfil" when page is not vAjustesPerfil => new vAjustesPerfil(),
             _ => null
         };
 
