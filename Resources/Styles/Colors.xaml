@@ -5,24 +5,58 @@
 
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
 
-    <Color x:Key="Primary">#18A64F</Color>
-    <Color x:Key="PrimaryDark">#007A37</Color>
-    <Color x:Key="PrimaryDarkText">#0D1F1A</Color>
-    <Color x:Key="Secondary">#B9F5CF</Color>
-    <Color x:Key="SecondaryDarkText">#008A3D</Color>
-    <Color x:Key="Tertiary">#F5C32D</Color>
+    <Color x:Key="Primary">#2FBF71</Color>
+    <Color x:Key="PrimaryDark">#0E5F45</Color>
+    <Color x:Key="PrimaryDarkText">#10251D</Color>
+    <Color x:Key="Secondary">#2FBF71</Color>
+    <Color x:Key="SecondaryDarkText">#5F6F68</Color>
+    <Color x:Key="Tertiary">#47DDE0</Color>
 
-    <Color x:Key="FondoPaginaEco">#F2F2F2</Color>
+    <Color x:Key="FondoPaginaEco">#F4FAF7</Color>
     <Color x:Key="SuperficieEco">#FFFFFF</Color>
-    <Color x:Key="BordeEco">#D8D8D8</Color>
-    <Color x:Key="TextoPrincipalEco">#007A37</Color>
-    <Color x:Key="TextoSecundarioEco">#008A3D</Color>
-    <Color x:Key="BotonPrimarioEco">#18A64F</Color>
-    <Color x:Key="BotonSecundarioEco">#B9F5CF</Color>
-    <Color x:Key="TextoBotonSecundarioEco">#0D1F1A</Color>
-    <Color x:Key="BotonGoogle">#E92529</Color>
-    <Color x:Key="BordeCampoFormulario">#73EAD9</Color>
-    <Color x:Key="AvatarRegistro">#CDD2D8</Color>
+    <Color x:Key="BordeEco">#DCEFE6</Color>
+    <Color x:Key="TextoPrincipalEco">#10251D</Color>
+    <Color x:Key="TextoSecundarioEco">#5F6F68</Color>
+    <Color x:Key="BotonPrimarioEco">#2FBF71</Color>
+    <Color x:Key="BotonSecundarioEco">#EAF8F1</Color>
+    <Color x:Key="TextoBotonSecundarioEco">#0E5F45</Color>
+    <Color x:Key="BordeCampoFormulario">#BFE8D3</Color>
+    <Color x:Key="AvatarRegistro">#DCEFE6</Color>
+    <Color x:Key="EcoNoche">#0E5F45</Color>
+    <Color x:Key="EcoCyan">#47DDE0</Color>
+    <Color x:Key="EcoCyanClaro">#47DDE0</Color>
+    <Color x:Key="EcoVerde">#2FBF71</Color>
+    <Color x:Key="EcoTextoSuave">#5F6F68</Color>
+
+    <Color x:Key="PrimaryGreen">#32C878</Color>
+    <Color x:Key="DarkGreen">#003C3C</Color>
+    <Color x:Key="DeepTeal">#0B5D4F</Color>
+    <Color x:Key="AccentTurquoise">#37D6D6</Color>
+    <Color x:Key="AccentBlue">#168AAD</Color>
+    <Color x:Key="BackgroundSoft">#F6F9F7</Color>
+    <Color x:Key="CardWhite">#FFFFFF</Color>
+    <Color x:Key="TextDark">#1F2933</Color>
+    <Color x:Key="MutedText">#6B7280</Color>
+    <Color x:Key="SoftGreen">#EAF8F1</Color>
+    <Color x:Key="WarningOrange">#F59E0B</Color>
+    <Color x:Key="DangerRed">#EF4444</Color>
+    <Color x:Key="SuccessSurface">#E8F8EF</Color>
+    <Color x:Key="WarningSurface">#FFF7E6</Color>
+    <Color x:Key="DangerSurface">#FFF0F1</Color>
+    <Color x:Key="DividerSoft">#E7EFEA</Color>
+    <Color x:Key="HeaderTextSoft">#D9FFF1</Color>
+
+    <LinearGradientBrush x:Key="HeaderGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#003C3C" Offset="0.0" />
+        <GradientStop Color="#0B5D4F" Offset="0.58" />
+        <GradientStop Color="#167F70" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="HeroGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#002E32" Offset="0.0" />
+        <GradientStop Color="#075748" Offset="0.55" />
+        <GradientStop Color="#168B67" Offset="1.0" />
+    </LinearGradientBrush>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
@@ -49,9 +83,12 @@
     <SolidColorBrush x:Key="TextoSecundarioEcoBrush" Color="{StaticResource TextoSecundarioEco}"/>
     <SolidColorBrush x:Key="BotonPrimarioEcoBrush" Color="{StaticResource BotonPrimarioEco}"/>
     <SolidColorBrush x:Key="BotonSecundarioEcoBrush" Color="{StaticResource BotonSecundarioEco}"/>
-    <SolidColorBrush x:Key="BotonGoogleBrush" Color="{StaticResource BotonGoogle}"/>
     <SolidColorBrush x:Key="BordeCampoFormularioBrush" Color="{StaticResource BordeCampoFormulario}"/>
     <SolidColorBrush x:Key="AvatarRegistroBrush" Color="{StaticResource AvatarRegistro}"/>
+    <SolidColorBrush x:Key="EcoNocheBrush" Color="{StaticResource EcoNoche}"/>
+    <SolidColorBrush x:Key="EcoCyanBrush" Color="{StaticResource EcoCyan}"/>
+    <SolidColorBrush x:Key="EcoCyanClaroBrush" Color="{StaticResource EcoCyanClaro}"/>
+    <SolidColorBrush x:Key="EcoVerdeBrush" Color="{StaticResource EcoVerde}"/>
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}"/>
 

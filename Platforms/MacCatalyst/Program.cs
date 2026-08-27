@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace EcoHuellaFront
+namespace EcoHuellaApp
 {
     public class Program
     {

@@ -1,4 +1,4 @@
-﻿namespace EcoHuellaFront
+﻿namespace EcoHuellaApp
 {
     public partial class AppShell : Shell
     {

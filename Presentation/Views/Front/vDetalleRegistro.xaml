@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaApp.Presentation.Views.Front.vDetalleRegistro"
+             Title="Detalle de registro"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource BackgroundSoft}">
+    <Grid Padding="12" MaximumWidthRequest="430" HorizontalOptions="Center">
+        <Image Source="eco_leaf.svg" WidthRequest="82" Opacity="0.12" Rotation="34" HorizontalOptions="End" VerticalOptions="End" Margin="0,0,-24,-18" InputTransparent="True" />
+        <Border Style="{StaticResource EcoCard}" MaximumWidthRequest="430" HorizontalOptions="Fill" VerticalOptions="Fill" Padding="0">
+            <Grid RowDefinitions="116,*,64">
+                <Border Style="{StaticResource EcoHeader}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout VerticalOptions="Center">
+                            <Label Text="DETALLE DE REGISTRO" TextColor="White" FontFamily="OpenSansSemibold" FontSize="19" />
+                            <Label Text="Información e impacto calculado" TextColor="#D9FFF1" FontSize="12" />
+                        </VerticalStackLayout>
+                        <Border Grid.Column="1" WidthRequest="46" HeightRequest="46" BackgroundColor="#2237D6D6" Stroke="{StaticResource AccentTurquoise}" StrokeShape="RoundRectangle 23" VerticalOptions="Center">
+                            <Label Text="&#x1F464;" TextColor="{StaticResource AccentTurquoise}" FontSize="23" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <ScrollView Grid.Row="1" Margin="0,-18,0,0">
+                    <VerticalStackLayout Padding="18,0,18,20" Spacing="14">
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="Imágenes cargadas" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="18" />
+                                <CollectionView HeightRequest="110">
+                                    <CollectionView.ItemsLayout><LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" /></CollectionView.ItemsLayout>
+                                    <CollectionView.EmptyView>
+                                        <Border BackgroundColor="{StaticResource BackgroundSoft}" Stroke="{StaticResource BordeEco}" StrokeShape="RoundRectangle 18" Padding="18">
+                                            <VerticalStackLayout Spacing="4">
+                                                <Label Text="No hay imágenes cargadas" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" HorizontalTextAlignment="Center" />
+                                                <Label Text="La evidencia aparecerá aquí cuando exista lógica de cámara o galería." TextColor="{StaticResource MutedText}" FontSize="12" HorizontalTextAlignment="Center" />
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </CollectionView.EmptyView>
+                                </CollectionView>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="Información del registro" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="18" />
+                                <Label Text="{Binding ResponsableTexto}" TextColor="{StaticResource TextDark}" />
+                                <Label Text="Fecha y hora: 27/10/2023 · 10:30 AM" TextColor="{StaticResource MutedText}" />
+                                <Label Text="Tipo de residuos: Orgánicos" TextColor="{StaticResource TextDark}" />
+                                <Label Text="Kilos: 15.5 kg" TextColor="{StaticResource TextDark}" FontAttributes="Bold" />
+                                <Label Text="Ubicación: Sector A · 5.2 km recorridos" TextColor="{StaticResource MutedText}" />
+                                <Label Text="Comentarios: Residuos de cocina y jardín." TextColor="{StaticResource MutedText}" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="12">
+                                <Label Text="Impacto ambiental calculado" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="18" />
+                                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                                    <Border Style="{StaticResource EcoMetricCard}"><VerticalStackLayout><Label Text="CO₂ capturado" Style="{StaticResource EcoSubtitle}" /><Label Text="5.2 kg" TextColor="{StaticResource PrimaryGreen}" FontFamily="OpenSansSemibold" FontSize="21" /></VerticalStackLayout></Border>
+                                    <Border Grid.Column="1" Style="{StaticResource EcoMetricCard}"><VerticalStackLayout><Label Text="Metano evitado" Style="{StaticResource EcoSubtitle}" /><Label Text="0.8 kg" TextColor="{StaticResource DeepTeal}" FontFamily="OpenSansSemibold" FontSize="21" /></VerticalStackLayout></Border>
+                                    <Border Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource EcoMetricCard}"><Grid ColumnDefinitions="*,Auto"><VerticalStackLayout><Label Text="Tierra regenerada" Style="{StaticResource EcoSubtitle}" /><Label Text="12 m²" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="21" /></VerticalStackLayout><Label Grid.Column="1" Text="+18%" TextColor="{StaticResource PrimaryGreen}" FontFamily="OpenSansSemibold" FontSize="18" VerticalOptions="Center" /></Grid></Border>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="Ubicación" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="18" />
+                                <Border BackgroundColor="#EAF8F1" Stroke="#D2F1E1" StrokeShape="RoundRectangle 22" HeightRequest="125">
+                                    <Grid>
+                                        <Label Text="Mapa / ubicación del registro" TextColor="{StaticResource MutedText}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                    </Grid>
+                                </Border>
+                                <Label Text="Emisiones estimadas por ruta: 1.2 kg CO₂" TextColor="{StaticResource MutedText}" FontSize="12" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                            <Button Text="Editar" Clicked="Editar_Clicked" Style="{StaticResource BotonSecundario}" />
+                            <Button Grid.Column="1" Text="Eliminar" Clicked="Eliminar_Clicked" Style="{StaticResource BotonSecundario}" TextColor="{StaticResource DangerRed}" />
+                            <Button Grid.Column="2" Text="Volver" Clicked="Volver_Clicked" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </ScrollView>
+
+                <Border Grid.Row="2" Style="{StaticResource EcoBottomNavigation}">
+                    <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="24,*">
+                        <Label Text="&#x267B;" Style="{StaticResource BottomNavIcon}" />
+                        <Label Grid.Column="1" Text="&#x25F4;" Style="{StaticResource BottomNavIcon}" />
+                        <Label Grid.Column="2" Text="&#x21BA;" Style="{StaticResource BottomNavIconActive}" />
+                        <Label Grid.Column="3" Text="&#x25A5;" Style="{StaticResource BottomNavIcon}" />
+                        <Label Grid.Row="1" Text="Entregas" Style="{StaticResource BottomNavText}" />
+                        <Label Grid.Row="1" Grid.Column="1" Text="Dashboard" Style="{StaticResource BottomNavText}" />
+                        <Label Grid.Row="1" Grid.Column="2" Text="Historial" Style="{StaticResource BottomNavTextActive}" />
+                        <Label Grid.Row="1" Grid.Column="3" Text="Procesos" Style="{StaticResource BottomNavText}" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

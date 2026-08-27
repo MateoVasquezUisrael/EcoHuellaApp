@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaApp.Presentation.Views.Front.vHistorialProcesos"
+             Title="Historial de procesos"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource BackgroundSoft}">
+    <Grid Padding="12" MaximumWidthRequest="430" HorizontalOptions="Center">
+        <Border Style="{StaticResource EcoCard}" MaximumWidthRequest="430" HorizontalOptions="Fill" VerticalOptions="Fill" Padding="0">
+            <Grid RowDefinitions="116,*">
+                <Border Style="{StaticResource EcoHeader}">
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="HISTORIAL DE PROCESOS" TextColor="White" FontFamily="OpenSansSemibold" FontSize="20" />
+                        <Label Text="{Binding Resumen}" TextColor="#D9FFF1" FontSize="12" />
+                    </VerticalStackLayout>
+                </Border>
+                <CollectionView Grid.Row="1" Margin="18,0,18,18" ItemsSource="{Binding Procesos}">
+                    <CollectionView.EmptyView>
+                        <Label Text="No hay procesos registrados." TextColor="{StaticResource MutedText}" HorizontalTextAlignment="Center" Margin="0,40" />
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource EcoCard}" Margin="0,8">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="{Binding Id, StringFormat='Proceso #{0}'}" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" FontSize="17" />
+                                    <Label Text="{Binding BiodigestorId, StringFormat='Biodigestor: #{0}'}" TextColor="{StaticResource MutedText}" />
+                                    <Label Text="{Binding FechaInicio, StringFormat='Inicio: {0:dd/MM/yyyy}'}" TextColor="{StaticResource MutedText}" />
+                                    <Label Text="{Binding FechaCierre, StringFormat='Cierre: {0:dd/MM/yyyy}'}" TextColor="{StaticResource MutedText}" />
+                                    <Label Text="{Binding CarbonoEvitado, StringFormat='CO₂ evitado: {0:N1} kg'}" TextColor="{StaticResource PrimaryGreen}" />
+                                    <Label Text="{Binding MetanoEvitado, StringFormat='Metano evitado: {0:N1} kg'}" TextColor="{StaticResource DeepTeal}" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

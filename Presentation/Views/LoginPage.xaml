@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EcoHuellaApp.Presentation.ViewModels"
+             x:Class="EcoHuellaApp.Presentation.Views.LoginPage"
+             x:DataType="vm:LoginViewModel" Shell.NavBarIsVisible="False"
+             SafeAreaEdges="All" BackgroundColor="{StaticResource BackgroundSoft}">
+    <ScrollView HorizontalScrollBarVisibility="Never">
+        <Grid Padding="20,28,20,32">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#EDF8F2" Offset="0" />
+                    <GradientStop Color="#F9FCFA" Offset="0.52" />
+                    <GradientStop Color="#E8F7F5" Offset="1" />
+                </LinearGradientBrush>
+            </Grid.Background>
+            <VerticalStackLayout Spacing="20" MaximumWidthRequest="390"
+                                 HorizontalOptions="Center" VerticalOptions="Center">
+                <Border Background="{StaticResource HeroGradientBrush}" Stroke="Transparent"
+                        StrokeShape="RoundRectangle 32" Padding="24,26">
+                    <VerticalStackLayout Spacing="12">
+                        <Border BackgroundColor="#123D35" Stroke="#6637D6D6" StrokeThickness="2"
+                                StrokeShape="RoundRectangle 26" WidthRequest="88" HeightRequest="88"
+                                HorizontalOptions="Center">
+                            <Image Source="aldea_las_nubes.png" Aspect="AspectFill" />
+                        </Border>
+                        <Label Text="ECOHUELLA • COMUNIDAD" TextColor="{StaticResource AccentTurquoise}"
+                               FontFamily="OpenSansSemibold" FontSize="11" CharacterSpacing="1.5"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="Aldea Las Nubes" TextColor="White" FontFamily="OpenSansSemibold"
+                               FontSize="29" HorizontalTextAlignment="Center" />
+                        <Label Text="Gestión ambiental simple y transparente" TextColor="#D9FFF1" FontSize="14"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Style="{StaticResource EcoCard}" Padding="24">
+                    <VerticalStackLayout Spacing="14">
+                        <Label Text="Iniciar sesión" TextColor="{StaticResource DarkGreen}"
+                               FontFamily="OpenSansSemibold" FontSize="25" />
+                        <Label Text="Ingresa con tu cuenta para continuar."
+                               Style="{StaticResource EcoSubtitle}" />
+                        <Label Text="Correo electrónico" TextColor="{StaticResource TextDark}"
+                               FontFamily="OpenSansSemibold" Margin="0,4,0,0" />
+                        <Border Style="{StaticResource CampoFormulario}">
+                            <Entry Text="{Binding Email}" Placeholder="nombre@correo.com" Keyboard="Email"
+                                   ReturnType="Next" Style="{StaticResource EntradaFormulario}" />
+                        </Border>
+                        <Label Text="Contraseña" TextColor="{StaticResource TextDark}"
+                               FontFamily="OpenSansSemibold" />
+                        <Border Style="{StaticResource CampoFormulario}">
+                            <Grid ColumnDefinitions="*,48">
+                                <Entry Text="{Binding Password}" Placeholder="Ingresa tu contraseña"
+                                       IsPassword="{Binding IsPasswordVisible, Converter={StaticResource InverseBool}}"
+                                       ReturnType="Done" ReturnCommand="{Binding SignInCommand}"
+                                       Style="{StaticResource EntradaFormulario}" />
+                                <Button Grid.Column="1" Text="Ver" Command="{Binding TogglePasswordVisibilityCommand}"
+                                        BackgroundColor="Transparent" TextColor="{StaticResource DeepTeal}"
+                                        FontSize="12" Padding="0" />
+                            </Grid>
+                        </Border>
+                        <Button Text="¿Olvidaste tu contraseña?" Command="{Binding ForgotPasswordCommand}"
+                                BackgroundColor="Transparent" TextColor="{StaticResource DeepTeal}"
+                                FontSize="13" Padding="0" HeightRequest="32" HorizontalOptions="End" />
+                        <Border IsVisible="{Binding HasError}" BackgroundColor="#FDEDEC" Stroke="#E74C3C"
+                                StrokeShape="RoundRectangle 12" Padding="12,10">
+                            <Label Text="{Binding ErrorMessage}" TextColor="#C0392B" FontSize="13" />
+                        </Border>
+                        <Border IsVisible="{Binding HasSuccess}" BackgroundColor="#EAF7F0" Stroke="#27AE60"
+                                StrokeShape="RoundRectangle 12" Padding="12,10">
+                            <Label Text="{Binding SuccessMessage}" TextColor="#1E8449" FontSize="13" />
+                        </Border>
+                        <Button Text="Ingresar" Command="{Binding SignInCommand}" HeightRequest="52"
+                                Margin="0,4,0,0" IsEnabled="{Binding IsNotBusy}" />
+                        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                                           Color="{StaticResource PrimaryGreen}" />
+
+                        <Button Text="Usuario nuevo" Command="{Binding NewUserCommand}"
+                                Style="{StaticResource BotonSecundario}" HeightRequest="52"
+                                IsEnabled="{Binding IsNotBusy}" />
+
+                        <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
+                            <BoxView HeightRequest="1" BackgroundColor="{StaticResource DividerSoft}" VerticalOptions="Center" />
+                            <Label Grid.Column="1" Text="ACCESO RÁPIDO" TextColor="{StaticResource MutedText}"
+                                   FontSize="10" CharacterSpacing="1" />
+                            <BoxView Grid.Column="2" HeightRequest="1" BackgroundColor="{StaticResource DividerSoft}" VerticalOptions="Center" />
+                        </Grid>
+
+                        <Button Text="Ingresar como invitado" Command="{Binding SignInAsGuestCommand}"
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource DeepTeal}"
+                                BorderColor="{StaticResource AccentTurquoise}"
+                                BorderWidth="1"
+                                HeightRequest="50"
+                                IsEnabled="{Binding IsNotBusy}" />
+                        <Label Text="Tus datos permanecen protegidos y asociados a tu cuenta."
+                               TextColor="{StaticResource MutedText}" FontSize="11"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

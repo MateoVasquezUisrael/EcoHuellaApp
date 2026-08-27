@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace EcoHuellaFront
+namespace EcoHuellaApp
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate
