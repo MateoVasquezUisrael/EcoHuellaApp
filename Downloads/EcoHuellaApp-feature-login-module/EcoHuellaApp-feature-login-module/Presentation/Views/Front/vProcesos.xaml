@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaApp.Presentation.Views.Front.vProcesos"
+             Title="Procesos"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource BackgroundSoft}">
+    <Grid Padding="12" MaximumWidthRequest="430" HorizontalOptions="Center">
+        <Image Source="eco_leaf.svg" WidthRequest="78" Opacity="0.13" Rotation="-25" HorizontalOptions="Start" VerticalOptions="Start" Margin="-20,-10,0,0" InputTransparent="True" />
+        <Image Source="eco_leaf.svg" WidthRequest="94" Opacity="0.12" Rotation="34" HorizontalOptions="End" VerticalOptions="End" Margin="0,0,-26,-18" InputTransparent="True" />
+
+        <Border Style="{StaticResource EcoCard}" MaximumWidthRequest="430" HorizontalOptions="Fill" VerticalOptions="Fill" Padding="0">
+            <Grid RowDefinitions="126,*,64">
+                <Border Style="{StaticResource EcoHeader}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="3" VerticalOptions="Center">
+                            <Label Text="PROCESOS" TextColor="White" FontFamily="OpenSansSemibold" FontSize="23" />
+                            <Label Text="Sacos, composteras y biodigestores" TextColor="#D9FFF1" FontSize="13" />
+                        </VerticalStackLayout>
+                        <Border Grid.Column="1" WidthRequest="46" HeightRequest="46" BackgroundColor="#2237D6D6" Stroke="{StaticResource AccentTurquoise}" StrokeShape="RoundRectangle 23" VerticalOptions="Center">
+                            <Label Text="&#x2699;" TextColor="{StaticResource AccentTurquoise}" FontSize="23" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <ScrollView Grid.Row="1" Margin="0,-18,0,0">
+                    <VerticalStackLayout Padding="18,0,18,20" Spacing="15">
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Resumen operativo" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="18" />
+                                <Label Text="{Binding ResumenGeneral}" Style="{StaticResource EcoSubtitle}" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="12">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Text="Sacos" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="20" />
+                                    <Border Grid.Column="1" Style="{StaticResource StatusActivo}">
+                                        <Label Text="{Binding SacosDisponiblesTexto}" TextColor="{StaticResource DeepTeal}" FontSize="11" />
+                                    </Border>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,*">
+                                    <VerticalStackLayout>
+                                        <Label Text="Total" Style="{StaticResource EcoSubtitle}" />
+                                        <Label Text="{Binding TotalSacos}" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" FontSize="24" />
+                                    </VerticalStackLayout>
+                                    <VerticalStackLayout Grid.Column="1">
+                                        <Label Text="Disponibles" Style="{StaticResource EcoSubtitle}" />
+                                        <Label Text="{Binding SacosDisponibles}" TextColor="{StaticResource PrimaryGreen}" FontFamily="OpenSansSemibold" FontSize="24" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                    <Button Text="Agregar saco" Clicked="AgregarSaco_Clicked" />
+                                    <Button Grid.Column="1" Text="Historial" Clicked="HistorialSacos_Clicked" Style="{StaticResource BotonSecundario}" />
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="12">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Text="Composteras" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="20" />
+                                    <Border Grid.Column="1" Style="{StaticResource StatusActivo}">
+                                        <Label Text="{Binding ComposterasActivasTexto}" TextColor="{StaticResource DeepTeal}" FontSize="11" />
+                                    </Border>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,*">
+                                    <VerticalStackLayout>
+                                        <Label Text="Total" Style="{StaticResource EcoSubtitle}" />
+                                        <Label Text="{Binding TotalComposteras}" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" FontSize="24" />
+                                    </VerticalStackLayout>
+                                    <VerticalStackLayout Grid.Column="1">
+                                        <Label Text="Activas" Style="{StaticResource EcoSubtitle}" />
+                                        <Label Text="{Binding ComposterasActivas}" TextColor="{StaticResource PrimaryGreen}" FontFamily="OpenSansSemibold" FontSize="24" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                    <Button Text="Agregar" Clicked="AgregarCompostera_Clicked" />
+                                    <Button Grid.Column="1" Text="Historial" Clicked="HistorialComposteras_Clicked" Style="{StaticResource BotonSecundario}" />
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="12">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Text="Procesos" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="20" />
+                                    <Border Grid.Column="1" Style="{StaticResource StatusActivo}">
+                                        <Label Text="{Binding ProcesosActivosTexto}" TextColor="{StaticResource DeepTeal}" FontSize="11" />
+                                    </Border>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,*,*">
+                                    <VerticalStackLayout>
+                                        <Label Text="Total" Style="{StaticResource EcoSubtitle}" />
+                                        <Label Text="{Binding TotalProcesos}" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" FontSize="22" />
+                                    </VerticalStackLayout>
+                                    <VerticalStackLayout Grid.Column="1">
+                                        <Label Text="Activos" Style="{StaticResource EcoSubtitle}" />
+                                        <Label Text="{Binding ProcesosActivos}" TextColor="{StaticResource PrimaryGreen}" FontFamily="OpenSansSemibold" FontSize="22" />
+                                    </VerticalStackLayout>
+                                    <VerticalStackLayout Grid.Column="2">
+                                        <Label Text="Finalizados" Style="{StaticResource EcoSubtitle}" />
+                                        <Label Text="{Binding ProcesosFinalizados}" TextColor="{StaticResource DeepTeal}" FontFamily="OpenSansSemibold" FontSize="22" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                    <Button Text="Agregar proceso" Clicked="AgregarProceso_Clicked" />
+                                    <Button Grid.Column="1" Text="Historial" Clicked="HistorialProcesos_Clicked" Style="{StaticResource BotonSecundario}" />
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </ScrollView>
+
+                <Border Grid.Row="2" Style="{StaticResource EcoBottomNavigation}">
+                    <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="24,*">
+                        <Label Text="&#x21BA;" Style="{StaticResource BottomNavIcon}" />
+                        <Label Grid.Column="1" Text="&#x267B;" Style="{StaticResource BottomNavIcon}" />
+                        <Label Grid.Column="2" Text="&#x25F4;" Style="{StaticResource BottomNavIcon}" />
+                        <Label Grid.Column="3" Text="&#x2699;" Style="{StaticResource BottomNavIconActive}" />
+                        <Label Grid.Row="1" Text="Historial" Style="{StaticResource BottomNavText}" />
+                        <Label Grid.Row="1" Grid.Column="1" Text="Entregas" Style="{StaticResource BottomNavText}" />
+                        <Label Grid.Row="1" Grid.Column="2" Text="Dashboard" Style="{StaticResource BottomNavText}" />
+                        <Label Grid.Row="1" Grid.Column="3" Text="Procesos" Style="{StaticResource BottomNavTextActive}" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

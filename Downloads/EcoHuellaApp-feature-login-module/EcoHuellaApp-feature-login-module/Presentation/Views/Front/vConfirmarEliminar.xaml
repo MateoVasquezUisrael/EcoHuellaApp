@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaApp.Presentation.Views.Front.vConfirmarEliminar"
+             Title="Eliminar registro"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource BackgroundSoft}">
+    <Grid Padding="24" MaximumWidthRequest="430" HorizontalOptions="Center" VerticalOptions="Center">
+        <Border Style="{StaticResource EcoCard}" Padding="24">
+            <VerticalStackLayout Spacing="18">
+                <Border BackgroundColor="#FEEBEC" Stroke="#FAC0C3" StrokeShape="RoundRectangle 34" WidthRequest="72" HeightRequest="72" HorizontalOptions="Center">
+                    <Label Text="!" TextColor="{StaticResource DangerRed}" FontFamily="OpenSansSemibold" FontSize="34" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                </Border>
+                <Label Text="¿Deseas eliminar este registro?" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" FontSize="22" HorizontalTextAlignment="Center" />
+                <Label Text="Esta confirmación es solo visual por ahora. No se eliminará información de la base de datos." TextColor="{StaticResource MutedText}" HorizontalTextAlignment="Center" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button Text="Cancelar" Clicked="Cancelar_Clicked" Style="{StaticResource BotonSecundario}" />
+                    <Button Grid.Column="1" Text="Eliminar" Style="{StaticResource BotonSecundario}" TextColor="{StaticResource DangerRed}" />
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</ContentPage>

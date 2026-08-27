@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaFront.Views.vLogin"
+             Title="Iniciar Sesión"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource FondoPaginaEco}">
+
+    <Grid Padding="28"
+          RowDefinitions="*"
+          ColumnDefinitions="*">
+
+        <Border BackgroundColor="{StaticResource SuperficieEco}"
+                Stroke="{StaticResource BordeEco}"
+                StrokeThickness="1"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="360"
+                MaximumWidthRequest="430"
+                HeightRequest="640">
+
+            <VerticalStackLayout Padding="28,0"
+                                 Spacing="20"
+                                 VerticalOptions="Center">
+
+                <Label Text="Iniciar Sesión"
+                       Style="{StaticResource TextoFraseEco}"
+                       FontSize="26"
+                       Margin="0,0,0,20" />
+
+                <Border Style="{StaticResource CampoFormulario}">
+                    <Entry Placeholder="Correo electrónico"
+                           Keyboard="Email"
+                           Style="{StaticResource EntradaFormulario}" />
+                </Border>
+
+                <Border Style="{StaticResource CampoFormulario}">
+                    <Entry Placeholder="Contraseña"
+                           IsPassword="True"
+                           Style="{StaticResource EntradaFormulario}" />
+                </Border>
+
+                <Button Text="Toca para ingresar"
+                        Clicked="OnIngresarClicked"
+                        Margin="0,18,0,0"
+                        HorizontalOptions="Fill" />
+
+                <Label Text="o"
+                       TextColor="{StaticResource PrimaryDarkText}"
+                       FontSize="16"
+                       HorizontalTextAlignment="Center" />
+
+                <Button Text="G Continuar con Google"
+                        Clicked="OnGoogleClicked"
+                        Style="{StaticResource BotonGoogle}"
+                        HorizontalOptions="Fill" />
+
+                <Button Text="Toca para registrarse"
+                        Clicked="OnRegistrarseClicked"
+                        Style="{StaticResource BotonSecundario}"
+                        HorizontalOptions="Fill" />
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</ContentPage>

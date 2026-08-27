@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaFront.Views.vRegisUsuario"
+             Title="Registro de Usuario"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource FondoPaginaEco}">
+
+    <Grid Padding="28"
+          RowDefinitions="*"
+          ColumnDefinitions="*">
+
+        <Border BackgroundColor="{StaticResource SuperficieEco}"
+                Stroke="{StaticResource BordeEco}"
+                StrokeThickness="1"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="360"
+                MaximumWidthRequest="430"
+                HeightRequest="640">
+
+            <ScrollView>
+                <VerticalStackLayout Padding="28,24"
+                                     Spacing="14"
+                                     VerticalOptions="Center">
+
+                    <Ellipse Fill="{StaticResource AvatarRegistro}"
+                             WidthRequest="96"
+                             HeightRequest="96"
+                             HorizontalOptions="Center"
+                             Margin="0,0,0,4" />
+
+                    <Button Text="Añadir Foto de Perfil"
+                            Style="{StaticResource BotonSecundario}"
+                            Clicked="OnAnadirFotoClicked"
+                            WidthRequest="170"
+                            HorizontalOptions="Center"
+                            Margin="0,0,0,14" />
+
+                    <Border Style="{StaticResource CampoFormulario}">
+                        <Entry Placeholder="Nombre Completo"
+                               Style="{StaticResource EntradaFormulario}" />
+                    </Border>
+
+                    <Border Style="{StaticResource CampoFormulario}">
+                        <Entry Placeholder="Correo Electrónico"
+                               Keyboard="Email"
+                               Style="{StaticResource EntradaFormulario}" />
+                    </Border>
+
+                    <Border Style="{StaticResource CampoFormulario}">
+                        <Entry Placeholder="Contraseña"
+                               IsPassword="True"
+                               Style="{StaticResource EntradaFormulario}" />
+                    </Border>
+
+                    <Border Style="{StaticResource CampoFormulario}">
+                        <Entry Placeholder="Confirmar Contraseña"
+                               IsPassword="True"
+                               Style="{StaticResource EntradaFormulario}" />
+                    </Border>
+
+                    <Border Style="{StaticResource CampoFormulario}">
+                        <Entry Placeholder="Organización (Opcional)"
+                               Style="{StaticResource EntradaFormulario}" />
+                    </Border>
+
+                    <Button Text="Registrarse"
+                            Clicked="OnRegistrarseClicked"
+                            Margin="0,22,0,14"
+                            HorizontalOptions="Fill" />
+
+                    <Label HorizontalTextAlignment="Center"
+                           FontSize="15">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="¿Ya tienes una cuenta? "
+                                      TextColor="{StaticResource PrimaryDarkText}" />
+                                <Span Text="Inicia Sesión"
+                                      TextColor="{StaticResource TextoPrincipalEco}"
+                                      FontAttributes="Bold">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnIniciaSesionTapped" />
+                                    </Span.GestureRecognizers>
+                                </Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Border>
+    </Grid>
+</ContentPage>
