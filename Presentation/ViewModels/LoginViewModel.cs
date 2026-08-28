@@ -11,20 +11,23 @@ namespace EcoHuellaApp.Presentation.ViewModels
         private readonly IUserRepository     _userRepository;
         private readonly IUserSessionService _session;
         private readonly INavigationService  _navigation;
+        private readonly IMockPasswordService _mockPassword;
 
         public LoginViewModel(
             IAuthService        authService,
             IUserRepository     userRepository,
             IUserSessionService session,
-            INavigationService  navigation)
+            INavigationService  navigation,
+            IMockPasswordService mockPassword)
         {
             _authService    = authService;
             _userRepository = userRepository;
             _session        = session;
             _navigation     = navigation;
+            _mockPassword   = mockPassword;
         }
 
-        // ── Formulario ────────────────────────────────────────────────────────
+        // Formulario.
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(SignInCommand))]
@@ -43,7 +46,7 @@ namespace EcoHuellaApp.Presentation.ViewModels
 
         public bool HasSuccess => !string.IsNullOrWhiteSpace(SuccessMessage);
 
-        // ── Login email / contraseña ──────────────────────────────────────────
+        // Acceso.
 
         [RelayCommand(CanExecute = nameof(CanSignIn))]
         private async Task SignInAsync()
@@ -52,8 +55,17 @@ namespace EcoHuellaApp.Presentation.ViewModels
             {
                 SuccessMessage = string.Empty;
 
+                var normalizedEmail = Email.Trim().ToLowerInvariant();
+                var mockUser = _mockPassword.TrySignIn(normalizedEmail, Password);
+                if (mockUser is not null)
+                {
+                    Password = string.Empty;
+                    await AuthorizeMockUserAsync(mockUser);
+                    return;
+                }
+
                 var result = await _authService.SignInWithEmailPasswordAsync(
-                    Email.Trim().ToLowerInvariant(), Password);
+                    normalizedEmail, Password);
 
                 Password = string.Empty; // limpiar de memoria
 
@@ -67,46 +79,7 @@ namespace EcoHuellaApp.Presentation.ViewModels
             });
         }
 
-        // ── Login con Google ──────────────────────────────────────────────────
-
-        [RelayCommand]
-        private async Task SignInWithGoogleAsync()
-        {
-            await ExecuteAsync(async () =>
-            {
-                SuccessMessage = string.Empty;
-
-                System.Diagnostics.Debug.WriteLine(
-                    "[LoginViewModel] SignInWithGoogleAsync started.");
-
-                var result = await _authService.SignInWithGoogleAsync();
-
-                System.Diagnostics.Debug.WriteLine(
-                    $"[LoginViewModel] Auth result: IsSuccess={result.IsSuccess}, ErrorCode={result.ErrorCode}, ErrorMessage={result.ErrorMessage}");
-
-                if (!result.IsSuccess)
-                {
-                    System.Diagnostics.Debug.WriteLine(
-                        $"[LoginViewModel] Google sign-in failed. ErrorCode={result.ErrorCode}, Message={result.ErrorMessage}");
-
-                    // Cancelación silenciosa del selector de cuentas
-                    if (result.ErrorCode == AuthErrorCode.Cancelled &&
-                        string.IsNullOrEmpty(result.ErrorMessage))
-                    {
-                        System.Diagnostics.Debug.WriteLine(
-                            "[LoginViewModel] Google sign-in cancelled by user.");
-                        return;
-                    }
-
-                    SetError(result.ErrorMessage ?? "Error al iniciar sesión con Google.");
-                    return;
-                }
-
-                await AuthorizeAndNavigateAsync(result.User!);
-            });
-        }
-
-        // ── Recuperar contraseña ──────────────────────────────────────────────
+        // Recuperación.
 
         [RelayCommand]
         private async Task ForgotPasswordAsync()
@@ -119,50 +92,76 @@ namespace EcoHuellaApp.Presentation.ViewModels
 
             var email = await page.DisplayPromptAsync(
                 title:       "Recuperar contraseña",
-                message:     "Ingresa tu correo para recibir las instrucciones.",
-                accept:      "Enviar",
+                message:     "Ingresa el correo de tu cuenta para generar una contraseña temporal de demostración.",
+                accept:      "Generar",
                 cancel:      "Cancelar",
                 placeholder: "correo@ejemplo.com",
+                initialValue: Email.Trim(),
                 keyboard:    Keyboard.Email);
 
             if (string.IsNullOrWhiteSpace(email)) return;
 
-            await ExecuteAsync(async () =>
+            email = email.Trim().ToLowerInvariant();
+            if (!email.Contains('@') || !email.Contains('.'))
             {
-                var result = await _authService.SendPasswordResetEmailAsync(
-                    email.Trim().ToLowerInvariant());
+                await page.DisplayAlertAsync(
+                    "Correo no válido",
+                    "Escribe una dirección de correo válida para continuar.",
+                    "Aceptar");
+                return;
+            }
 
-                if (result.IsSuccess)
-                {
-                    SuccessMessage = "Te enviamos un correo con las instrucciones.";
-                    ClearError();
-                }
-                else
-                {
-                    SetError(result.ErrorMessage ?? "No se pudo enviar el correo.");
-                }
-            });
+            var temporaryPassword = _mockPassword.GenerateTemporaryPassword(email);
+            SuccessMessage = "Contraseña temporal generada. Úsala para iniciar sesión.";
+            ClearError();
+            await page.DisplayAlertAsync(
+                "Contraseña temporal • Mockup",
+                $"Tu contraseña temporal es:\n\n{temporaryPassword}\n\nInicia sesión con ella. La aplicación te pedirá crear una contraseña nueva inmediatamente.",
+                "Entendido");
         }
 
-        // ── Visibilidad de contraseña ─────────────────────────────────────────
+        // Visibilidad.
 
         [RelayCommand]
         private void TogglePasswordVisibility() =>
             IsPasswordVisible = !IsPasswordVisible;
 
-        // ── Autorización Firestore + navegación ───────────────────────────────
+        [RelayCommand]
+        private Task NewUserAsync() => _navigation.GoToRegistrationAsync();
 
-        /// <summary>
-        /// Paso 2 del flujo de acceso: valida que el usuario autenticado
-        /// existe en Firestore y está activo antes de permitir el ingreso.
-        ///
-        /// Flujo completo:
-        ///   Firebase Auth → token → Firestore /usuarios/{uid}
-        ///   → activo=true → SetSession → NavegaR
-        /// </summary>
+        [RelayCommand]
+        private void SignInAsGuest()
+        {
+            var guestUser = new AppUser
+            {
+                Uid = $"guest-{Guid.NewGuid():N}",
+                Email = "invitado.local@ecohuella.app",
+                DisplayName = "Invitado",
+                Role = "Invitado",
+                IsEmailVerified = true,
+                RequiresPasswordChange = false,
+                LinkedProviders = ["guest"]
+            };
+
+            var guestProfile = new UsuarioSistema
+            {
+                Uid = guestUser.Uid,
+                Email = guestUser.Email,
+                Nombre = "Invitado",
+                Rol = RolSistema.Usuario,
+                Activo = true
+            };
+
+            _session.SetSession(guestUser, guestProfile);
+            _navigation.GoToGuestDemo();
+        }
+
+        // Autorización y navegación.
+
+        /// <summary>Valida el perfil y abre la aplicación.</summary>
         private async Task AuthorizeAndNavigateAsync(AppUser authUser)
         {
-            // Obtener token para firmar la petición a Firestore
+            // Obtiene el token.
             var token = await _authService.GetFreshTokenAsync();
 
             if (string.IsNullOrEmpty(token))
@@ -172,30 +171,64 @@ namespace EcoHuellaApp.Presentation.ViewModels
                 return;
             }
 
-            // Consultar Firestore
+            // Consulta el perfil.
             var usuario = await _userRepository.GetByUidAsync(authUser.Uid, token);
 
             if (usuario is null)
             {
-                // Autenticado en Firebase pero sin registro en el sistema
-                await _authService.SignOutAsync();
-                SetError("No tienes permiso para acceder a esta aplicación. " +
-                         "Contacta al administrador.");
-                return;
+                // Recupera perfiles pendientes.
+                usuario = new UsuarioSistema
+                {
+                    Uid = authUser.Uid,
+                    Email = authUser.Email,
+                    Nombre = string.IsNullOrWhiteSpace(authUser.DisplayName)
+                        ? authUser.Email.Split('@')[0]
+                        : authUser.DisplayName,
+                    Rol = RolSistema.Usuario,
+                    Activo = true
+                };
+
+                if (!await _userRepository.CreateAsync(usuario, token))
+                {
+                    await _authService.SignOutAsync();
+                    SetError("La cuenta es válida, pero no se pudo preparar el perfil local.");
+                    return;
+                }
             }
 
             if (!usuario.Activo)
             {
-                // El administrador desactivó la cuenta
+                // Cuenta desactivada.
                 await _authService.SignOutAsync();
                 SetError("Tu cuenta está desactivada. Contacta al administrador.");
                 return;
             }
 
-            // Acceso concedido — establecer sesión completa
+            // Acceso concedido.
             _session.SetSession(authUser, usuario);
+            _mockPassword.TrackUser(authUser);
 
             if (authUser.RequiresPasswordChange)
+                await _navigation.GoToChangePasswordAsync();
+            else
+                _navigation.GoToMainApp();
+        }
+
+        private async Task AuthorizeMockUserAsync(AppUser mockUser)
+        {
+            var usuario = await _userRepository.GetByUidAsync(mockUser.Uid, "mock-local");
+            usuario ??= new UsuarioSistema
+            {
+                Uid = mockUser.Uid,
+                Email = mockUser.Email,
+                Nombre = mockUser.DisplayName,
+                Rol = RolSistema.Usuario,
+                Activo = true
+            };
+
+            await _userRepository.CreateAsync(usuario, "mock-local");
+            _session.SetSession(mockUser, usuario);
+            if (mockUser.RequiresPasswordChange)
                 await _navigation.GoToChangePasswordAsync();
             else
                 _navigation.GoToMainApp();

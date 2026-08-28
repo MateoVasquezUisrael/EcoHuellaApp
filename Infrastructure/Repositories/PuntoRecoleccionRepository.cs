@@ -10,17 +10,21 @@ namespace EcoHuellaApp.Infrastructure.Repositories
     public class PuntoRecoleccionRepository : IRepositoryGeneric<PuntoRecoleccion>
     {
         private readonly AppDatabase _database;
+        private readonly IUserSessionService _session;
         private string Status { get; set; }
 
-        public PuntoRecoleccionRepository(AppDatabase database)
+        public PuntoRecoleccionRepository(AppDatabase database, IUserSessionService session)
         {
             _database = database;
+            _session = session;
         }
+        private string UsuarioUid => _session.AuthUser?.Uid ?? throw new InvalidOperationException("No hay una sesión activa.");
 
         public async Task ActualizarAsync(PuntoRecoleccion entity)
         {
             try
             {
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.UpdateAsync(entity);
 
                 Status = string.Format("Dato actualizado: ", entity);
@@ -37,6 +41,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories
             try
             {
                 entity.Estado = false;
+                entity.UsuarioUid = UsuarioUid;
 
                 await _database.Database.UpdateAsync(entity);
             }
@@ -51,6 +56,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories
         {
             try
             {
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.InsertAsync(entity);
 
                 Status = string.Format("Dato ingresado: ", entity);
@@ -68,7 +74,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories
             {
                 return await _database.Database
                     .Table<PuntoRecoleccion>()
-                    .Where(p => p.Id == id)
+                    .Where(p => p.Id == id && p.UsuarioUid == UsuarioUid)
                     .FirstOrDefaultAsync();
             }
             catch (Exception ex)
@@ -84,7 +90,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories
             {
                 return await _database.Database
                     .Table<PuntoRecoleccion>()
-                    .Where(p => p.Estado)
+                .Where(p => p.Estado && p.UsuarioUid == UsuarioUid)
                     .ToListAsync();
             }
             catch (Exception ex)

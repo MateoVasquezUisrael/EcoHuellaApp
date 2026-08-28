@@ -8,17 +8,21 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoComposteraArtesanal
     public class ComposteraArtesanalRepository : IRepositoryGeneric<ComposteraArtesanal>
     {
         private readonly AppDatabase _database;
+        private readonly IUserSessionService _session;
         private string Status { get; set; }
 
-        public ComposteraArtesanalRepository(AppDatabase database)
+        public ComposteraArtesanalRepository(AppDatabase database, IUserSessionService session)
         {
             _database = database;
+            _session = session;
         }
+        private string UsuarioUid => _session.AuthUser?.Uid ?? throw new InvalidOperationException("No hay una sesión activa.");
 
         public async Task ActualizarAsync(ComposteraArtesanal entity)
         {
             try
             {
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.UpdateAsync(entity);
                 Status = string.Format("Dato actualizado: {0}", entity);
             }
@@ -34,6 +38,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoComposteraArtesanal
             try
             {
                 entity.Estado = false;
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.UpdateAsync(entity);
             }
             catch (Exception ex)
@@ -47,6 +52,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoComposteraArtesanal
         {
             try
             {
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.InsertAsync(entity);
                 Status = string.Format("Dato ingresado: {0}", entity);
             }
@@ -63,7 +69,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoComposteraArtesanal
             {
                 var compostera = await _database.Database
                     .Table<ComposteraArtesanal>()
-                    .Where(c => c.Id == id && c.Estado)
+                    .Where(c => c.Id == id && c.Estado && c.UsuarioUid == UsuarioUid)
                     .FirstOrDefaultAsync();
 
                 if (compostera != null)
@@ -85,7 +91,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoComposteraArtesanal
             try
             {
                 var composteras = await _database.Database
-                    .GetAllWithChildrenAsync<ComposteraArtesanal>(c => c.Estado);
+                    .GetAllWithChildrenAsync<ComposteraArtesanal>(c => c.Estado && c.UsuarioUid == UsuarioUid);
 
                 return composteras
                     .OrderByDescending(c => c.Id)
@@ -96,6 +102,14 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoComposteraArtesanal
                 Status = string.Format("Error: {0}", ex.Message);
                 throw;
             }
+        }
+
+        public async Task<List<ComposteraArtesanal>> ObtenerHistorialAsync()
+        {
+            return await _database.Database.Table<ComposteraArtesanal>()
+                .Where(c => c.UsuarioUid == UsuarioUid)
+                .OrderByDescending(c => c.Id)
+                .ToListAsync();
         }
     }
 }

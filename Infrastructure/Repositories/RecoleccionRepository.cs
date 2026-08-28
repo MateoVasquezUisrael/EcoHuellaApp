@@ -13,17 +13,20 @@ namespace EcoHuellaApp.Infrastructure.Repositories
     public class RecoleccionRepository : IRepositoryGeneric<Recoleccion>
     {
         private readonly AppDatabase _database;
+        private readonly IUserSessionService _session;
         private string Status { get; set; }
 
-        public RecoleccionRepository(AppDatabase database)
+        public RecoleccionRepository(AppDatabase database, IUserSessionService session)
         {
             _database = database;
+            _session = session;
         }
+        private string UsuarioUid => _session.AuthUser?.Uid ?? throw new InvalidOperationException("No hay una sesión activa.");
 
         public async Task<List<Recoleccion>> ObtenerTodosAsync()
         {
             var recolecciones = await _database.Database
-                .GetAllWithChildrenAsync<Recoleccion>(r => r.Estado);
+                .GetAllWithChildrenAsync<Recoleccion>(r => r.Estado && r.UsuarioUid == UsuarioUid);
 
             return recolecciones
                 .OrderByDescending(r => r.Fecha)
@@ -34,7 +37,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories
         {
                 var recoleccion = await _database.Database
                 .Table<Recoleccion>()
-                .Where(r => r.Id == id)
+                .Where(r => r.Id == id && r.UsuarioUid == UsuarioUid)
                 .FirstOrDefaultAsync();
 
 
@@ -49,12 +52,14 @@ namespace EcoHuellaApp.Infrastructure.Repositories
 
         public async Task ActualizarAsync(Recoleccion entity)
         {
+            entity.UsuarioUid = UsuarioUid;
             await _database.Database
                 .UpdateAsync(entity);
         }
 
         public async Task GuardarRegistroAsync(Recoleccion entity)
         {
+            entity.UsuarioUid = UsuarioUid;
             await _database.Database
                 .InsertAsync(entity);
         }
@@ -62,6 +67,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories
         public async Task BorrarRegistroAsync(Recoleccion entity)
         {
             entity.Estado = false;
+            entity.UsuarioUid = UsuarioUid;
             await _database.Database.UpdateAsync(entity);
         }
     }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaApp.Presentation.Views.Front.vUbicacion"
+             Title="Ubicación"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource BackgroundSoft}">
+    <Grid Padding="12" MaximumWidthRequest="430" HorizontalOptions="Center">
+        <Image Source="eco_leaf.svg" WidthRequest="74" Opacity="0.14" Rotation="-26" HorizontalOptions="Start" VerticalOptions="Start" Margin="-20,-14,0,0" InputTransparent="True" />
+        <Image Source="eco_leaf.svg" WidthRequest="92" Opacity="0.13" Rotation="30" HorizontalOptions="End" VerticalOptions="End" Margin="0,0,-28,-22" InputTransparent="True" />
+        <Border Style="{StaticResource EcoCard}" MaximumWidthRequest="430" HorizontalOptions="Fill" VerticalOptions="Fill" Padding="0">
+            <Grid RowDefinitions="116,*,64">
+                <Border Style="{StaticResource EcoHeader}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout VerticalOptions="Center">
+                            <Label Text="UBICACIÓN" TextColor="White" FontFamily="OpenSansSemibold" FontSize="21" />
+                            <Label Text="Selecciona el punto de entrega" TextColor="#D9FFF1" FontSize="12" />
+                        </VerticalStackLayout>
+                        <Border Grid.Column="1" WidthRequest="46" HeightRequest="46" BackgroundColor="#2237D6D6" Stroke="{StaticResource AccentTurquoise}" StrokeShape="RoundRectangle 23" VerticalOptions="Center">
+                            <Label Text="&#x1F464;" TextColor="{StaticResource AccentTurquoise}" FontSize="23" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <ScrollView Grid.Row="1" Margin="0,-18,0,0">
+                    <VerticalStackLayout Padding="18,0,18,20" Spacing="14">
+                        <Border Style="{StaticResource CampoFormulario}">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Entry Placeholder="Buscar dirección" Style="{StaticResource EntradaFormulario}" />
+                                <Label Grid.Column="1" Text="⌕" TextColor="{StaticResource MutedText}" FontSize="26" VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                        <Border BackgroundColor="#DDE9E4" Stroke="{StaticResource BordeEco}" StrokeShape="RoundRectangle 22" HeightRequest="305">
+                            <Grid>
+                                <Label Text="Mapa" TextColor="{StaticResource MutedText}" FontSize="24" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Button Text="➤" BackgroundColor="White" TextColor="{StaticResource DarkGreen}" WidthRequest="50" HeightRequest="50" CornerRadius="14" HorizontalOptions="End" VerticalOptions="End" Margin="14" />
+                            </Grid>
+                        </Border>
+                        <Border Style="{StaticResource EcoCard}">
+                            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto" RowSpacing="12">
+                                <Label Text="Distancia recorrida" TextColor="{StaticResource MutedText}" />
+                                <Label Grid.Column="1" Text="5.2 km" TextColor="{StaticResource PrimaryGreen}" FontFamily="OpenSansSemibold" />
+                                <Label Grid.Row="1" Text="Emisiones estimadas" TextColor="{StaticResource MutedText}" />
+                                <Label Grid.Row="1" Grid.Column="1" Text="1.2 kg CO₂" TextColor="{StaticResource DeepTeal}" FontFamily="OpenSansSemibold" />
+                            </Grid>
+                        </Border>
+                        <Button Text="Confirmar ubicación" />
+                    </VerticalStackLayout>
+                </ScrollView>
+
+                <Border Grid.Row="2" Style="{StaticResource EcoBottomNavigation}">
+                    <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="24,*">
+                        <Label Text="&#x267B;" Style="{StaticResource BottomNavIconActive}" />
+                        <Label Grid.Column="1" Text="&#x25F4;" Style="{StaticResource BottomNavIcon}" />
+                        <Label Grid.Column="2" Text="&#x21BA;" Style="{StaticResource BottomNavIcon}" />
+                        <Label Grid.Column="3" Text="&#x25A5;" Style="{StaticResource BottomNavIcon}" />
+                        <Label Grid.Row="1" Text="Entregas" Style="{StaticResource BottomNavTextActive}" />
+                        <Label Grid.Row="1" Grid.Column="1" Text="Dashboard" Style="{StaticResource BottomNavText}" />
+                        <Label Grid.Row="1" Grid.Column="2" Text="Historial" Style="{StaticResource BottomNavText}" />
+                        <Label Grid.Row="1" Grid.Column="3" Text="Procesos" Style="{StaticResource BottomNavText}" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

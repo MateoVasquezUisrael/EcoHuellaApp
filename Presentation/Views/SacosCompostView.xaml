@@ -2,139 +2,74 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EcoHuellaApp.Presentation.Views.SacosCompostView"
-             Title="Sacos de Compost">
+             Title="Sacos de compost"
+             BackgroundColor="{StaticResource BackgroundSoft}">
     <ScrollView>
-        <VerticalStackLayout
-            Padding="20"
-            Spacing="10">
+        <VerticalStackLayout Padding="20" Spacing="16">
 
-            <Label
-                Text="Gestión de Sacos de Compost"
-                FontSize="24"
-                HorizontalOptions="Center" />
+            <Border Style="{StaticResource EcoHeader}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Sacos de compost"
+                           Style="{StaticResource Headline}"
+                           TextColor="White" />
+                    <Label Text="Registra sacos disponibles y controla su venta o consumo."
+                           TextColor="#E8F5E9"
+                           FontSize="14" />
+                </VerticalStackLayout>
+            </Border>
 
-            <!-- Formulario nuevo saco -->
-            <Label
-                Text="Nuevo Saco"
-                FontAttributes="Bold"
-                FontSize="18" />
+            <Border Style="{StaticResource EcoCard}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Nuevo saco"
+                           Style="{StaticResource SubHeadline}" />
+                    <Border Style="{StaticResource CampoFormulario}">
+                        <DatePicker x:Name="dpFechaRegistro"
+                                    Format="dd/MM/yyyy" />
+                    </Border>
+                    <VerticalStackLayout Spacing="10">
+                        <Button x:Name="btnGuardarSaco"
+                                Text="Guardar saco"
+                                Clicked="btnGuardarSaco_Clicked" />
+                        <Button x:Name="btnHistorialSacos"
+                                Text="Historial de sacos usados"
+                                Clicked="btnHistorialSacos_Clicked"
+                                Style="{StaticResource SecondaryButtonStyle}" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
 
-            <DatePicker
-                x:Name="dpFechaRegistro"
-                Format="dd/MM/yyyy" />
-
-            <Button
-                x:Name="btnGuardarSaco"
-                Text="Guardar Saco"
-                Clicked="btnGuardarSaco_Clicked" />
-
-            <!-- Lista de sacos disponibles -->
-            <Label
-                Text="Sacos disponibles"
-                FontAttributes="Bold"
-                FontSize="18" />
-
-            <CollectionView
-                x:Name="cvSacosDisponibles"
-                SelectionMode="Single"
-                SelectionChanged="cvSacosDisponibles_SelectionChanged">
-
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border StrokeShape="RoundRectangle 10"
-                                BackgroundColor="{AppThemeBinding Light=White, Dark=#242424}"
-                                Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark=#333}"
-                                Margin="5"
-                                Padding="10">
-                            <VerticalStackLayout>
-
-                                <Label
-                                    Text="{Binding Id, StringFormat='Saco #{0}'}"
-                                    FontAttributes="Bold" />
-
-                                <Label
-                                    Text="{Binding Fecha, StringFormat='Registrado: {0:dd/MM/yyyy}'}" />
-
-                                <Label
-                                    Text="Disponible"
-                                    TextColor="Green" />
-
-                            </VerticalStackLayout>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-
-            </CollectionView>
-
-            <!-- Formulario uso/venta -->
-            <Label
-                x:Name="lblUsoTitulo"
-                Text="Usar / vender saco"
-                FontAttributes="Bold"
-                FontSize="18"
-                IsVisible="False" />
-
-            <Picker
-                x:Name="pickerMotivo"
-                Title="Motivo"
-                SelectedIndexChanged="pickerMotivo_SelectedIndexChanged"
-                IsVisible="False">
-                <Picker.Items>
-                    <x:String>Venta</x:String>
-                    <x:String>Consumo</x:String>
-                </Picker.Items>
-            </Picker>
-
-            <Entry
-                x:Name="txtClienteVenta"
-                Placeholder="Cliente (solo para venta)"
-                IsVisible="False" />
-
-            <Button
-                x:Name="btnConfirmarUso"
-                Text="Confirmar uso / venta"
-                Clicked="btnConfirmarUso_Clicked"
-                IsVisible="False" />
-
-            <!-- Lista de sacos usados/vendidos -->
-            <Label
-                Text="Sacos usados o vendidos"
-                FontAttributes="Bold"
-                FontSize="18" />
-
-            <CollectionView
-                x:Name="cvSacosUsados"
-                SelectionMode="None">
-
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border StrokeShape="RoundRectangle 10"
-                                BackgroundColor="{AppThemeBinding Light=White, Dark=#242424}"
-                                Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark=#333}"
-                                Margin="5"
-                                Padding="10">
-                            <VerticalStackLayout>
-
-                                <Label
-                                    Text="{Binding Id, StringFormat='Saco #{0}'}"
-                                    FontAttributes="Bold" />
-
-                                <Label
-                                    Text="{Binding Fecha, StringFormat='Registrado: {0:dd/MM/yyyy}'}" />
-
-                                <Label
-                                    Text="{Binding Motivo, StringFormat='Motivo: {0}'}" />
-
-                                    <Label
-                                    Text="{Binding ClienteVenta, StringFormat='Cliente: {0}'}"
-                                    IsVisible="{Binding ClienteVenta, Converter={StaticResource StringNotEmpty}}" />
-
-                            </VerticalStackLayout>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-
-            </CollectionView>
+            <Border Style="{StaticResource EcoCard}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Sacos disponibles"
+                           Style="{StaticResource SubHeadline}" />
+                    <CollectionView x:Name="cvSacosDisponibles" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border StrokeShape="RoundRectangle 16"
+                                        BackgroundColor="White"
+                                        Stroke="{StaticResource LightGreen}"
+                                        Margin="0,6"
+                                        Padding="14">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                      <VerticalStackLayout Spacing="5">
+                                        <Label Text="{Binding Id, StringFormat='Saco #{0}'}"
+                                               FontAttributes="Bold"
+                                               FontSize="16" />
+                                        <Label Text="{Binding Fecha, StringFormat='Registrado: {0:dd/MM/yyyy}'}"
+                                               TextColor="{StaticResource MutedText}" />
+                                        <Label Text="Disponible"
+                                               TextColor="{StaticResource DarkGreen}"
+                                               FontAttributes="Bold" />
+                                      </VerticalStackLayout>
+                                      <Button Grid.Column="1" Text="Acciones" CommandParameter="{Binding .}"
+                                              Clicked="btnAccionesSaco_Clicked" VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
 
         </VerticalStackLayout>
     </ScrollView>

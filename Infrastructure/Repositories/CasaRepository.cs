@@ -12,16 +12,20 @@ namespace EcoHuellaApp.Infrastructure.Repositories
     {
         //esto es la conexión que debe guardarse localmente
         private readonly AppDatabase _database;
+        private readonly IUserSessionService _session;
         private string Status { get; set; }
-        public CasaRepository(AppDatabase database)
+        public CasaRepository(AppDatabase database, IUserSessionService session)
         {
             _database = database;
+            _session = session;
         }
+        private string UsuarioUid => _session.AuthUser?.Uid ?? throw new InvalidOperationException("No hay una sesión activa.");
 
         public async Task ActualizarAsync(Casa entity)
         {
             try
             {
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.UpdateAsync(entity);
 
                 Status = string.Format("Dato ingresado: ", entity);
@@ -40,6 +44,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories
             {
                 //temporal, LUEGO MANDAR A SERVICE
                 entity.Estado = false;
+                entity.UsuarioUid = UsuarioUid;
 
                 await _database.Database.UpdateAsync(entity);
             }
@@ -55,6 +60,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories
         {
             try
             {
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.InsertAsync(entity);
 
                 Status = string.Format("Dato ingresado: ", entity);
@@ -73,7 +79,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories
             {
                 return await _database.Database
                     .Table<Casa>()
-                    .Where(c => c.Id == id)
+                    .Where(c => c.Id == id && c.UsuarioUid == UsuarioUid)
                     .FirstOrDefaultAsync();
             }
             catch (Exception ex)
@@ -89,7 +95,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories
             {
                 return await _database.Database
                 .Table<Casa>()
-                .Where(c => c.Estado)
+                .Where(c => c.Estado && c.UsuarioUid == UsuarioUid)
                 .ToListAsync();
             }
             catch (Exception ex)

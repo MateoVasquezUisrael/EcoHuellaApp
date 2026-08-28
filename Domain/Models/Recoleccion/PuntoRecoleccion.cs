@@ -15,6 +15,8 @@ namespace EcoHuellaApp.Domain.Models.Recoleccion
         //el estado de esta entidad es true = activo, false = inactivo
         [PrimaryKey, AutoIncrement]
         public int Id {  get; set; }
+        [Indexed]
+        public string UsuarioUid { get; set; } = string.Empty;
         [NotNull]
         public string Direccion { get; set; }
         public double Latitud {  get; set; }

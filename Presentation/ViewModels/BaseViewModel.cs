@@ -2,50 +2,36 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace EcoHuellaApp.Presentation.ViewModels
 {
-    /// <summary>
-    /// ViewModel base. Todos los ViewModels del proyecto deben heredar de esta clase.
-    /// La keyword 'partial' es obligatoria para que CommunityToolkit genere
-    /// el código de INotifyPropertyChanged en tiempo de compilación.
-    /// </summary>
+    /// <summary>Estado común de los ViewModels.</summary>
     public abstract partial class BaseViewModel : ObservableObject
     {
-        // ── Estado de carga ──────────────────────────────────────────────────
+        // Carga.
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsNotBusy))]
         private bool _isBusy;
 
-        /// <summary>Inverso de IsBusy — para deshabilitar controles en XAML.</summary>
+        /// <summary>Indica si está disponible.</summary>
         public bool IsNotBusy => !IsBusy;
 
-        // ── Estado de error ──────────────────────────────────────────────────
+        // Errores.
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(HasError))]
         private string _errorMessage = string.Empty;
 
-        /// <summary>True cuando hay un mensaje de error visible al usuario.</summary>
+        /// <summary>Indica si existe un error.</summary>
         public bool HasError => !string.IsNullOrWhiteSpace(ErrorMessage);
 
-        // ── Helpers protegidos ───────────────────────────────────────────────
+        // Utilidades.
 
         protected void SetError(string message) => ErrorMessage = message;
         protected void ClearError()             => ErrorMessage = string.Empty;
 
-        /// <summary>
-        /// Wrapper estándar para comandos async.
-        /// Maneja automáticamente: IsBusy=true/false, captura de excepciones,
-        /// y limpieza de errores previos antes de cada ejecución.
-        ///
-        /// USO en cualquier ViewModel:
-        ///   await ExecuteAsync(async () => {
-        ///       var result = await _service.DoSomethingAsync();
-        ///       ...
-        ///   });
-        /// </summary>
+        /// <summary>Ejecuta una operación y controla su estado.</summary>
         protected async Task ExecuteAsync(Func<Task> operation)
         {
-            if (IsBusy) return;   // Previene doble-tap en botones
+            if (IsBusy) return; // Evita el doble toque.
 
             ClearError();
             IsBusy = true;
@@ -55,13 +41,13 @@ namespace EcoHuellaApp.Presentation.ViewModels
             }
             catch (Exception ex)
             {
-                // Error inesperado — loguea en Debug y muestra mensaje genérico
+                // Registra el error.
                 System.Diagnostics.Debug.WriteLine($"[{GetType().Name}] Error: {ex}");
                 SetError("Ocurrió un error inesperado. Intenta de nuevo.");
             }
             finally
             {
-                // Always: IsBusy vuelve a false sin importar lo que ocurra
+                // Restablece el estado.
                 IsBusy = false;
             }
         }

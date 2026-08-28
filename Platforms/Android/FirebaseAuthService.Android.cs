@@ -52,49 +52,31 @@ namespace EcoHuellaApp.Platforms.Android
             }
         }
 
-        // Google Sign-In 
-
-        public async Task<AuthResult> SignInWithGoogleAsync()
+        public async Task<AuthResult> RegisterWithEmailPasswordAsync(string email, string password)
         {
             try
             {
-                var activity = Platform.CurrentActivity
-                    ?? throw new InvalidOperationException("No hay Activity activa.");
-
-                System.Diagnostics.Debug.WriteLine(
-                    "[FirebaseAuth.Android] SignInWithGoogleAsync started. Activity: " + activity.LocalClassName);
-
-                // null = usuario cancela explícitamente  sin error
-                // GoogleSignInException = error real (config, red, etc.)
-                var credential = await GoogleSignInService.SignInAsync(activity);
-
-                System.Diagnostics.Debug.WriteLine(
-                    "[FirebaseAuth.Android] Credential obtained. IsNull: " + (credential is null));
-
-                if (credential is null)
-                    return AuthResult.Fail(string.Empty, AuthErrorCode.Cancelled);
-
-                System.Diagnostics.Debug.WriteLine(
-                    "[FirebaseAuth.Android] Calling Firebase SignInWithCredential...");
-                await RunFirebaseTask(
-                    _auth.SignInWithCredential(credential));
-
-                System.Diagnostics.Debug.WriteLine(
-                    "[FirebaseAuth.Android] Firebase sign-in completed. CurrentUser is null: " + (_auth.CurrentUser is null));
-
+                await RunFirebaseTask(_auth.CreateUserWithEmailAndPassword(email, password));
+                if (_auth.CurrentUser is not null)
+                    Preferences.Default.Set($"first_login_{_auth.CurrentUser.Uid}", false);
                 return MapUserResult(_auth.CurrentUser);
             }
-            
-            catch (FirebaseAuthInvalidCredentialsException)
+            catch (FirebaseAuthWeakPasswordException)
             {
-                System.Diagnostics.Debug.WriteLine("[FirebaseAuth.Android] FirebaseAuthInvalidCredentialsException");
-                return AuthResult.Fail("Credencial de Google inválida.", AuthErrorCode.InvalidCredentials);
+                return AuthResult.Fail("La contraseña debe tener al menos 6 caracteres.", AuthErrorCode.WeakPassword);
+            }
+            catch (FirebaseAuthUserCollisionException)
+            {
+                return AuthResult.Fail("Ya existe una cuenta con ese correo.", AuthErrorCode.InvalidCredentials);
+            }
+            catch (Java.IO.IOException)
+            {
+                return AuthResult.Fail("Sin conexión a internet.", AuthErrorCode.NetworkError);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("[FirebaseAuth.Android] GoogleSignIn exception: " + ex);
-                var detailedMessage = $"Google Sign-In error: {ex.GetType().Name}: {ex.Message}";
-                return AuthResult.Fail(detailedMessage, AuthErrorCode.Unknown);
+                System.Diagnostics.Debug.WriteLine("[FirebaseAuth.Android] Register: " + ex);
+                return AuthResult.Fail("No se pudo crear la cuenta.", AuthErrorCode.Unknown);
             }
         }
 
@@ -103,8 +85,7 @@ namespace EcoHuellaApp.Platforms.Android
             try
             {
                 _auth.SignOut();
-                await GoogleSignInService.SignOutAsync(
-                    Platform.CurrentActivity as global::Android.App.Activity);
+                await Task.CompletedTask;
                 return AuthResult.Ok(AppUser.Empty);
             }
             catch (Exception ex)
@@ -217,7 +198,7 @@ namespace EcoHuellaApp.Platforms.Android
                 ?? [];
 
             // Solo los usuarios de email/password tienen contraseña temporal del admin.
-            // Los usuarios de Google/Facebook no necesitan cambiar contraseña.
+            // El indicador se conserva localmente después del primer acceso.
             bool isEmailPasswordUser = providers.Contains("password");
             var requiresChange = isEmailPasswordUser &&
                 Preferences.Default.Get($"first_login_{u.Uid}", defaultValue: true);

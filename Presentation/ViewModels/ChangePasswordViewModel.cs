@@ -5,24 +5,22 @@ using EcoHuellaApp.Domain.Models;
 
 namespace EcoHuellaApp.Presentation.ViewModels
 {
-    /// <summary>
-    /// Pantalla de cambio de contraseña obligatorio en el primer login.
-    /// El usuario acaba de autenticarse → Firebase permite UpdatePassword
-    /// sin re-autenticación (sesión reciente).
-    /// Solo se piden: nueva contraseña + confirmación.
-    /// </summary>
+    /// <summary>Gestiona el cambio de contraseña.</summary>
     public sealed partial class ChangePasswordViewModel : BaseViewModel
     {
         private readonly IAuthService       _authService;
         private readonly INavigationService _navigation;
+        private readonly IMockPasswordService _mockPassword;
 
-        public ChangePasswordViewModel(IAuthService authService, INavigationService navigation)
+        public ChangePasswordViewModel(IAuthService authService, INavigationService navigation,
+            IMockPasswordService mockPassword)
         {
             _authService = authService;
             _navigation  = navigation;
+            _mockPassword = mockPassword;
         }
 
-        // ── Formulario ────────────────────────────────────────────────────────
+        // Formulario.
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(ChangePasswordCommand))]
@@ -32,7 +30,7 @@ namespace EcoHuellaApp.Presentation.ViewModels
         [NotifyCanExecuteChangedFor(nameof(ChangePasswordCommand))]
         private string _confirmPassword = string.Empty;
 
-        // ── Indicador de fortaleza ────────────────────────────────────────────
+        // Fortaleza.
 
         [ObservableProperty] private string _strengthLabel    = string.Empty;
         [ObservableProperty] private Color  _strengthColor    = Colors.Transparent;
@@ -50,7 +48,7 @@ namespace EcoHuellaApp.Presentation.ViewModels
             ChangePasswordCommand.NotifyCanExecuteChanged();
         }
 
-        // ── Comando ───────────────────────────────────────────────────────────
+        // Guardado.
 
         [RelayCommand(CanExecute = nameof(CanChangePassword))]
         private async Task ChangePasswordAsync()
@@ -63,9 +61,17 @@ namespace EcoHuellaApp.Presentation.ViewModels
 
             await ExecuteAsync(async () =>
             {
+                if (_mockPassword.HasPendingPasswordChange)
+                {
+                    _mockPassword.CompletePasswordChange(NewPassword);
+                    NewPassword = ConfirmPassword = string.Empty;
+                    _navigation.GoToMainApp();
+                    return;
+                }
+
                 var result = await _authService.UpdatePasswordAsync(NewPassword);
 
-                // Limpiar datos sensibles de memoria
+                // Limpia datos sensibles.
                 NewPassword     = string.Empty;
                 ConfirmPassword = string.Empty;
 

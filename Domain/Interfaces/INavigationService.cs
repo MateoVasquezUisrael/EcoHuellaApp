@@ -3,22 +3,15 @@ namespace EcoHuellaApp.Domain.Interfaces
 {
     public interface INavigationService
     {
-        /// <summary>
-        /// Navega a la pantalla de cambio de contraseña obligatorio.
-        /// Se llama después de un primer login exitoso.
-        /// </summary>
+        /// <summary>Abre el cambio de contraseña.</summary>
         Task GoToChangePasswordAsync();
+        Task GoToRegistrationAsync();
 
-        /// <summary>
-        /// Reemplaza el árbol de navegación completo con AppShell.
-        /// Se llama después de un login exitoso o tras cambiar la contraseña.
-        /// Esta operación es irreversible (no hay back a Login).
-        /// </summary>
+        /// <summary>Abre la aplicación principal.</summary>
         void GoToMainApp();
+        void GoToGuestDemo();
 
-        /// <summary>
-        /// Regresa a la pantalla anterior dentro del flujo de auth.
-        /// </summary>
+        /// <summary>Regresa a la pantalla anterior.</summary>
         Task GoBackAsync();
 
         Task GoToLoginAsync();

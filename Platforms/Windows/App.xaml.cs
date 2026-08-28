@@ -2,10 +2,7 @@
 
 namespace EcoHuellaApp.WinUI
 {
-    /// <summary>
-    /// App Windows. Google Sign-In usa HttpListener en localhost — no requiere
-    /// manejo de activación por protocolo URI.
-    /// </summary>
+    /// <summary>Aplicación Windows de EcoHuella.</summary>
     public partial class App : MauiWinUIApplication
     {
         public App() => InitializeComponent();

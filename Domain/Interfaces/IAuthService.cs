@@ -2,22 +2,19 @@ using EcoHuellaApp.Domain.Models;
 
 namespace EcoHuellaApp.Domain.Interfaces
 {
-    /// <summary>
-    /// Contrato del servicio de autenticación.
-    /// Desacopla completamente los ViewModels de Firebase u otro proveedor.
-    /// </summary>
+    /// <summary>Gestiona la autenticación.</summary>
     public interface IAuthService
     {
         AppUser? CurrentUser { get; }
 
-        /// <summary>Sincrono — no hace llamadas de red. Usa caché del SDK nativo.</summary>
+        /// <summary>Devuelve la sesión almacenada.</summary>
         bool HasActiveSession();
 
         Task<AuthResult> SignInWithEmailPasswordAsync(string email, string password);
-        Task<AuthResult> SignInWithGoogleAsync();
+        Task<AuthResult> RegisterWithEmailPasswordAsync(string email, string password);
         Task<AuthResult> SignOutAsync();
 
-        /// <summary>Actualiza contraseña. Requiere sesión reciente (primer login).</summary>
+        /// <summary>Actualiza la contraseña.</summary>
         Task<AuthResult> UpdatePasswordAsync(string newPassword);
 
         Task<AuthResult> SendPasswordResetEmailAsync(string email);

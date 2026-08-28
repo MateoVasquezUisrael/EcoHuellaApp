@@ -8,17 +8,21 @@ namespace EcoHuellaApp.Infrastructure.Repositories.Ventas
     public class SacosCompostRepository : IRepositoryGeneric<SacosCompost>
     {
         private readonly AppDatabase _database;
+        private readonly IUserSessionService _session;
         private string Status { get; set; }
 
-        public SacosCompostRepository(AppDatabase database)
+        public SacosCompostRepository(AppDatabase database, IUserSessionService session)
         {
             _database = database;
+            _session = session;
         }
+        private string UsuarioUid => _session.AuthUser?.Uid ?? throw new InvalidOperationException("No hay una sesión activa.");
 
         public async Task ActualizarAsync(SacosCompost entity)
         {
             try
             {
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.UpdateAsync(entity);
                 Status = string.Format("Dato actualizado: {0}", entity);
             }
@@ -34,6 +38,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.Ventas
             try
             {
                 entity.Estado = false;
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.UpdateAsync(entity);
             }
             catch (Exception ex)
@@ -47,6 +52,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.Ventas
         {
             try
             {
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.InsertAsync(entity);
                 Status = string.Format("Dato ingresado: {0}", entity);
             }
@@ -63,7 +69,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.Ventas
             {
                 var saco = await _database.Database
                     .Table<SacosCompost>()
-                    .Where(s => s.Id == id)
+                    .Where(s => s.Id == id && s.UsuarioUid == UsuarioUid)
                     .FirstOrDefaultAsync();
 
                 return saco;
@@ -81,6 +87,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.Ventas
             {
                 var sacos = await _database.Database
                     .Table<SacosCompost>()
+                    .Where(s => s.UsuarioUid == UsuarioUid)
                     .ToListAsync();
 
                 return sacos
@@ -100,7 +107,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.Ventas
             {
                 var sacos = await _database.Database
                     .Table<SacosCompost>()
-                    .Where(s => s.Estado)
+                    .Where(s => s.Estado && s.UsuarioUid == UsuarioUid)
                     .ToListAsync();
 
                 return sacos
@@ -120,7 +127,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.Ventas
             {
                 var sacos = await _database.Database
                     .Table<SacosCompost>()
-                    .Where(s => !s.Estado)
+                    .Where(s => !s.Estado && s.UsuarioUid == UsuarioUid)
                     .ToListAsync();
 
                 return sacos

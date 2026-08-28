@@ -1,9 +1,8 @@
-﻿using EcoHuellaApp.Domain.Models;
-using SQLite;
-using EcoHuellaApp.Domain.Models.Recoleccion;
-using EcoHuellaApp.Domain.Models.ProcesoDegradacion;
 using EcoHuellaApp.Domain.Models.ProcesoComposteraArtesanal;
+using EcoHuellaApp.Domain.Models.ProcesoDegradacion;
+using EcoHuellaApp.Domain.Models.Recoleccion;
 using EcoHuellaApp.Domain.Models.Ventas;
+using SQLite;
 
 namespace EcoHuellaApp.Data
 {
@@ -11,11 +10,11 @@ namespace EcoHuellaApp.Data
     {
         private readonly SQLiteAsyncConnection _connection;
 
-        public AppDatabase(string _dbPath)
+        public AppDatabase(string dbPath)
         {
             try
             {
-                _connection = new SQLiteAsyncConnection(_dbPath);
+                _connection = new SQLiteAsyncConnection(dbPath);
 
                 _connection.CreateTableAsync<Casa>().Wait();
                 _connection.CreateTableAsync<PuntoRecoleccion>().Wait();
@@ -29,19 +28,10 @@ namespace EcoHuellaApp.Data
             }
             catch (Exception ex)
             {
-
                 throw new Exception("Error:" + ex);
             }
         }
 
-        //get
-        public SQLiteAsyncConnection Database
-        {
-            get
-            {
-                return _connection;
-            }
-        }
-
+        public SQLiteAsyncConnection Database => _connection;
     }
 }

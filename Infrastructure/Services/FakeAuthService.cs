@@ -36,17 +36,15 @@ namespace EcoHuellaApp.Infrastructure.Services
             return AuthResult.Ok(_currentUser);
         }
 
-        public Task<AuthResult> SignInWithGoogleAsync()
+        public Task<AuthResult> RegisterWithEmailPasswordAsync(string email, string password)
         {
-            _currentUser = new AppUser
-            {
-                Uid = "fake-google-001",
-                Email = "google@ecohuellaapp.com",
-                DisplayName = "Usuario Google (Fake)",
-                IsEmailVerified = true,
-                RequiresPasswordChange = false,
-                LinkedProviders = ["google.com"]
-            };
+            if (_users.ContainsKey(email))
+                return Task.FromResult(AuthResult.Fail(
+                    "Ya existe una cuenta con ese correo.", AuthErrorCode.InvalidCredentials));
+
+            var record = new FakeUserRecord(Guid.NewGuid().ToString("N"), password, email.Split('@')[0], false);
+            _users[email] = record;
+            _currentUser = MapUser(email, record);
             return Task.FromResult(AuthResult.Ok(_currentUser));
         }
 

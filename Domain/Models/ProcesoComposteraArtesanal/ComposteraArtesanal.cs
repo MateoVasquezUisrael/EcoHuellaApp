@@ -10,6 +10,8 @@ namespace EcoHuellaApp.Domain.Models.ProcesoComposteraArtesanal
     {
         [PrimaryKey, Indexed, AutoIncrement]
         public int Id { get; set; }
+        [Indexed]
+        public string UsuarioUid { get; set; } = string.Empty;
 
         public bool Estado { get; set; } //true es activo, false es inactivo
 
@@ -17,5 +19,7 @@ namespace EcoHuellaApp.Domain.Models.ProcesoComposteraArtesanal
 
         [OneToMany]
         public List<AccionCompostera>? Acciones { get; set; }
+        [Ignore]
+        public string EstadoTexto => Estado ? "Activa" : "Inactiva";
     }
 }

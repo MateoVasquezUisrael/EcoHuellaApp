@@ -13,6 +13,8 @@ namespace EcoHuellaApp.Domain.Models.ProcesoDegradacion
     {
         [PrimaryKey, AutoIncrement, Indexed]
         public int Id { get; set; }
+        [Indexed]
+        public string UsuarioUid { get; set; } = string.Empty;
         public DateTime? FechaInicio { get; set; }
         [AllowNull]
         public DateTime? FechaCierre { get; set; }

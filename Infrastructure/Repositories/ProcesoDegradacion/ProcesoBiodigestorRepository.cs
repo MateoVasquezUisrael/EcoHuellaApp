@@ -9,17 +9,21 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
     public class ProcesoBiodigestorRepository : IRepositoryGeneric<ProcesoBiodigestor>
     {
         private readonly AppDatabase _database;
+        private readonly IUserSessionService _session;
         private string Status { get; set; }
 
-        public ProcesoBiodigestorRepository(AppDatabase database)
+        public ProcesoBiodigestorRepository(AppDatabase database, IUserSessionService session)
         {
             _database = database;
+            _session = session;
         }
+        private string UsuarioUid => _session.AuthUser?.Uid ?? throw new InvalidOperationException("No hay una sesión activa.");
 
         public async Task ActualizarAsync(ProcesoBiodigestor entity)
         {
             try
             {
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.UpdateAsync(entity);
                 Status = string.Format("Dato actualizado: {0}", entity);
             }
@@ -36,6 +40,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
             {
                 entity.EstadoLlenado = true;
                 entity.EstadoFinalizado = true;
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.UpdateAsync(entity);
             }
             catch (Exception ex)
@@ -49,6 +54,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
         {
             try
             {
+                entity.UsuarioUid = UsuarioUid;
                 if (entity.Id == 0)
                 {
                     await _database.Database.InsertAsync(entity);
@@ -73,7 +79,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
             {
                 var proceso = await _database.Database
                     .Table<ProcesoBiodigestor>()
-                    .Where(p => p.Id == id && !p.EstadoFinalizado)
+                    .Where(p => p.Id == id && !p.EstadoFinalizado && p.UsuarioUid == UsuarioUid)
                     .FirstOrDefaultAsync();
 
                 if (proceso != null)
@@ -95,7 +101,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
             try
             {
                 var procesos = await _database.Database
-                    .GetAllWithChildrenAsync<ProcesoBiodigestor>(p => !p.EstadoFinalizado);
+                    .GetAllWithChildrenAsync<ProcesoBiodigestor>(p => !p.EstadoFinalizado && p.UsuarioUid == UsuarioUid);
 
                 return procesos
                     .OrderByDescending(p => p.FechaInicio)
@@ -114,7 +120,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
             {
                 var proceso = await _database.Database
                     .Table<ProcesoBiodigestor>()
-                    .Where(p => p.Id == procesoId && !p.EstadoFinalizado)
+                    .Where(p => p.Id == procesoId && !p.EstadoFinalizado && p.UsuarioUid == UsuarioUid)
                     .FirstOrDefaultAsync();
 
                 if (proceso is null)
@@ -148,7 +154,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
             {
                 var query = _database.Database
                     .Table<ProcesoBiodigestor>()
-                    .Where(p => p.EstadoFinalizado);
+                    .Where(p => p.EstadoFinalizado && p.UsuarioUid == UsuarioUid);
 
                 if (biodigestorId.HasValue)
                     query = query.Where(p => p.BiodigestorId == biodigestorId.Value);

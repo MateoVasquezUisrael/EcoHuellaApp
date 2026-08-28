@@ -8,17 +8,21 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoComposteraArtesanal
     public class AccionComposteraRepository : IRepositoryGeneric<AccionCompostera>
     {
         private readonly AppDatabase _database;
+        private readonly IUserSessionService _session;
         private string Status { get; set; }
 
-        public AccionComposteraRepository(AppDatabase database)
+        public AccionComposteraRepository(AppDatabase database, IUserSessionService session)
         {
             _database = database;
+            _session = session;
         }
+        private string UsuarioUid => _session.AuthUser?.Uid ?? throw new InvalidOperationException("No hay una sesión activa.");
 
         public async Task ActualizarAsync(AccionCompostera entity)
         {
             try
             {
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.UpdateAsync(entity);
                 Status = string.Format("Dato actualizado: {0}", entity);
             }
@@ -34,6 +38,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoComposteraArtesanal
             try
             {
                 entity.TipoAccion = "ELIMINADO";
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.UpdateAsync(entity);
             }
             catch (Exception ex)
@@ -47,6 +52,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoComposteraArtesanal
         {
             try
             {
+                entity.UsuarioUid = UsuarioUid;
                 await _database.Database.InsertAsync(entity);
                 Status = string.Format("Dato ingresado: {0}", entity);
             }
@@ -63,7 +69,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoComposteraArtesanal
             {
                 var accion = await _database.Database
                     .Table<AccionCompostera>()
-                    .Where(a => a.Id == id)
+                    .Where(a => a.Id == id && a.UsuarioUid == UsuarioUid)
                     .FirstOrDefaultAsync();
 
                 if (accion != null)
@@ -85,7 +91,7 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoComposteraArtesanal
             try
             {
                 var acciones = await _database.Database
-                    .GetAllWithChildrenAsync<AccionCompostera>();
+                    .GetAllWithChildrenAsync<AccionCompostera>(a => a.UsuarioUid == UsuarioUid);
 
                 return acciones
                     .Where(a => a.TipoAccion != "ELIMINADO")

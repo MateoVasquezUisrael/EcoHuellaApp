@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EcoHuellaApp.Presentation.Views.Front.vGestionResiduos"
+             Title="Entregas"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource BackgroundSoft}">
+    <Grid Padding="12" MaximumWidthRequest="430" HorizontalOptions="Center">
+        <Image Source="eco_leaf.svg" WidthRequest="72" Opacity="0.14" Rotation="-24" HorizontalOptions="Start" VerticalOptions="Start" Margin="-18,-10,0,0" InputTransparent="True" />
+        <Image Source="eco_leaf.svg" WidthRequest="86" Opacity="0.13" Rotation="32" HorizontalOptions="End" VerticalOptions="End" Margin="0,0,-24,-18" InputTransparent="True" />
+
+        <Border Style="{StaticResource EcoCard}" MaximumWidthRequest="430" HorizontalOptions="Fill" VerticalOptions="Fill" Padding="0">
+            <Grid RowDefinitions="116,*,64">
+                <Border Style="{StaticResource EcoHeader}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout VerticalOptions="Center" Spacing="3">
+                            <Label Text="ENTREGAS" TextColor="White" FontFamily="OpenSansSemibold" FontSize="23" />
+                            <Label Text="Gestión de entregas orgánicas" TextColor="#D9FFF1" FontSize="13" />
+                        </VerticalStackLayout>
+                        <Border Grid.Column="1" WidthRequest="46" HeightRequest="46" BackgroundColor="#2237D6D6" Stroke="{StaticResource AccentTurquoise}" StrokeShape="RoundRectangle 23" VerticalOptions="Center">
+                            <Label Text="&#x1F464;" TextColor="{StaticResource AccentTurquoise}" FontSize="23" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <ScrollView Grid.Row="1" Margin="0,-18,0,0">
+                    <VerticalStackLayout Padding="18,0,18,20" Spacing="15">
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="Gestión de residuos" Style="{StaticResource EcoTitle}" FontSize="26" />
+                                <Label Text="Registra residuos frescos y administra casas y puntos de recolección." Style="{StaticResource EcoSubtitle}" />
+                                <Button Text="+ Nueva entrega" Clicked="NuevaEntrega_Clicked" HeightRequest="52" />
+                                <VerticalStackLayout Spacing="10">
+                                    <Button Text="Casas" Clicked="Casas_Clicked" Style="{StaticResource BotonSecundario}" HeightRequest="54" />
+                                    <Button
+                                            Text="Puntos de recolección"
+                                            Clicked="Puntos_Clicked"
+                                            Style="{StaticResource BotonSecundario}"
+                                            FontSize="13"
+                                            HeightRequest="54" />
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="Historial de entregas" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="18" />
+                                <CollectionView x:Name="cvHistorialEntregas" SelectionMode="None" MaximumHeightRequest="360">
+                                    <CollectionView.EmptyView>
+                                        <Label Text="No hay entregas registradas." Style="{StaticResource EcoSubtitle}" HorizontalTextAlignment="Center" />
+                                    </CollectionView.EmptyView>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Stroke="{StaticResource BordeEco}" StrokeShape="RoundRectangle 14" Padding="12" Margin="0,4">
+                                                <VerticalStackLayout Spacing="4">
+                                                    <Label Text="{Binding Fecha, StringFormat='Entrega del {0:dd/MM/yyyy}'}" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" />
+                                                    <Label Text="{Binding Casa.Direccion, StringFormat='Casa: {0}'}" Style="{StaticResource EcoSubtitle}" />
+                                                    <Label Text="{Binding PuntoRecoleccion.Direccion, StringFormat='Punto: {0}'}" Style="{StaticResource EcoSubtitle}" />
+                                                    <Label Text="{Binding CantidadCubetas, StringFormat='Cubetas: {0}'}" TextColor="{StaticResource PrimaryGreen}" />
+                                                </VerticalStackLayout>
+                                            </Border>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </ScrollView>
+
+                <Border Grid.Row="2" Style="{StaticResource EcoBottomNavigation}">
+                    <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="24,*">
+                        <Label Text="&#x21BA;" Style="{StaticResource BottomNavIcon}" />
+                        <Label Grid.Column="1" Text="&#x267B;" Style="{StaticResource BottomNavIconActive}" />
+                        <Label Grid.Column="2" Text="&#x25F4;" Style="{StaticResource BottomNavIcon}" />
+                        <Label Grid.Column="3" Text="&#x2699;" Style="{StaticResource BottomNavIcon}" />
+                        <Label Grid.Row="1" Text="Historial" Style="{StaticResource BottomNavText}" />
+                        <Label Grid.Row="1" Grid.Column="1" Text="Entregas" Style="{StaticResource BottomNavTextActive}" />
+                        <Label Grid.Row="1" Grid.Column="2" Text="Dashboard" Style="{StaticResource BottomNavText}" />
+                        <Label Grid.Row="1" Grid.Column="3" Text="Procesos" Style="{StaticResource BottomNavText}" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

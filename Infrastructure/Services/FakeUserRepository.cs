@@ -28,7 +28,6 @@ namespace EcoHuellaApp.Infrastructure.Services
                     Rol    = RolSistema.Usuario,
                     Activo = true
                 }
-                // Nota: "fake-google-001" (usuario Google fake) NO existe aquí
                 // intencionalmente, para probar el rechazo de acceso no autorizado.
             };
 
@@ -36,6 +35,12 @@ namespace EcoHuellaApp.Infrastructure.Services
         {
             await Task.Delay(300); // simular latencia de red
             return _usuarios.TryGetValue(uid, out var usuario) ? usuario : null;
+        }
+
+        public Task<bool> CreateAsync(UsuarioSistema usuario, string idToken)
+        {
+            _usuarios[usuario.Uid] = usuario;
+            return Task.FromResult(true);
         }
     }
 }

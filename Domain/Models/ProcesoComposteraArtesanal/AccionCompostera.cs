@@ -27,6 +27,8 @@ namespace EcoHuellaApp.Domain.Models.ProcesoComposteraArtesanal
     {
         [PrimaryKey, Indexed, AutoIncrement]
         public int Id { get; set; }
+        [Indexed]
+        public string UsuarioUid { get; set; } = string.Empty;
 
         public string? TipoAccion { get; set; }
 

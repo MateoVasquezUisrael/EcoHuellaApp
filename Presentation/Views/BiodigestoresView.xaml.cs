@@ -31,89 +31,6 @@ public partial class BiodigestoresView : ContentPage
 
         _biodigestorSeleccionado =
             (Biodigestor)e.CurrentSelection.First();
-
-        txtCapacidadMaxima.Text =
-            _biodigestorSeleccionado.CapacidadMaxima.ToString();
-    }
-
-    private async void btnGuardar_Clicked(
-        object sender,
-        EventArgs e)
-    {
-        if (_biodigestorSeleccionado != null)
-        {
-            await ActualizarBiodigestorAsync();
-            return;
-        }
-
-        var nuevoBiodigestor = new Biodigestor
-        {
-            CapacidadMaxima = double.TryParse(
-                txtCapacidadMaxima.Text, out var cap) ? cap : 0,
-            Estado = true
-        };
-
-        await _repository.GuardarRegistroAsync(nuevoBiodigestor);
-
-        await CargarBiodigestores();
-        LimpiarFormulario();
-    }
-
-    private async void btnActualizar_Clicked(
-        object sender,
-        EventArgs e)
-    {
-        await ActualizarBiodigestorAsync();
-    }
-
-    private async Task ActualizarBiodigestorAsync()
-    {
-        if (_biodigestorSeleccionado == null)
-        {
-            await DisplayAlert(
-                "Aviso",
-                "Seleccione un biodigestor.",
-                "Aceptar");
-
-            return;
-        }
-
-        _biodigestorSeleccionado.CapacidadMaxima =
-            double.TryParse(txtCapacidadMaxima.Text, out var cap) ? cap : 0;
-
-        await _repository.ActualizarAsync(_biodigestorSeleccionado);
-
-        await CargarBiodigestores();
-        LimpiarFormulario();
-    }
-
-    private async void btnEliminar_Clicked(
-        object sender,
-        EventArgs e)
-    {
-        if (_biodigestorSeleccionado == null)
-        {
-            await DisplayAlert(
-                "Aviso",
-                "Seleccione un biodigestor.",
-                "Aceptar");
-
-            return;
-        }
-
-        bool respuesta = await DisplayAlert(
-            "Confirmar",
-            "¿Desea eliminar el biodigestor?",
-            "Sí",
-            "No");
-
-        if (!respuesta)
-            return;
-
-        await _repository.BorrarRegistroAsync(_biodigestorSeleccionado);
-
-        await CargarBiodigestores();
-        LimpiarFormulario();
     }
 
     private async void btnVerProcesos_Clicked(
@@ -154,12 +71,5 @@ public partial class BiodigestoresView : ContentPage
             _biodigestorSeleccionado.Id);
 
         await Navigation.PushAsync(finalizadosView);
-    }
-
-    private void LimpiarFormulario()
-    {
-        txtCapacidadMaxima.Text = string.Empty;
-        _biodigestorSeleccionado = null;
-        cvBiodigestores.SelectedItem = null;
     }
 }

@@ -2,141 +2,74 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EcoHuellaApp.Presentation.Views.ComposterasArtesanalesView"
-             Title="Composteras Artesanales">
+             Title="Composteras artesanales"
+             BackgroundColor="{StaticResource BackgroundSoft}">
     <ScrollView>
-        <VerticalStackLayout
-            Padding="20"
-            Spacing="10">
+        <VerticalStackLayout Padding="20" Spacing="16">
 
-            <Label
-                Text="Gestión de Composteras Artesanales"
-                FontSize="24"
-                HorizontalOptions="Center" />
+            <Border Style="{StaticResource EcoHeader}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Composteras artesanales"
+                           Style="{StaticResource Headline}"
+                           TextColor="White" />
+                    <Label Text="Registra composteras y controla acciones de lixiviado o compost."
+                           TextColor="#E8F5E9"
+                           FontSize="14" />
+                </VerticalStackLayout>
+            </Border>
 
-            <!-- Formulario Compostera -->
-            <Label
-                Text="Nueva Compostera"
-                FontAttributes="Bold"
-                FontSize="18" />
+            <Border Style="{StaticResource EcoCard}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Nueva compostera"
+                           Style="{StaticResource SubHeadline}" />
+                    <Border Style="{StaticResource CampoFormulario}">
+                        <Entry x:Name="txtPesoMaximo"
+                               Placeholder="Peso máximo (kg)"
+                               Keyboard="Numeric" />
+                    </Border>
+                    <VerticalStackLayout Spacing="10">
+                        <Button x:Name="btnGuardarCompostera"
+                                Text="Guardar compostera"
+                                Clicked="btnGuardarCompostera_Clicked" />
+                        <Button x:Name="btnHistorialAcciones"
+                                Text="Historial de acciones"
+                                Clicked="btnHistorialAcciones_Clicked"
+                                Style="{StaticResource SecondaryButtonStyle}" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
 
-            <Entry
-                x:Name="txtPesoMaximo"
-                Placeholder="Peso máximo (kg)"
-                Keyboard="Numeric" />
-
-            <Button
-                x:Name="btnGuardarCompostera"
-                Text="Guardar Compostera"
-                Clicked="btnGuardarCompostera_Clicked" />
-
-            <!-- Lista de Composteras -->
-            <Label
-                Text="Composteras registradas"
-                FontAttributes="Bold"
-                FontSize="18" />
-
-            <CollectionView
-                x:Name="cvComposteras"
-                SelectionMode="Single"
-                SelectionChanged="cvComposteras_SelectionChanged">
-
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border StrokeShape="RoundRectangle 10"
-                                BackgroundColor="{AppThemeBinding Light=White, Dark=#242424}"
-                                Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark=#333}"
-                                Margin="5"
-                                Padding="10">
-                            <VerticalStackLayout>
-
-                                <Label
-                                    Text="{Binding Id, StringFormat='Compostera #{0}'}"
-                                    FontAttributes="Bold" />
-
-                                <Label
-                                    Text="{Binding PesoMaximo, StringFormat='Peso máximo: {0} kg'}" />
-
-                                <Label
-                                    Text="{Binding Estado, StringFormat='Activo: {0}'}" />
-
-                            </VerticalStackLayout>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-
-            </CollectionView>
-
-            <!-- Formulario Acción -->
-            <Label
-                x:Name="lblAccionTitulo"
-                Text="Acciones de la compostera"
-                FontAttributes="Bold"
-                FontSize="18"
-                IsVisible="False" />
-
-            <Picker
-                x:Name="pickerTipoAccion"
-                Title="Tipo de acción"
-                IsVisible="False">
-                <Picker.Items>
-                    <x:String>Insertar</x:String>
-                    <x:String>Extraer</x:String>
-                </Picker.Items>
-            </Picker>
-
-            <DatePicker
-                x:Name="dpFechaAccion"
-                Format="dd/MM/yyyy"
-                IsVisible="False" />
-
-            <Picker
-                x:Name="pickerTipoElemento"
-                Title="Tipo de elemento"
-                IsVisible="False">
-                <Picker.Items>
-                    <x:String>Lixiviado</x:String>
-                    <x:String>Compost</x:String>
-                    <x:String>Forraje Verde</x:String>
-                </Picker.Items>
-            </Picker>
-
-            <Button
-                x:Name="btnGuardarAccion"
-                Text="Guardar Acción"
-                Clicked="btnGuardarAccion_Clicked"
-                IsVisible="False" />
-
-            <!-- Lista de Acciones -->
-            <CollectionView
-                x:Name="cvAcciones"
-                SelectionMode="None"
-                IsVisible="False">
-
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border StrokeShape="RoundRectangle 10"
-                                BackgroundColor="{AppThemeBinding Light=White, Dark=#242424}"
-                                Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark=#333}"
-                                Margin="5"
-                                Padding="10">
-                            <VerticalStackLayout>
-
-                                <Label
-                                    Text="{Binding TipoAccion, StringFormat='Acción: {0}'}"
-                                    FontAttributes="Bold" />
-
-                                <Label
-                                    Text="{Binding TipoElemento, StringFormat='Elemento: {0}'}" />
-
-                                <Label
-                                    Text="{Binding FechaAccion, StringFormat='Fecha: {0:dd/MM/yyyy}'}" />
-
-                            </VerticalStackLayout>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-
-            </CollectionView>
+            <Border Style="{StaticResource EcoCard}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Composteras registradas"
+                           Style="{StaticResource SubHeadline}" />
+                    <CollectionView x:Name="cvComposteras" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border StrokeShape="RoundRectangle 16"
+                                        BackgroundColor="White"
+                                        Stroke="{StaticResource LightGreen}"
+                                        Margin="0,6"
+                                        Padding="14">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                      <VerticalStackLayout Spacing="5">
+                                        <Label Text="{Binding Id, StringFormat='Compostera #{0}'}"
+                                               FontAttributes="Bold"
+                                               FontSize="16" />
+                                        <Label Text="{Binding PesoMaximo, StringFormat='Peso máximo: {0} kg'}"
+                                               TextColor="{StaticResource MutedText}" />
+                                        <Label Text="{Binding Estado, StringFormat='Activo: {0}'}"
+                                               TextColor="{StaticResource DarkGreen}" />
+                                      </VerticalStackLayout>
+                                      <Button Grid.Column="1" Text="Acciones" CommandParameter="{Binding .}"
+                                              Clicked="btnAccionesCompostera_Clicked" VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
 
         </VerticalStackLayout>
     </ScrollView>

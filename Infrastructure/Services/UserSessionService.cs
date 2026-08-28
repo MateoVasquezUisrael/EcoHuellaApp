@@ -3,11 +3,7 @@ using EcoHuellaApp.Domain.Models;
 
 namespace EcoHuellaApp.Infrastructure.Services
 {
-    /// <summary>
-    /// Singleton que mantiene el estado de la sesión activa.
-    /// Se pobla después de que Login + Firestore sean exitosos.
-    /// Se limpia al hacer logout o cuando se deniega el acceso.
-    /// </summary>
+    /// <summary>Mantiene la sesión activa.</summary>
     public sealed class UserSessionService : IUserSessionService
     {
         private AppUser?       _authUser;

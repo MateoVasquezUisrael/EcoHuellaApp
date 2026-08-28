@@ -629,7 +629,7 @@ El mensaje que verá el usuario al intentar ingresar:
 - Visual Studio 2022 v17.12+ con workload MAUI instalado
 - Cuenta de Google con acceso a Firebase Console
 - Para Android: dispositivo físico o emulador con API 23+ y Google Play Services
-- Para iOS: Mac con Xcode compatible con iOS 26+ (o iOS Remote Simulator desde Windows)
+- Para iOS: Mac con Xcode 15+ (o iOS Remote Simulator desde Windows)
 - Para Windows: Windows 10 1803+ (Build 17763+)
 
 ### Paso 1 — Clonar y restaurar paquetes

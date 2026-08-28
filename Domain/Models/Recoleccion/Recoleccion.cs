@@ -12,6 +12,8 @@ namespace EcoHuellaApp.Domain.Models.Recoleccion
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
+        [Indexed]
+        public string UsuarioUid { get; set; } = string.Empty;
         [NotNull]
         public DateTime? Fecha { get; set; }
 

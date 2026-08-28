@@ -2,63 +2,61 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EcoHuellaApp.Presentation.Views.ProcesosFinalizadosView"
-             Title="Procesos Finalizados">
+             Title="Procesos finalizados"
+             BackgroundColor="{StaticResource BackgroundSoft}">
     <ScrollView>
-        <VerticalStackLayout
-            Padding="20"
-            Spacing="10">
+        <VerticalStackLayout Padding="20" Spacing="16">
 
-            <Label
-                Text="Procesos Finalizados"
-                FontSize="24"
-                HorizontalOptions="Center" />
+            <Border Style="{StaticResource EcoHeader}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Procesos finalizados"
+                           Style="{StaticResource Headline}"
+                           TextColor="White" />
+                    <Label x:Name="lblFiltro"
+                           TextColor="#E8F5E9"
+                           FontSize="14" />
+                </VerticalStackLayout>
+            </Border>
 
-            <Label
-                x:Name="lblFiltro"
-                FontSize="14"
-                HorizontalOptions="Center" />
+            <Border Style="{StaticResource EcoCard}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Resultados ambientales"
+                           Style="{StaticResource SubHeadline}" />
+                    <Label Text="Consulta los ciclos cerrados y el impacto calculado por cada biodigestor."
+                           TextColor="{StaticResource MutedText}"
+                           FontSize="13" />
 
-            <CollectionView
-                x:Name="cvProcesosFinalizados"
-                SelectionMode="None">
-
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border StrokeShape="RoundRectangle 10"
-                                BackgroundColor="{AppThemeBinding Light=White, Dark=#242424}"
-                                Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark=#333}"
-                                Margin="5"
-                                Padding="10">
-                            <VerticalStackLayout>
-
-                                <Label
-                                    Text="{Binding Id, StringFormat='Proceso #{0}'}"
-                                    FontAttributes="Bold" />
-
-                                <Label
-                                    Text="{Binding BiodigestorId, StringFormat='Biodigestor: #{0}'}" />
-
-                                <Label
-                                    Text="{Binding FechaInicio, StringFormat='Inicio: {0:dd/MM/yyyy HH:mm}'}" />
-
-                                <Label
-                                    Text="{Binding FechaCierre, StringFormat='Cierre: {0:dd/MM/yyyy HH:mm}'}" />
-
-                                <Label
-                                    Text="{Binding MasaRestante, StringFormat='Masa restante: {0:F2} kg'}" />
-
-                                <Label
-                                    Text="{Binding MetanoEvitado, StringFormat='Metano evitado: {0:F2} kg'}" />
-
-                                <Label
-                                    Text="{Binding CarbonoEvitado, StringFormat='Carbono evitado: {0:F2} kg CO2e'}" />
-
-                            </VerticalStackLayout>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-
-            </CollectionView>
+                    <CollectionView x:Name="cvProcesosFinalizados"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border StrokeShape="RoundRectangle 16"
+                                        BackgroundColor="White"
+                                        Stroke="{StaticResource LightGreen}"
+                                        Margin="0,6"
+                                        Padding="14">
+                                    <VerticalStackLayout Spacing="5">
+                                        <Label Text="{Binding Id, StringFormat='Proceso #{0}'}"
+                                               FontAttributes="Bold"
+                                               FontSize="16" />
+                                        <Label Text="{Binding BiodigestorId, StringFormat='Biodigestor: #{0}'}"
+                                               TextColor="{StaticResource MutedText}" />
+                                        <Label Text="{Binding FechaInicio, StringFormat='Inicio: {0:dd/MM/yyyy HH:mm}'}"
+                                               TextColor="{StaticResource MutedText}" />
+                                        <Label Text="{Binding FechaCierre, StringFormat='Cierre: {0:dd/MM/yyyy HH:mm}'}"
+                                               TextColor="{StaticResource MutedText}" />
+                                        <Label Text="{Binding MasaRestante, StringFormat='Masa restante: {0:F2} kg'}" />
+                                        <Label Text="{Binding MetanoEvitado, StringFormat='Metano evitado: {0:F2} kg'}" />
+                                        <Label Text="{Binding CarbonoEvitado, StringFormat='Carbono evitado: {0:F2} kg CO₂e'}"
+                                               TextColor="{StaticResource DarkGreen}"
+                                               FontAttributes="Bold" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
 
         </VerticalStackLayout>
     </ScrollView>

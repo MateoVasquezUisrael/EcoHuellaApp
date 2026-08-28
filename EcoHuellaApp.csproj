@@ -18,12 +18,13 @@
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 		<WindowsPackageType>None</WindowsPackageType>
+		<AndroidPackageFormat Condition="$(Configuration) == 'Release'">apk</AndroidPackageFormat>
 
 		<!-- Excluye JAR duplicado de Compose Runtime que causa conflicto D8 en Android -->
 		<AndroidExcludeJarFiles>runtime-annotation-jvm.jar</AndroidExcludeJarFiles>
 
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">26.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">26.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">23.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
@@ -47,10 +48,14 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<!-- Ícono -->
-		<MauiIcon Include="Resources\AppIcon\appicon.png" ForegroundFile="Resources\AppIcon\appiconfg.png" Color="#000000" />
+		<MauiIcon Include="Resources\AppIcon\appicon.png"
+		          ForegroundFile="Resources\AppIcon\appiconfg.png"
+		          Color="#000000" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#000000" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.png"
+		                  Color="#000000"
+		                  BaseSize="128,128" />
 
 		<!-- Imágenes -->
 		<MauiImage Include="Resources\Images\*" />
@@ -70,18 +75,16 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.8" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.71" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.70" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Plugin.LocalNotification" Version="14.1.0" />
 		<PackageReference Include="SQLiteNetExtensions" Version="2.1.0" />
 		<PackageReference Include="SQLiteNetExtensions.Async" Version="2.1.0" />
-
 	</ItemGroup>
 
 	<!-- ── Paquetes Android ──────────────────────────────────────────────────── -->
 	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
 		<PackageReference Include="Xamarin.Firebase.Auth" Version="124.0.1" />
-		<PackageReference Include="Xamarin.GooglePlayServices.Auth" Version="121.4.0.2" />
 
 		<!-- Excluye paquetes duplicados de Compose Runtime que causan conflicto D8 -->
 		<PackageReference Include="Xamarin.AndroidX.Compose.Runtime.Annotation.Jvm" Version="1.10.0.1" ExcludeAssets="all" />
@@ -98,7 +101,6 @@
 	<ItemGroup Condition="$(TargetFramework.Contains('-ios')) OR $(TargetFramework.Contains('-maccatalyst'))">
 		<PackageReference Include="AdamE.Firebase.iOS.Auth" Version="12.10.0" />
 		<PackageReference Include="AdamE.Firebase.iOS.Installations" Version="12.10.0" />
-		<PackageReference Include="AdamE.Google.iOS.SignIn" Version="9.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$(TargetFramework.Contains('-ios'))">
@@ -140,8 +142,12 @@
 	<ItemGroup>
 		<Folder Include="Constants\" />
 		<Folder Include="Data\" />
-		<Folder Include="Infrastructure\Extensions\" />
+		<Folder Include="Helpers\" />
+		<Folder Include="Domain\Interfaces\" />
+		<Folder Include="Infrastructure\Services\" />
+		<Folder Include="Infrastructure\Repositories\" />
 		<Folder Include="Infrastructure\Repositories\ProcesoComposteraArtesanal\" />
+		<Folder Include="Infrastructure\Extensions\" />
 		<Folder Include="Presentation\Converters\" />
 		<Folder Include="Presentation\ViewModels\" />
 		<Folder Include="Presentation\Views\" />

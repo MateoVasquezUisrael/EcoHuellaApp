@@ -2,30 +2,16 @@ using EcoHuellaApp.Domain.Interfaces;
 using EcoHuellaApp.Domain.Models;
 using Firebase.Auth;
 using Foundation;
-using Google.SignIn;
-using GIDSignIn = Google.SignIn.SignIn;
 using DomainCode = EcoHuellaApp.Domain.Models.AuthErrorCode;
 using FirebaseCode = Firebase.Auth.AuthErrorCode;
-
 
 namespace EcoHuellaApp.Platforms.iOS
 {
     /// <summary>
-    /// IAuthService nativo para iOS usando Firebase Auth SDK + Google Sign-In SDK.
-    ///
-    /// Google Sign-In: usa AdamE.Google.iOS.SignIn (GIDSignIn) que abre
-    /// ASWebAuthenticationSession internamente. El REVERSED_CLIENT_ID registrado
-    /// en Info.plist permite que Safari redirija de vuelta a la app.
-    ///
-    /// Requiere en Info.plist (ya configurado):
-    ///   CFBundleURLSchemes = REVERSED_CLIENT_ID de GoogleService-Info.plist
+    /// IAuthService nativo para iOS usando Firebase Auth con correo y contraseña.
     /// </summary>
     public sealed class FirebaseAuthService : IAuthService
     {
-        // CLIENT_ID del GoogleService-Info.plist (cliente OAuth nativo de iOS)
-        private const string iOSClientId =
-            "1063838909055-cbho8glot83btdjrq0l4j54f3ac04bq6.apps.googleusercontent.com";
-
         private readonly Auth _auth;
 
         public FirebaseAuthService()
@@ -54,90 +40,20 @@ namespace EcoHuellaApp.Platforms.iOS
             }
         }
 
-        // ── Google Sign-In ────────────────────────────────────────────────────
-
-        /// <summary>
-        /// Usa GIDSignIn (Google Sign-In iOS SDK) para obtener el id_token y
-        /// access_token de Google, y luego autenticar en Firebase con ellos.
-        /// </summary>
-        public Task<AuthResult> SignInWithGoogleAsync()
+        public async Task<AuthResult> RegisterWithEmailPasswordAsync(string email, string password)
         {
-            var tcs = new TaskCompletionSource<AuthResult>();
-
             try
             {
-                var topVc = Platform.GetCurrentUIViewController();
-                if (topVc is null)
-                    return Task.FromResult(AuthResult.Fail(
-                        "No hay UIViewController activo.", DomainCode.Unknown));
-
-                // Google Sign-In SDK v9: la configuración se asigna a SharedInstance
-                // y el sign-in se inicia solo con el viewController presentador.
-                GIDSignIn.SharedInstance.Configuration =
-                    new Configuration(iOSClientId);
-
-                // GIDSignIn abre ASWebAuthenticationSession.
-                // El callback llega en el hilo principal.
-                GIDSignIn.SharedInstance.SignInWithPresentingViewController(
-                    topVc,
-                    async (signInResult, nsError) =>
-                    {
-                        if (nsError is not null)
-                        {
-                            // GIDSignInErrorCodeCanceled = -5
-                            var code = (long)nsError.Code;
-                            tcs.TrySetResult(code == -5
-                                ? AuthResult.Fail(string.Empty, DomainCode.Cancelled)
-                                : MapNSError(nsError));
-                            return;
-                        }
-
-                        try
-                        {
-                            var idToken     = signInResult?.User?.IdToken?.TokenString;
-                            var accessToken = signInResult?.User?.AccessToken?.TokenString;
-
-                            if (string.IsNullOrEmpty(idToken) ||
-                                string.IsNullOrEmpty(accessToken))
-                            {
-                                tcs.TrySetResult(AuthResult.Fail(
-                                    "Google no devolvió tokens válidos.",
-                                    DomainCode.Unknown));
-                                return;
-                            }
-
-                            // Crear credencial Firebase a partir de los tokens de Google
-                            var credential = GoogleAuthProvider.GetCredential(
-                                idToken, accessToken);
-
-                            var firebaseResult =
-                                await _auth.SignInWithCredentialAsync(credential);
-
-                            tcs.TrySetResult(MapUserResult(firebaseResult.User));
-                        }
-                        catch (NSErrorException ex)
-                        {
-                            tcs.TrySetResult(MapNSError(ex.Error));
-                        }
-                        catch (Exception ex)
-                        {
-                            System.Diagnostics.Debug.WriteLine(
-                                $"[FirebaseAuth.iOS] GoogleCredential: {ex}");
-                            tcs.TrySetResult(AuthResult.Fail(
-                                "Error al autenticar con Firebase.",
-                                DomainCode.Unknown));
-                        }
-                    });
+                var result = await _auth.CreateUserAsync(email, password);
+                Preferences.Default.Set($"first_login_{result.User.Uid}", false);
+                return MapUserResult(result.User);
             }
+            catch (NSErrorException ex) { return MapNSError(ex.Error); }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(
-                    $"[FirebaseAuth.iOS] GoogleSignIn: {ex}");
-                tcs.TrySetResult(AuthResult.Fail(
-                    "Error al iniciar sesión con Google.", DomainCode.Unknown));
+                System.Diagnostics.Debug.WriteLine($"[FirebaseAuth.iOS] Register: {ex}");
+                return AuthResult.Fail("No se pudo crear la cuenta.", DomainCode.Unknown);
             }
-
-            return tcs.Task;
         }
 
         // ── Logout ────────────────────────────────────────────────────────────
@@ -145,10 +61,6 @@ namespace EcoHuellaApp.Platforms.iOS
         public Task<AuthResult> SignOutAsync()
         {
             _auth.SignOut(out var error);
-
-            // Cerrar también la sesión de Google para que el picker
-            // vuelva a mostrarse en el próximo inicio de sesión
-            GIDSignIn.SharedInstance.SignOutUser();
 
             return Task.FromResult(
                 error is null
@@ -233,7 +145,7 @@ namespace EcoHuellaApp.Platforms.iOS
                 ?? [];
 
             // Solo los usuarios email/password tienen contraseña temporal del admin.
-            // Usuarios de Google nunca necesitan cambiar contraseña.
+            // El indicador se conserva localmente después del primer acceso.
             bool isEmailPasswordUser = providers.Contains("password");
             var requiresChange = isEmailPasswordUser &&
                 Preferences.Default.Get($"first_login_{u.Uid}", defaultValue: true);

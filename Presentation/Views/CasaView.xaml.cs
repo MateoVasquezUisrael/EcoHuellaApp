@@ -2,8 +2,6 @@ using EcoHuellaApp.Domain.Interfaces;
 using EcoHuellaApp.Domain.Models.Recoleccion;
 using EcoHuellaApp.Infrastructure.Services;
 using Microsoft.Maui.Controls;
-using Plugin.LocalNotification;
-using Plugin.LocalNotification.Core.Models;
 
 
 namespace EcoHuellaApp.Presentation.Views;
@@ -205,17 +203,4 @@ public partial class CasaView : ContentPage
     }
 
 
-    private async void BtnNotificacion_Clicked(
-    object sender,
-    EventArgs e)
-    {
-        var request = new NotificationRequest
-        {
-            NotificationId = 100,
-            Title = "EcoHuella",
-            Description = "Prueba de notificación"
-        };
-
-        await LocalNotificationCenter.Current.Show(request);
-    }
 }
