@@ -27,6 +27,8 @@ namespace EcoHuellaApp.Presentation.Views
         {
             try
             {
+                Mapsui.Widgets.InfoWidgets.LoggingWidget.ShowLoggingInMap = Mapsui.Widgets.ActiveMode.No;
+
                 var map = new Mapsui.Map();
                 var tileLayer = await _tileService.GetTileLayerAsync();
                 map.Layers.Add(tileLayer);

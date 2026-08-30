@@ -17,8 +17,11 @@
                             <Label Text="PROCESOS" TextColor="White" FontFamily="OpenSansSemibold" FontSize="23" />
                             <Label Text="Sacos, composteras y biodigestores" TextColor="#D9FFF1" FontSize="13" />
                         </VerticalStackLayout>
-                        <Border Grid.Column="1" WidthRequest="46" HeightRequest="46" BackgroundColor="#2237D6D6" Stroke="{StaticResource AccentTurquoise}" StrokeShape="RoundRectangle 23" VerticalOptions="Center">
-                            <Label Text="&#x2699;" TextColor="{StaticResource AccentTurquoise}" FontSize="23" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                        <Border Grid.Column="1" WidthRequest="46" HeightRequest="46" BackgroundColor="{StaticResource AccentTurquoise}" StrokeShape="RoundRectangle 23" VerticalOptions="Center">
+                            <Border.Shadow>
+                                <Shadow Brush="{StaticResource DeepTeal}" Opacity="0.35" Radius="8" Offset="0,3" />
+                            </Border.Shadow>
+                            <Label Text="&#x1F464;" TextColor="White" FontSize="23" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
                         </Border>
                     </Grid>
                 </Border>
@@ -104,9 +107,9 @@
                                         <Label Text="{Binding ProcesosFinalizados}" TextColor="{StaticResource DeepTeal}" FontFamily="OpenSansSemibold" FontSize="22" />
                                     </VerticalStackLayout>
                                 </Grid>
-                                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                                    <Button Text="Ver procesos" Clicked="AbrirBiodigestores_Clicked" />
-                                    <Button Grid.Column="1" Text="Historial" Clicked="HistorialProcesos_Clicked" Style="{StaticResource BotonSecundario}" />
+                                <Grid RowDefinitions="Auto,Auto" RowSpacing="10">
+                                    <Button Text="Historial" Clicked="HistorialProcesos_Clicked" Style="{StaticResource BotonSecundario}" />
+                                    <Button Grid.Row="1" Text="Gestionar biodigestores" Clicked="GestionarBiodigestores_Clicked" Style="{StaticResource BotonSecundario}" />
                                 </Grid>
                             </VerticalStackLayout>
                         </Border>

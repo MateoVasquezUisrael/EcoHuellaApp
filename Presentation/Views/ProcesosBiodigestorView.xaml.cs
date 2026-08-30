@@ -11,6 +11,7 @@ public partial class ProcesosBiodigestorView : ContentPage
     private readonly IRepositoryGeneric<Biodigestor> _biodigestorRepository;
     private readonly IRepositoryGeneric<ProcesoBiodigestor> _procesoRepository;
     private readonly ProcesoBiodigestorRepository _procesoRepositoryEspecifico;
+    private readonly IRepositoryGeneric<EntradasProcesoBiodigestor> _entradasRepository;
     public ProcesosBiodigestorView(int biodigestorId = 0)
     {
         InitializeComponent();
@@ -26,6 +27,9 @@ public partial class ProcesosBiodigestorView : ContentPage
 
         _procesoRepositoryEspecifico = services?.GetRequiredService<ProcesoBiodigestorRepository>()
             ?? throw new InvalidOperationException("No se pudo resolver el repositorio específico de procesos.");
+
+        _entradasRepository = services?.GetRequiredService<IRepositoryGeneric<EntradasProcesoBiodigestor>>()
+            ?? throw new InvalidOperationException("No se pudo resolver el repositorio de entradas.");
 
         _ = CargarDatosAsync();
     }
@@ -90,6 +94,36 @@ public partial class ProcesosBiodigestorView : ContentPage
         catch (Exception ex)
         {
             await DisplayAlert("Error", $"No se pudo iniciar el proceso: {ex.Message}", "Aceptar");
+        }
+    }
+
+    private async void btnRegistrarEntrada_Clicked(
+        object sender,
+        EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is ProcesoBiodigestor proceso)
+        {
+            if (proceso.EstadoLlenado)
+            {
+                await DisplayAlert("Aviso", "Este proceso ya está lleno, no se pueden agregar más entradas.", "Aceptar");
+                return;
+            }
+
+            try
+            {
+                await _entradasRepository.GuardarRegistroAsync(new EntradasProcesoBiodigestor
+                {
+                    ProcesoBiodigestorId = proceso.Id,
+                    FechaIngreso = DateTime.Now,
+                    Estado = true
+                });
+
+                await CargarProcesosAsync();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"No se pudo registrar la entrada: {ex.Message}", "Aceptar");
+            }
         }
     }
 

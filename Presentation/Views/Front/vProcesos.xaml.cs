@@ -99,10 +99,5 @@ public partial class vProcesos : ContentPage
         await Navigation.PushAsync(page);
     }
 
-    private async void AbrirBiodigestores_Clicked(object? sender, EventArgs e)
-    {
-        var page = new ProcesosBiodigestorView();
-        NavegacionInferior.AgregarBotonPerfil(page);
-        await Navigation.PushAsync(page);
-    }
+    private async void GestionarBiodigestores_Clicked(object? sender, EventArgs e) => await BackendNavigation.PushAsync<BiodigestoresView>(this);
 }

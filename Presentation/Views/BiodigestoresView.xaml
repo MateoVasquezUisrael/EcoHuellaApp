@@ -34,6 +34,29 @@
                                     Style="{StaticResource BotonSecundario}" />
                         </Grid>
 
+                        <Border Style="{StaticResource EcoCard}">
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="Datos del biodigestor" Style="{StaticResource EcoTitle}" FontSize="22" />
+
+                                <Border Style="{StaticResource CampoFormulario}">
+                                    <Entry x:Name="txtCapacidadMaxima" Placeholder="Capacidad máxima (kg)" Keyboard="Numeric" Style="{StaticResource EntradaFormulario}" />
+                                </Border>
+
+                                <Border Style="{StaticResource StatusActivo}">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Text="Biodigestor activo" TextColor="{StaticResource DeepTeal}" FontFamily="OpenSansSemibold" VerticalTextAlignment="Center" />
+                                        <Switch Grid.Column="1" x:Name="swEstado" IsToggled="True" />
+                                    </Grid>
+                                </Border>
+
+                                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                                    <Button x:Name="btnGuardarBiodigestor" Text="Guardar biodigestor" Clicked="btnGuardarBiodigestor_Clicked" />
+                                    <Button Grid.Column="1" x:Name="btnActualizarBiodigestor" Text="Editar" Clicked="btnActualizarBiodigestor_Clicked" Style="{StaticResource BotonSecundario}" />
+                                    <Button Grid.Row="1" Grid.ColumnSpan="2" x:Name="btnEliminarBiodigestor" Text="Eliminar" Clicked="btnEliminarBiodigestor_Clicked" Style="{StaticResource BotonSecundario}" TextColor="{StaticResource DangerRed}" />
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+
                         <Label Text="Biodigestores registrados" TextColor="{StaticResource DarkGreen}" FontFamily="OpenSansSemibold" FontSize="18" />
 
                         <CollectionView x:Name="cvBiodigestores"

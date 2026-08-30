@@ -13,6 +13,7 @@ using EcoHuellaApp.Presentation.ViewModels;
 using EcoHuellaApp.Presentation.Views;
 using Microsoft.Extensions.Logging;
 using Plugin.LocalNotification;
+using QuestPDF.Infrastructure;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace EcoHuellaApp
@@ -22,6 +23,7 @@ namespace EcoHuellaApp
         public static MauiApp CreateMauiApp()
         {
             SQLitePCL.Batteries.Init();
+            QuestPDF.Settings.License = LicenseType.Community;
 
             var builder = MauiApp.CreateBuilder();
             builder
@@ -83,6 +85,9 @@ namespace EcoHuellaApp
             builder.Services.AddTransient<SacosCompostView>();
             builder.Services.AddSingleton<IRepositoryGeneric<SacosCompost>, SacosCompostRepository>();
             builder.Services.AddSingleton<SacosCompostRepository>();
+
+            // Reportes.
+            builder.Services.AddTransient<ReporteMensualPdfService>();
 
 #if DEBUG
             builder.Logging.AddDebug();

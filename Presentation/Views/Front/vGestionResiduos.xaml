@@ -17,8 +17,11 @@
                             <Label Text="ENTREGAS" TextColor="White" FontFamily="OpenSansSemibold" FontSize="23" />
                             <Label Text="Gestión de entregas orgánicas" TextColor="#D9FFF1" FontSize="13" />
                         </VerticalStackLayout>
-                        <Border Grid.Column="1" WidthRequest="46" HeightRequest="46" BackgroundColor="#2237D6D6" Stroke="{StaticResource AccentTurquoise}" StrokeShape="RoundRectangle 23" VerticalOptions="Center">
-                            <Label Text="&#x1F464;" TextColor="{StaticResource AccentTurquoise}" FontSize="23" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                        <Border Grid.Column="1" WidthRequest="46" HeightRequest="46" BackgroundColor="{StaticResource AccentTurquoise}" StrokeShape="RoundRectangle 23" VerticalOptions="Center">
+                            <Border.Shadow>
+                                <Shadow Brush="{StaticResource DeepTeal}" Opacity="0.35" Radius="8" Offset="0,3" />
+                            </Border.Shadow>
+                            <Label Text="&#x1F464;" TextColor="White" FontSize="23" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
                         </Border>
                     </Grid>
                 </Border>

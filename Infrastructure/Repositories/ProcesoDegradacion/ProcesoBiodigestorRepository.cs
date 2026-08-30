@@ -129,14 +129,14 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
                 await _database.Database.GetChildrenAsync(proceso);
 
                 var matematicaVerde = new MatematicaVerde();
-                double masaCarbono = proceso.Biodigestor?.CapacidadMaxima ?? 0;
+                double masaResiduo = proceso.Biodigestor?.CapacidadMaxima ?? 0;
 
-                if (masaCarbono <= 0)
+                if (masaResiduo <= 0)
                     throw new InvalidOperationException("El biodigestor no tiene una capacidad máxima configurada válida.");
 
-                proceso.MasaRestante = matematicaVerde.PerdidaMasa(masaCarbono);
-                proceso.MetanoEvitado = matematicaVerde.CalcularMetanoEvitado(masaCarbono);
-                proceso.CarbonoEvitado = matematicaVerde.ConversionMetanoCarbono(masaCarbono);
+                proceso.MasaRestante = matematicaVerde.PerdidaMasa(masaResiduo);
+                proceso.MetanoEvitado = matematicaVerde.CalcularMetanoEvitado(masaResiduo);
+                proceso.CarbonoEvitado = matematicaVerde.ConversionMetanoCarbono(masaResiduo);
                 proceso.FechaCierre = DateTime.Now;
                 proceso.EstadoLlenado = true;
                 proceso.EstadoFinalizado = true;

@@ -48,7 +48,7 @@
                             <DataTemplate>
                                 <Border StrokeShape="RoundRectangle 16"
                                         BackgroundColor="White"
-                                        Stroke="{StaticResource LightGreen}"
+                                        Stroke="{StaticResource SoftGreen}"
                                         Margin="0,6"
                                         Padding="14">
                                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">

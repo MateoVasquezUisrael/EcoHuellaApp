@@ -6,6 +6,7 @@ using EcoHuellaApp.Domain.Models.ProcesoDegradacion;
 using EcoHuellaApp.Domain.Models.Recoleccion;
 using EcoHuellaApp.Domain.Models.Ventas;
 using EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion;
+using EcoHuellaApp.Infrastructure.Services;
 using EcoHuellaApp.Presentation.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,13 +16,14 @@ public partial class vHome : ContentPage
     private readonly IRepositoryGeneric<ProcesoBiodigestor>? _procesoRepository;
     private readonly ProcesoBiodigestorRepository? _procesoRepositoryEspecifico;
     private readonly IRepositoryGeneric<SacosCompost>? _sacosRepository;
+    private readonly ReporteMensualPdfService? _reporteService;
 
     public ObservableCollection<BarraMensual> EvolucionMensual { get; } = [];
 
     public string TotalKilosTexto { get; private set; } = "0 kg";
     public string Co2EvitadoTexto { get; private set; } = "0 kg";
     public string MetanoEvitadoTexto { get; private set; } = "0 kg";
-    public string TierraRegeneradaTexto { get; private set; } = "Sin datos";
+    public string SacosGeneradosTexto { get; private set; } = "Sin datos";
     public string EficienciaTexto { get; private set; } = "0%";
     public double EficienciaProgreso { get; private set; }
     public string ResumenImpacto { get; private set; } = "Cargando métricas reales...";
@@ -37,6 +39,7 @@ public partial class vHome : ContentPage
         _procesoRepository = services?.GetService<IRepositoryGeneric<ProcesoBiodigestor>>();
         _procesoRepositoryEspecifico = services?.GetService<ProcesoBiodigestorRepository>();
         _sacosRepository = services?.GetService<IRepositoryGeneric<SacosCompost>>();
+        _reporteService = services?.GetService<ReporteMensualPdfService>();
 
         dpHasta.Date = DateTime.Today;
         dpDesde.Date = DateTime.Today.AddMonths(-5);
@@ -89,12 +92,12 @@ public partial class vHome : ContentPage
         var metanoEvitado = procesosFinalizados.Sum(p => p.MetanoEvitado);
         var procesosTotales = procesosActivos.Count + procesosFinalizados.Count;
         var eficiencia = procesosTotales == 0 ? 0 : (double)procesosFinalizados.Count / procesosTotales;
-        var sacosDisponibles = sacos.Count(s => s.Estado);
+        var sacosGenerados = sacos.Count;
 
         TotalKilosTexto = FormatearKg(totalKilos);
         Co2EvitadoTexto = FormatearKg(co2Evitado);
         MetanoEvitadoTexto = FormatearKg(metanoEvitado);
-        TierraRegeneradaTexto = sacosDisponibles > 0 ? $"{sacosDisponibles} sacos" : "Sin datos";
+        SacosGeneradosTexto = sacosGenerados > 0 ? $"{sacosGenerados} sacos" : "Sin datos";
         EficienciaProgreso = eficiencia;
         EficienciaTexto = $"{eficiencia:P0}";
         ResumenImpacto = $"{recolecciones.Count} entregas y {procesosFinalizados.Count} procesos finalizados en el rango.";
@@ -142,7 +145,7 @@ public partial class vHome : ContentPage
         OnPropertyChanged(nameof(TotalKilosTexto));
         OnPropertyChanged(nameof(Co2EvitadoTexto));
         OnPropertyChanged(nameof(MetanoEvitadoTexto));
-        OnPropertyChanged(nameof(TierraRegeneradaTexto));
+        OnPropertyChanged(nameof(SacosGeneradosTexto));
         OnPropertyChanged(nameof(EficienciaTexto));
         OnPropertyChanged(nameof(EficienciaProgreso));
         OnPropertyChanged(nameof(ResumenImpacto));
@@ -172,7 +175,33 @@ public partial class vHome : ContentPage
 
     private async void DescargarReporte_Clicked(object? sender, EventArgs e)
     {
-        await DisplayAlert("Reporte", "La descarga visual está lista para conectarse a la exportación cuando exista.", "Aceptar");
+        if (_reporteService is null)
+        {
+            await DisplayAlert("Reporte", "No se pudo generar el reporte.", "Aceptar");
+            return;
+        }
+
+        var desde = dpDesde.Date.GetValueOrDefault(DateTime.Today.AddMonths(-5)).Date;
+        var hasta = dpHasta.Date.GetValueOrDefault(DateTime.Today).Date.AddDays(1).AddTicks(-1);
+
+        try
+        {
+            var pdfBytes = await _reporteService.GenerarAsync(desde, hasta);
+
+            var nombreArchivo = $"reporte_ecohuella_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+            var rutaArchivo = Path.Combine(FileSystem.CacheDirectory, nombreArchivo);
+            await File.WriteAllBytesAsync(rutaArchivo, pdfBytes);
+
+            await Share.Default.RequestAsync(new ShareFileRequest
+            {
+                Title = "Reporte mensual EcoHuella",
+                File = new ShareFile(rutaArchivo)
+            });
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"No se pudo generar el reporte: {ex.Message}", "Aceptar");
+        }
     }
 
     public sealed class BarraMensual

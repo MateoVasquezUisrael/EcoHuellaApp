@@ -5,7 +5,7 @@ using EcoHuellaApp.Helpers;
 
 namespace EcoHuellaApp.Helpers
 {
-    // TODO: validar que los parámetros (cantidadesBaldes, MasaCarbono) no sean negativos en los métodos públicos de esta clase.
+    // TODO: validar que los parámetros (cantidadesBaldes, MasaResiduo) no sean negativos en los métodos públicos de esta clase.
     public class  MatematicaVerde
     {
         public double CalcularMasa(int cantidadesBaldes)
@@ -20,51 +20,51 @@ namespace EcoHuellaApp.Helpers
             return calculo;
         }
 
-        public double CalcularMetanoEnVertadero(double MasaCarbono)
+        public double CalcularMetanoEnVertadero(double MasaResiduo)
         {
             ///<summary>
             ///Método simplificado para calcular el potencial de generación de metano de la IPCC
             ///en https://www.ipcc-nggip.iges.or.jp/public/gp/spanish/5_Waste_ES.pdf
             /// </summary>
-            double calculo = MasaCarbono * ConstantesMatematicaVerde.CarbonoOrganicoDegradable * ConstantesMatematicaVerde.CarbonoOrganicoDegradableFraccionario
+            double calculo = MasaResiduo * ConstantesMatematicaVerde.CarbonoOrganicoDegradable * ConstantesMatematicaVerde.CarbonoOrganicoDegradableFraccionario
                 * ConstantesMatematicaVerde.FraccionMetanoEnBiogas * ConstantesMatematicaVerde.ConstanteConversionCarbonoMetano * ConstantesMatematicaVerde.FactorCorreccionVertedero;
 
             return calculo;
         }
 
-        public double CalcularMetanoEnCompost(double MasaCarbono)
+        public double CalcularMetanoEnCompost(double MasaResiduo)
         {
             /// <summary>
-            /// Método encargado de calcular el metano dentro 
+            /// Método encargado de calcular el metano dentro
             /// del compostaje anaeróbico en base a https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/5_Volume5/V5_4_Ch4_Bio_Treat.pdf
             /// </summary>
 
-            double calculo = MasaCarbono * ConstantesMatematicaVerde.ConstanteFactorEmisionMetano;
+            double calculo = MasaResiduo * ConstantesMatematicaVerde.ConstanteFactorEmisionMetano;
 
             return calculo;
         }
 
-        public double CalcularMetanoEvitado(double MasaCarbono)
+        public double CalcularMetanoEvitado(double MasaResiduo)
         {
             ///<summary>
             ///Calcula el metano evitado basado en el metano que se genera en el compost y el potencial de metano en vertedero.
             ///</summary>
-            
-            double calculo = CalcularMetanoEnVertadero(MasaCarbono) - CalcularMetanoEnCompost(MasaCarbono);
+
+            double calculo = CalcularMetanoEnVertadero(MasaResiduo) - CalcularMetanoEnCompost(MasaResiduo);
 
             return calculo;
         }
 
-        public double ConversionMetanoCarbono(double MasaCarbono)
+        public double ConversionMetanoCarbono(double MasaResiduo)
         {
-            double calculo = CalcularMetanoEvitado(MasaCarbono) * ConstantesMatematicaVerde.PotencialCalentamientoMetano;
+            double calculo = CalcularMetanoEvitado(MasaResiduo) * ConstantesMatematicaVerde.PotencialCalentamientoMetano;
 
             return calculo;
         }
 
-        public double PerdidaMasa(double MasaCarbono)
+        public double PerdidaMasa(double MasaResiduo)
         {
-            double calculo = MasaCarbono * ConstantesMatematicaVerde.PerdidaVolumen;
+            double calculo = MasaResiduo * ConstantesMatematicaVerde.PerdidaVolumen;
 
             return calculo;
         }

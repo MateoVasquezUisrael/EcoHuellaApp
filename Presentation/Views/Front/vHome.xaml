@@ -17,8 +17,11 @@
                             <Label Text="DASHBOARD" TextColor="White" FontFamily="OpenSansSemibold" FontSize="23" />
                             <Label Text="Análisis real de entregas y procesos" TextColor="#D9FFF1" FontSize="13" />
                         </VerticalStackLayout>
-                        <Border Grid.Column="1" WidthRequest="46" HeightRequest="46" BackgroundColor="#2237D6D6" Stroke="{StaticResource AccentTurquoise}" StrokeShape="RoundRectangle 23" VerticalOptions="Center">
-                            <Label Text="&#x1F464;" TextColor="{StaticResource AccentTurquoise}" FontSize="23" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                        <Border Grid.Column="1" WidthRequest="46" HeightRequest="46" BackgroundColor="{StaticResource AccentTurquoise}" StrokeShape="RoundRectangle 23" VerticalOptions="Center">
+                            <Border.Shadow>
+                                <Shadow Brush="{StaticResource DeepTeal}" Opacity="0.35" Radius="8" Offset="0,3" />
+                            </Border.Shadow>
+                            <Label Text="&#x1F464;" TextColor="White" FontSize="23" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
                         </Border>
                     </Grid>
                 </Border>
@@ -79,9 +82,9 @@
                             </Border>
                             <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource EcoMetricCard}">
                                 <VerticalStackLayout Spacing="4">
-                                    <Label Text="TIERRA" TextColor="{StaticResource MutedText}" FontSize="11" />
-                                    <Label Text="{Binding TierraRegeneradaTexto}" TextColor="{StaticResource PrimaryGreen}" FontFamily="OpenSansSemibold" FontSize="23" />
-                                    <Label Text="Regenerada" Style="{StaticResource EcoSubtitle}" />
+                                    <Label Text="SACOS" TextColor="{StaticResource MutedText}" FontSize="11" />
+                                    <Label Text="{Binding SacosGeneradosTexto}" TextColor="{StaticResource PrimaryGreen}" FontFamily="OpenSansSemibold" FontSize="23" />
+                                    <Label Text="Generados" Style="{StaticResource EcoSubtitle}" />
                                 </VerticalStackLayout>
                             </Border>
                             <Border Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource EcoMetricCard}">

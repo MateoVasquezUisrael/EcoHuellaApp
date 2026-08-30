@@ -81,6 +81,7 @@
 		<PackageReference Include="Plugin.LocalNotification" Version="14.1.0" />
 		<PackageReference Include="SQLiteNetExtensions" Version="2.1.0" />
 		<PackageReference Include="SQLiteNetExtensions.Async" Version="2.1.0" />
+		<PackageReference Include="QuestPDF" Version="2026.8.0"/>
 	</ItemGroup>
 
 	<!-- ── Paquetes Android ──────────────────────────────────────────────────── -->
