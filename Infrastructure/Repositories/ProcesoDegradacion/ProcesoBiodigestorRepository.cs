@@ -131,6 +131,9 @@ namespace EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion
                 var matematicaVerde = new MatematicaVerde();
                 double masaCarbono = proceso.Biodigestor?.CapacidadMaxima ?? 0;
 
+                if (masaCarbono <= 0)
+                    throw new InvalidOperationException("El biodigestor no tiene una capacidad máxima configurada válida.");
+
                 proceso.MasaRestante = matematicaVerde.PerdidaMasa(masaCarbono);
                 proceso.MetanoEvitado = matematicaVerde.CalcularMetanoEvitado(masaCarbono);
                 proceso.CarbonoEvitado = matematicaVerde.ConversionMetanoCarbono(masaCarbono);

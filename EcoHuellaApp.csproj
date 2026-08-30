@@ -35,6 +35,7 @@
 		<AndroidSigningKeyAlias>androiddebugkey</AndroidSigningKeyAlias>
 		<AndroidSigningKeyPass>android</AndroidSigningKeyPass>
 		<AndroidSigningStorePass>android</AndroidSigningStorePass>
+		<AndroidPackageFormat>apk</AndroidPackageFormat>
 	</PropertyGroup>
 
 	<!-- RID de Android solo para el TFM de android -->

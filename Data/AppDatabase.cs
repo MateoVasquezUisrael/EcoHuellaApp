@@ -16,19 +16,21 @@ namespace EcoHuellaApp.Data
             {
                 _connection = new SQLiteAsyncConnection(dbPath);
 
-                _connection.CreateTableAsync<Casa>().Wait();
-                _connection.CreateTableAsync<PuntoRecoleccion>().Wait();
-                _connection.CreateTableAsync<Recoleccion>().Wait();
-                _connection.CreateTableAsync<Biodigestor>().Wait();
-                _connection.CreateTableAsync<ProcesoBiodigestor>().Wait();
-                _connection.CreateTableAsync<EntradasProcesoBiodigestor>().Wait();
-                _connection.CreateTableAsync<ComposteraArtesanal>().Wait();
-                _connection.CreateTableAsync<AccionCompostera>().Wait();
-                _connection.CreateTableAsync<SacosCompost>().Wait();
+                Task.WhenAll(
+                    _connection.CreateTableAsync<Casa>(),
+                    _connection.CreateTableAsync<PuntoRecoleccion>(),
+                    _connection.CreateTableAsync<Recoleccion>(),
+                    _connection.CreateTableAsync<Biodigestor>(),
+                    _connection.CreateTableAsync<ProcesoBiodigestor>(),
+                    _connection.CreateTableAsync<EntradasProcesoBiodigestor>(),
+                    _connection.CreateTableAsync<ComposteraArtesanal>(),
+                    _connection.CreateTableAsync<AccionCompostera>(),
+                    _connection.CreateTableAsync<SacosCompost>()
+                ).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
-                throw new Exception("Error:" + ex);
+                throw new InvalidOperationException("No se pudo inicializar la base de datos local.", ex);
             }
         }
 

@@ -17,7 +17,6 @@ public partial class vHistorialSacos : ContentPage
         InitializeComponent();
         BindingContext = this;
         _repository = Application.Current?.Handler?.MauiContext?.Services.GetService<IRepositoryGeneric<SacosCompost>>();
-        _ = CargarAsync();
     }
 
     protected override void OnAppearing()

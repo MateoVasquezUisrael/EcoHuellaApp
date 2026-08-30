@@ -9,4 +9,5 @@ public interface IMockPasswordService
     bool HasPendingPasswordChange { get; }
     void CompletePasswordChange(string newPassword);
     void TrackUser(AppUser user);
+    void ClearPendingState();
 }

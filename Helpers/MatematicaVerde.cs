@@ -5,6 +5,7 @@ using EcoHuellaApp.Helpers;
 
 namespace EcoHuellaApp.Helpers
 {
+    // TODO: validar que los parámetros (cantidadesBaldes, MasaCarbono) no sean negativos en los métodos públicos de esta clase.
     public class  MatematicaVerde
     {
         public double CalcularMasa(int cantidadesBaldes)

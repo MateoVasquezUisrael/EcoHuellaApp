@@ -25,8 +25,15 @@ public sealed class ComposteraAccionPage : ContentPage
         guardar.Clicked += async (_, _) =>
         {
             if (accion.SelectedItem is null || elemento.SelectedItem is null) { await DisplayAlertAsync("Aviso", "Completa el tipo de acción y el elemento.", "Aceptar"); return; }
-            await repository.GuardarRegistroAsync(new AccionCompostera { ComposteraArtesanalId = compostera.Id, TipoAccion = accion.SelectedItem.ToString(), TipoElemento = elemento.SelectedItem.ToString(), FechaAccion = fecha.Date });
-            await Navigation.PopModalAsync();
+            try
+            {
+                await repository.GuardarRegistroAsync(new AccionCompostera { ComposteraArtesanalId = compostera.Id, TipoAccion = accion.SelectedItem.ToString(), TipoElemento = elemento.SelectedItem.ToString(), FechaAccion = fecha.Date });
+                await Navigation.PopModalAsync();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlertAsync("Error", $"No se pudo guardar la acción: {ex.Message}", "Aceptar");
+            }
         };
         var cerrar = new Button { Text = "Cancelar", BackgroundColor = Color.FromArgb("#E4F4ED"), TextColor = Color.FromArgb("#075E54") };
         cerrar.Clicked += async (_, _) => await Navigation.PopModalAsync();

@@ -59,45 +59,83 @@ public partial class CasaView : ContentPage
             _casaSeleccionada.Estado;
     }
 
+    private async Task<(bool EsValido, double Latitud, double Longitud)> ValidarFormularioAsync()
+    {
+        if (string.IsNullOrWhiteSpace(txtNombreResponsable.Text) ||
+            string.IsNullOrWhiteSpace(txtDireccion.Text) ||
+            string.IsNullOrWhiteSpace(txtSector.Text))
+        {
+            await DisplayAlertAsync("Aviso", "Complete responsable, dirección y sector.", "Aceptar");
+            return (false, 0, 0);
+        }
+
+        if (!double.TryParse(txtLatitud.Text, out var latitud) || latitud < -90 || latitud > 90)
+        {
+            await DisplayAlertAsync("Aviso", "Seleccione una ubicación válida en el mapa.", "Aceptar");
+            return (false, 0, 0);
+        }
+
+        if (!double.TryParse(txtLongitud.Text, out var longitud) || longitud < -180 || longitud > 180)
+        {
+            await DisplayAlertAsync("Aviso", "Seleccione una ubicación válida en el mapa.", "Aceptar");
+            return (false, 0, 0);
+        }
+
+        return (true, latitud, longitud);
+    }
+
     private async void btnGuardar_Clicked(
     object sender,
     EventArgs e)
     {
-        if (_casaSeleccionada == null)
+        var (esValido, lat, lon) = await ValidarFormularioAsync();
+        if (!esValido) return;
+
+        try
         {
-            Casa nuevaCasa = new Casa
+            if (_casaSeleccionada == null)
             {
-                NombreResponsable = txtNombreResponsable.Text,
-                Direccion = txtDireccion.Text,
-                Sector = txtSector.Text,
-                Estado = swEstado.IsToggled,
-                Latitud = double.TryParse(txtLatitud.Text, out var lat) ? lat : 0,
-                Longitud = double.TryParse(txtLongitud.Text, out var lon) ? lon : 0
-            };
+                Casa nuevaCasa = new Casa
+                {
+                    NombreResponsable = txtNombreResponsable.Text,
+                    Direccion = txtDireccion.Text,
+                    Sector = txtSector.Text,
+                    Estado = swEstado.IsToggled,
+                    Latitud = lat,
+                    Longitud = lon
+                };
 
-            await _repository.GuardarRegistroAsync(nuevaCasa);
+                await _repository.GuardarRegistroAsync(nuevaCasa);
+            }
+            else
+            {
+                _casaSeleccionada.NombreResponsable =
+                    txtNombreResponsable.Text;
+
+                _casaSeleccionada.Direccion =
+                    txtDireccion.Text;
+
+                _casaSeleccionada.Sector =
+                    txtSector.Text;
+
+                _casaSeleccionada.Estado =
+                    swEstado.IsToggled;
+
+                _casaSeleccionada.Latitud = lat;
+                _casaSeleccionada.Longitud = lon;
+
+                await _repository.ActualizarAsync(
+                    _casaSeleccionada);
+            }
+
+            await CargarCasas();
+
+            LimpiarFormulario();
         }
-        else
+        catch (Exception ex)
         {
-            _casaSeleccionada.NombreResponsable =
-                txtNombreResponsable.Text;
-
-            _casaSeleccionada.Direccion =
-                txtDireccion.Text;
-
-            _casaSeleccionada.Sector =
-                txtSector.Text;
-
-            _casaSeleccionada.Estado =
-                swEstado.IsToggled;
-
-            await _repository.ActualizarAsync(
-                _casaSeleccionada);
+            await DisplayAlertAsync("Error", $"No se pudo guardar la casa: {ex.Message}", "Aceptar");
         }
-
-        await CargarCasas();
-
-        LimpiarFormulario();
     }
 
     private void LimpiarFormulario()
@@ -147,28 +185,36 @@ public partial class CasaView : ContentPage
             return;
         }
 
-        _casaSeleccionada.NombreResponsable =
-            txtNombreResponsable.Text;
+        var (esValido, lat, lon) = await ValidarFormularioAsync();
+        if (!esValido) return;
 
-        _casaSeleccionada.Direccion =
-            txtDireccion.Text;
+        try
+        {
+            _casaSeleccionada.NombreResponsable =
+                txtNombreResponsable.Text;
 
-        _casaSeleccionada.Sector =
-            txtSector.Text;
+            _casaSeleccionada.Direccion =
+                txtDireccion.Text;
 
-        _casaSeleccionada.Latitud =
-            double.TryParse(txtLatitud.Text, out var latUpdate) ? latUpdate : 0;
+            _casaSeleccionada.Sector =
+                txtSector.Text;
 
-        _casaSeleccionada.Longitud =
-            double.TryParse(txtLongitud.Text, out var lonUpdate) ? lonUpdate : 0;
+            _casaSeleccionada.Latitud = lat;
 
-        _casaSeleccionada.Estado =
-            swEstado.IsToggled;
+            _casaSeleccionada.Longitud = lon;
 
-        await _repository.ActualizarAsync(
-            _casaSeleccionada);
+            _casaSeleccionada.Estado =
+                swEstado.IsToggled;
 
-        await CargarCasas();
+            await _repository.ActualizarAsync(
+                _casaSeleccionada);
+
+            await CargarCasas();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Error", $"No se pudo actualizar la casa: {ex.Message}", "Aceptar");
+        }
     }
     private async void btnEliminar_Clicked(
     object sender,
@@ -194,12 +240,19 @@ public partial class CasaView : ContentPage
         if (!respuesta)
             return;
 
-        await _repository.BorrarRegistroAsync(
-            _casaSeleccionada);
+        try
+        {
+            await _repository.BorrarRegistroAsync(
+                _casaSeleccionada);
 
-        await CargarCasas();
+            await CargarCasas();
 
-        LimpiarFormulario();
+            LimpiarFormulario();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Error", $"No se pudo eliminar la casa: {ex.Message}", "Aceptar");
+        }
     }
 
 

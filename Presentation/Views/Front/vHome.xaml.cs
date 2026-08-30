@@ -159,7 +159,14 @@ public partial class vHome : ContentPage
     {
         if (dpDesde.Date <= dpHasta.Date)
         {
-            await CargarDashboardAsync();
+            try
+            {
+                await CargarDashboardAsync();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"No se pudo actualizar el dashboard: {ex.Message}", "Aceptar");
+            }
         }
     }
 

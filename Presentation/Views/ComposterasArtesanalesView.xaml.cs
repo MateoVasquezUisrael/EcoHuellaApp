@@ -32,9 +32,16 @@ public partial class ComposterasArtesanalesView : ContentPage
             await DisplayAlertAsync("Peso inválido", "El peso máximo debe ser mayor que 0 kg.", "Aceptar");
             return;
         }
-        await _composteras.GuardarRegistroAsync(new ComposteraArtesanal { PesoMaximo = peso, Estado = true });
-        txtPesoMaximo.Text = string.Empty;
-        await CargarAsync();
+        try
+        {
+            await _composteras.GuardarRegistroAsync(new ComposteraArtesanal { PesoMaximo = peso, Estado = true });
+            txtPesoMaximo.Text = string.Empty;
+            await CargarAsync();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Error", $"No se pudo guardar la compostera: {ex.Message}", "Aceptar");
+        }
     }
 
     private async void btnAccionesCompostera_Clicked(object sender, EventArgs e)

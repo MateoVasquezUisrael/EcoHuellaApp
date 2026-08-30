@@ -21,8 +21,6 @@ public partial class vHistorialEntregas : ContentPage
         InitializeComponent();
         BindingContext = this;
         NavegacionInferior.Conectar(this);
-
-        _ = CargarRecoleccionesAsync();
     }
 
     private async Task CargarRecoleccionesAsync()

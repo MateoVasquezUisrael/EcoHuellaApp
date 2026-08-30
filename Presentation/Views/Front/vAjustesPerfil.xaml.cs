@@ -9,6 +9,7 @@ public partial class vAjustesPerfil : ContentPage
     private readonly IUserSessionService? _session;
     private readonly IAuthService? _authService;
     private readonly INavigationService? _navigationService;
+    private readonly IMockPasswordService? _mockPassword;
 
     public string Nombre { get; private set; } = "Usuario";
     public string Correo { get; private set; } = string.Empty;
@@ -25,6 +26,7 @@ public partial class vAjustesPerfil : ContentPage
         _session = services?.GetService<IUserSessionService>();
         _authService = services?.GetService<IAuthService>();
         _navigationService = services?.GetService<INavigationService>();
+        _mockPassword = services?.GetService<IMockPasswordService>();
 
         CargarUsuario();
     }
@@ -63,12 +65,20 @@ public partial class vAjustesPerfil : ContentPage
 
     private async void CerrarSesion_Clicked(object? sender, EventArgs e)
     {
-        _session?.ClearSession();
+        try
+        {
+            _session?.ClearSession();
+            _mockPassword?.ClearPendingState();
 
-        if (_authService is not null)
-            await _authService.SignOutAsync();
+            if (_authService is not null)
+                await _authService.SignOutAsync();
 
-        if (_navigationService is not null)
-            await _navigationService.GoToLoginAsync();
+            if (_navigationService is not null)
+                await _navigationService.GoToLoginAsync();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Error", $"No se pudo cerrar sesión: {ex.Message}", "Aceptar");
+        }
     }
 }

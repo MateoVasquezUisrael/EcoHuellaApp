@@ -70,20 +70,27 @@ public partial class ProcesosBiodigestorView : ContentPage
             return;
         }
 
-        var nuevoProceso = new ProcesoBiodigestor
+        try
         {
-            FechaInicio = DateTime.Now,
-            FechaEstimadaFinProceso = DateTime.Now.AddDays(42),
-            BiodigestorId = _biodigestorId,
-            EstadoLlenado = false,
-            EstadoFinalizado = false,
-            MetanoEvitado = 0,
-            CarbonoEvitado = 0
-        };
+            var nuevoProceso = new ProcesoBiodigestor
+            {
+                FechaInicio = DateTime.Now,
+                FechaEstimadaFinProceso = DateTime.Now.AddDays(42),
+                BiodigestorId = _biodigestorId,
+                EstadoLlenado = false,
+                EstadoFinalizado = false,
+                MetanoEvitado = 0,
+                CarbonoEvitado = 0
+            };
 
-        await _procesoRepository.GuardarRegistroAsync(nuevoProceso);
+            await _procesoRepository.GuardarRegistroAsync(nuevoProceso);
 
-        await CargarProcesosAsync();
+            await CargarProcesosAsync();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"No se pudo iniciar el proceso: {ex.Message}", "Aceptar");
+        }
     }
 
     private async void btnMarcarLleno_Clicked(

@@ -18,7 +18,6 @@ public partial class vHistorialComposteras : ContentPage
         InitializeComponent();
         BindingContext = this;
         _repository = Application.Current?.Handler?.MauiContext?.Services.GetService<ComposteraArtesanalRepository>();
-        _ = CargarAsync();
     }
 
     protected override void OnAppearing()

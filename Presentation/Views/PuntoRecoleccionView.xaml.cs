@@ -50,37 +50,73 @@ public partial class PuntoRecoleccionView : ContentPage
             _puntoSeleccionado.Estado;
     }
 
+    private async Task<(bool EsValido, double Latitud, double Longitud)> ValidarFormularioAsync()
+    {
+        if (string.IsNullOrWhiteSpace(txtDireccion.Text))
+        {
+            await DisplayAlertAsync("Aviso", "Ingrese la dirección del punto.", "Aceptar");
+            return (false, 0, 0);
+        }
+
+        if (!double.TryParse(txtLatitud.Text, out var latitud) || latitud < -90 || latitud > 90)
+        {
+            await DisplayAlertAsync("Aviso", "Seleccione una ubicación válida en el mapa.", "Aceptar");
+            return (false, 0, 0);
+        }
+
+        if (!double.TryParse(txtLongitud.Text, out var longitud) || longitud < -180 || longitud > 180)
+        {
+            await DisplayAlertAsync("Aviso", "Seleccione una ubicación válida en el mapa.", "Aceptar");
+            return (false, 0, 0);
+        }
+
+        return (true, latitud, longitud);
+    }
+
     private async void btnGuardar_Clicked(
         object sender,
         EventArgs e)
     {
-        if (_puntoSeleccionado == null)
+        var (esValido, lat, lon) = await ValidarFormularioAsync();
+        if (!esValido) return;
+
+        try
         {
-            var nuevoPunto = new PuntoRecoleccion
+            if (_puntoSeleccionado == null)
             {
-                Direccion = txtDireccion.Text,
-                Estado = swEstado.IsToggled,
-                Latitud = double.TryParse(txtLatitud.Text, out var lat) ? lat : 0,
-                Longitud = double.TryParse(txtLongitud.Text, out var lon) ? lon : 0
-            };
+                var nuevoPunto = new PuntoRecoleccion
+                {
+                    Direccion = txtDireccion.Text,
+                    Estado = swEstado.IsToggled,
+                    Latitud = lat,
+                    Longitud = lon
+                };
 
-            await _repository.GuardarRegistroAsync(nuevoPunto);
+                await _repository.GuardarRegistroAsync(nuevoPunto);
+            }
+            else
+            {
+                _puntoSeleccionado.Direccion =
+                    txtDireccion.Text;
+
+                _puntoSeleccionado.Estado =
+                    swEstado.IsToggled;
+
+                _puntoSeleccionado.Latitud = lat;
+                _puntoSeleccionado.Longitud = lon;
+
+                await _repository.ActualizarAsync(
+                    _puntoSeleccionado);
+            }
+
+            await CargarPuntos();
+
+            LimpiarFormulario();
         }
-        else
+        catch (Exception ex)
         {
-            _puntoSeleccionado.Direccion =
-                txtDireccion.Text;
-
-            _puntoSeleccionado.Estado =
-                swEstado.IsToggled;
-
-            await _repository.ActualizarAsync(
-                _puntoSeleccionado);
+            await DisplayAlertAsync("Error", $"No se pudo guardar el punto de recolección: {ex.Message}", "Aceptar");
         }
-
-        await CargarPuntos();
-
-        LimpiarFormulario();
     }
 
     private void LimpiarFormulario()
@@ -128,22 +164,30 @@ public partial class PuntoRecoleccionView : ContentPage
             return;
         }
 
-        _puntoSeleccionado.Direccion =
-            txtDireccion.Text;
+        var (esValido, lat, lon) = await ValidarFormularioAsync();
+        if (!esValido) return;
 
-        _puntoSeleccionado.Latitud =
-            double.TryParse(txtLatitud.Text, out var latUpdate) ? latUpdate : 0;
+        try
+        {
+            _puntoSeleccionado.Direccion =
+                txtDireccion.Text;
 
-        _puntoSeleccionado.Longitud =
-            double.TryParse(txtLongitud.Text, out var lonUpdate) ? lonUpdate : 0;
+            _puntoSeleccionado.Latitud = lat;
 
-        _puntoSeleccionado.Estado =
-            swEstado.IsToggled;
+            _puntoSeleccionado.Longitud = lon;
 
-        await _repository.ActualizarAsync(
-            _puntoSeleccionado);
+            _puntoSeleccionado.Estado =
+                swEstado.IsToggled;
 
-        await CargarPuntos();
+            await _repository.ActualizarAsync(
+                _puntoSeleccionado);
+
+            await CargarPuntos();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Error", $"No se pudo actualizar el punto de recolección: {ex.Message}", "Aceptar");
+        }
     }
 
     private async void btnEliminar_Clicked(
@@ -170,11 +214,18 @@ public partial class PuntoRecoleccionView : ContentPage
         if (!respuesta)
             return;
 
-        await _repository.BorrarRegistroAsync(
-            _puntoSeleccionado);
+        try
+        {
+            await _repository.BorrarRegistroAsync(
+                _puntoSeleccionado);
 
-        await CargarPuntos();
+            await CargarPuntos();
 
-        LimpiarFormulario();
+            LimpiarFormulario();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Error", $"No se pudo eliminar el punto de recolección: {ex.Message}", "Aceptar");
+        }
     }
 }

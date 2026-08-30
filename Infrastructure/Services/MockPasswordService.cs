@@ -62,6 +62,8 @@ public sealed class MockPasswordService : IMockPasswordService
         _activeEmail = null;
     }
 
+    public void ClearPendingState() => _activeEmail = null;
+
     private static string Normalize(string email) => email.Trim().ToLowerInvariant();
     private static string IndexKey(string email) => $"{IndexPrefix}{Normalize(email)}";
     private static string CredentialKey(string email) => $"{CredentialPrefix}{Normalize(email)}";

@@ -185,7 +185,7 @@ public partial class RecoleccionView : ContentPage
             return;
         }
 
-        if (!int.TryParse(txtCantidadCubetas.Text, out var cantidadCubetas))
+        if (!int.TryParse(txtCantidadCubetas.Text, out var cantidadCubetas) || cantidadCubetas < 0)
         {
             await DisplayAlertAsync(
                 "Aviso",
@@ -194,36 +194,43 @@ public partial class RecoleccionView : ContentPage
             return;
         }
 
-        if (_recoleccionSeleccionada == null)
+        try
         {
-            var recoleccion = new Recoleccion
+            if (_recoleccionSeleccionada == null)
             {
-                Fecha = dpFecha.Date,
-                CasaId = casa.Id,
-                PuntoRecoleccionId = punto.Id,
-                CantidadCubetas = cantidadCubetas,
-                LitrosEstimados = double.TryParse(txtLitrosEstimados.Text, out var litros) ? litros : 0,
-                MasaEstimada = double.TryParse(txtMasaEstimada.Text, out var masa) ? masa : 0,
-                Estado = true
-            };
+                var recoleccion = new Recoleccion
+                {
+                    Fecha = dpFecha.Date,
+                    CasaId = casa.Id,
+                    PuntoRecoleccionId = punto.Id,
+                    CantidadCubetas = cantidadCubetas,
+                    LitrosEstimados = cantidadCubetas * ConstantesMatematicaVerde.VolumenBaldes,
+                    MasaEstimada = _matematicaVerde.CalcularMasa(cantidadCubetas),
+                    Estado = true
+                };
 
-            await _repository.GuardarRegistroAsync(recoleccion);
+                await _repository.GuardarRegistroAsync(recoleccion);
+            }
+            else
+            {
+                _recoleccionSeleccionada.Fecha = dpFecha.Date;
+                _recoleccionSeleccionada.CasaId = casa.Id;
+                _recoleccionSeleccionada.PuntoRecoleccionId = punto.Id;
+                _recoleccionSeleccionada.CantidadCubetas = cantidadCubetas;
+                _recoleccionSeleccionada.LitrosEstimados = cantidadCubetas * ConstantesMatematicaVerde.VolumenBaldes;
+                _recoleccionSeleccionada.MasaEstimada = _matematicaVerde.CalcularMasa(cantidadCubetas);
+
+                await _repository.ActualizarAsync(_recoleccionSeleccionada);
+            }
+
+            await CargarRecolecciones();
+            LimpiarFormulario();
+            await Navigation.PopAsync();
         }
-        else
+        catch (Exception ex)
         {
-            _recoleccionSeleccionada.Fecha = dpFecha.Date;
-            _recoleccionSeleccionada.CasaId = casa.Id;
-            _recoleccionSeleccionada.PuntoRecoleccionId = punto.Id;
-            _recoleccionSeleccionada.CantidadCubetas = cantidadCubetas;
-            _recoleccionSeleccionada.LitrosEstimados = double.TryParse(txtLitrosEstimados.Text, out var litrosUpdate) ? litrosUpdate : 0;
-            _recoleccionSeleccionada.MasaEstimada = double.TryParse(txtMasaEstimada.Text, out var masaUpdate) ? masaUpdate : 0;
-
-            await _repository.ActualizarAsync(_recoleccionSeleccionada);
+            await DisplayAlertAsync("Error", $"No se pudo guardar la recolección: {ex.Message}", "Aceptar");
         }
-
-        await CargarRecolecciones();
-        LimpiarFormulario();
-        await Navigation.PopAsync();
     }
 
     private async void btnActualizar_Clicked(
@@ -264,10 +271,17 @@ public partial class RecoleccionView : ContentPage
         if (!respuesta)
             return;
 
-        await _repository.BorrarRegistroAsync(_recoleccionSeleccionada);
+        try
+        {
+            await _repository.BorrarRegistroAsync(_recoleccionSeleccionada);
 
-        await CargarRecolecciones();
-        LimpiarFormulario();
+            await CargarRecolecciones();
+            LimpiarFormulario();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Error", $"No se pudo eliminar la recolección: {ex.Message}", "Aceptar");
+        }
     }
 
     private void LimpiarFormulario()

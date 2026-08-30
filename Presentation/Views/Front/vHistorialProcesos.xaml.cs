@@ -21,7 +21,6 @@ public partial class vHistorialProcesos : ContentPage
         var services = Application.Current?.Handler?.MauiContext?.Services;
         _activosRepository = services?.GetService<IRepositoryGeneric<ProcesoBiodigestor>>();
         _finalizadosRepository = services?.GetService<ProcesoBiodigestorRepository>();
-        _ = CargarAsync();
     }
 
     protected override void OnAppearing()

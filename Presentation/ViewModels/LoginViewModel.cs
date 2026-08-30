@@ -111,13 +111,20 @@ namespace EcoHuellaApp.Presentation.ViewModels
                 return;
             }
 
-            var temporaryPassword = _mockPassword.GenerateTemporaryPassword(email);
-            SuccessMessage = "Contraseña temporal generada. Úsala para iniciar sesión.";
-            ClearError();
-            await page.DisplayAlertAsync(
-                "Contraseña temporal • Mockup",
-                $"Tu contraseña temporal es:\n\n{temporaryPassword}\n\nInicia sesión con ella. La aplicación te pedirá crear una contraseña nueva inmediatamente.",
-                "Entendido");
+            try
+            {
+                var temporaryPassword = _mockPassword.GenerateTemporaryPassword(email);
+                SuccessMessage = "Contraseña temporal generada. Úsala para iniciar sesión.";
+                ClearError();
+                await page.DisplayAlertAsync(
+                    "Contraseña temporal • Mockup",
+                    $"Tu contraseña temporal es:\n\n{temporaryPassword}\n\nInicia sesión con ella. La aplicación te pedirá crear una contraseña nueva inmediatamente.",
+                    "Entendido");
+            }
+            catch (Exception ex)
+            {
+                await page.DisplayAlertAsync("Error", $"No se pudo generar la contraseña temporal: {ex.Message}", "Aceptar");
+            }
         }
 
         // Visibilidad.

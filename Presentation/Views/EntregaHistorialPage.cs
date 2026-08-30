@@ -19,18 +19,32 @@ public sealed class EntregaHistorialPage : ContentPage
         guardar.Clicked += async (_, _) =>
         {
             if (repository is null || !int.TryParse(cubetas.Text, out var cantidad) || cantidad <= 0) { await DisplayAlertAsync("Aviso", "Ingresa una cantidad válida.", "Aceptar"); return; }
-            entrega.Fecha = fecha.Date;
-            entrega.CantidadCubetas = cantidad;
-            entrega.LitrosEstimados = cantidad * 20;
-            entrega.MasaEstimada = entrega.LitrosEstimados * 0.6;
-            await repository.ActualizarAsync(entrega);
-            await Navigation.PopModalAsync();
+            try
+            {
+                entrega.Fecha = fecha.Date;
+                entrega.CantidadCubetas = cantidad;
+                entrega.LitrosEstimados = cantidad * 20;
+                entrega.MasaEstimada = entrega.LitrosEstimados * 0.6;
+                await repository.ActualizarAsync(entrega);
+                await Navigation.PopModalAsync();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlertAsync("Error", $"No se pudo actualizar la entrega: {ex.Message}", "Aceptar");
+            }
         };
         eliminar.Clicked += async (_, _) =>
         {
             if (repository is null || !await DisplayAlertAsync("Eliminar entrega", "¿Deseas eliminar este registro?", "Eliminar", "Cancelar")) return;
-            await repository.BorrarRegistroAsync(entrega);
-            await Navigation.PopModalAsync();
+            try
+            {
+                await repository.BorrarRegistroAsync(entrega);
+                await Navigation.PopModalAsync();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlertAsync("Error", $"No se pudo eliminar la entrega: {ex.Message}", "Aceptar");
+            }
         };
         cerrar.Clicked += async (_, _) => await Navigation.PopModalAsync();
 

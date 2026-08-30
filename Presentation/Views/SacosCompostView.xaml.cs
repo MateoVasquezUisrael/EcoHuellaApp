@@ -23,9 +23,16 @@ public partial class SacosCompostView : ContentPage
 
     private async void btnGuardarSaco_Clicked(object sender, EventArgs e)
     {
-        await _repository.GuardarRegistroAsync(new SacosCompost { Fecha = dpFechaRegistro.Date, Estado = true });
-        dpFechaRegistro.Date = DateTime.Today;
-        await CargarSacosAsync();
+        try
+        {
+            await _repository.GuardarRegistroAsync(new SacosCompost { Fecha = dpFechaRegistro.Date, Estado = true });
+            dpFechaRegistro.Date = DateTime.Today;
+            await CargarSacosAsync();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Error", $"No se pudo guardar el saco: {ex.Message}", "Aceptar");
+        }
     }
 
     private async void btnAccionesSaco_Clicked(object sender, EventArgs e)
