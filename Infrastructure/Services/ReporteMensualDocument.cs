@@ -1,221 +1,237 @@
-using QuestPDF.Fluent;
-using QuestPDF.Helpers;
-using QuestPDF.Infrastructure;
-using IContainer = QuestPDF.Infrastructure.IContainer;
-using Colors = QuestPDF.Helpers.Colors;
+using MigraDocCore.DocumentObjectModel;
+using MigraDocCore.DocumentObjectModel.Tables;
+using Colors = MigraDocCore.DocumentObjectModel.Colors;
 
 namespace EcoHuellaApp.Infrastructure.Services;
 
-public sealed class ReporteMensualDocument : IDocument
+public static class ReporteMensualDocument
 {
-    private readonly ReporteMensualData _data;
-
-    public ReporteMensualDocument(ReporteMensualData data) => _data = data;
-
-    public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
-
-    public void Compose(IDocumentContainer container)
+    public static Document Construir(ReporteMensualData data)
     {
-        container.Page(page =>
-        {
-            page.Size(PageSizes.A4);
-            page.Margin(30);
-            page.DefaultTextStyle(x => x.FontSize(10));
+        var document = new Document();
+        document.Info.Title = "Reporte mensual EcoHuella";
 
-            page.Header().Column(col =>
-            {
-                col.Item().Text("EcoHuella — Reporte mensual").FontSize(18).Bold();
-                col.Item().Text($"Del {_data.Desde:dd/MM/yyyy} al {_data.Hasta:dd/MM/yyyy}").FontSize(10);
-            });
+        var estiloNormal = document.Styles["Normal"];
+        estiloNormal.Font.Name = EcoHuellaFontResolver.FamilyName;
+        estiloNormal.Font.Size = 9;
 
-            page.Content().PaddingVertical(10).Column(col =>
-            {
-                col.Spacing(16);
-                col.Item().Element(ComponerCasas);
-                col.Item().Element(ComponerComposteras);
-                col.Item().Element(ComponerBiodigestores);
-                col.Item().Element(ComponerSacos);
-            });
+        var section = document.AddSection();
+        section.PageSetup.PageFormat = PageFormat.A4;
+        section.PageSetup.TopMargin = Unit.FromCentimeter(1.5);
+        section.PageSetup.BottomMargin = Unit.FromCentimeter(1.5);
+        section.PageSetup.LeftMargin = Unit.FromCentimeter(1.5);
+        section.PageSetup.RightMargin = Unit.FromCentimeter(1.5);
 
-            page.Footer().AlignCenter().Text(x =>
-            {
-                x.CurrentPageNumber();
-                x.Span(" / ");
-                x.TotalPages();
-            });
-        });
+        var titulo = section.AddParagraph("EcoHuella - Reporte mensual");
+        titulo.Format.Font.Name = EcoHuellaFontResolver.FamilyName;
+        titulo.Format.Font.Size = 16;
+        titulo.Format.Font.Bold = true;
+
+        var subtitulo = section.AddParagraph($"Del {data.Desde:dd/MM/yyyy} al {data.Hasta:dd/MM/yyyy}");
+        subtitulo.Format.Font.Color = Colors.Gray;
+        subtitulo.Format.SpaceAfter = Unit.FromCentimeter(0.5);
+
+        AgregarCasas(section, data);
+        AgregarRecolecciones(section, data);
+        AgregarComposteras(section, data);
+        AgregarBiodigestores(section, data);
+        AgregarSacos(section, data);
+
+        return document;
     }
 
-    private void ComponerCasas(IContainer container)
+    private static void AgregarTitulo(Section section, string texto)
     {
-        container.Column(col =>
-        {
-            col.Item().Text("Clientes (casas)").FontSize(14).Bold();
-
-            if (_data.Casas.Count == 0)
-            {
-                col.Item().Text("Sin registros.").Italic();
-                return;
-            }
-
-            col.Item().Table(table =>
-            {
-                table.ColumnsDefinition(c =>
-                {
-                    c.RelativeColumn(2);
-                    c.RelativeColumn(3);
-                    c.RelativeColumn(2);
-                    c.RelativeColumn(1);
-                });
-
-                table.Header(header =>
-                {
-                    header.Cell().Text("Responsable").Bold();
-                    header.Cell().Text("Dirección").Bold();
-                    header.Cell().Text("Sector").Bold();
-                    header.Cell().Text("Activo").Bold();
-                });
-
-                foreach (var casa in _data.Casas)
-                {
-                    table.Cell().Text(casa.NombreResponsable);
-                    table.Cell().Text(casa.Direccion);
-                    table.Cell().Text(casa.Sector ?? "-");
-                    table.Cell().Text(casa.Estado ? "Sí" : "No");
-                }
-            });
-        });
+        var parrafo = section.AddParagraph(texto);
+        parrafo.Format.Font.Size = 13;
+        parrafo.Format.Font.Bold = true;
+        parrafo.Format.SpaceBefore = Unit.FromCentimeter(0.6);
+        parrafo.Format.SpaceAfter = Unit.FromCentimeter(0.2);
     }
 
-    private void ComponerComposteras(IContainer container)
+    private static void AgregarSinDatos(Section section)
     {
-        container.Column(col =>
-        {
-            col.Item().Text("Composteras artesanales").FontSize(14).Bold();
-            col.Item().Text($"{_data.Composteras.Count} composteras registradas · {_data.AccionesCompostera.Count} acciones en el periodo")
-                .FontSize(9).FontColor(Colors.Grey.Darken1);
-
-            if (_data.AccionesCompostera.Count == 0)
-            {
-                col.Item().Text("Sin acciones en el periodo.").Italic();
-                return;
-            }
-
-            col.Item().Table(table =>
-            {
-                table.ColumnsDefinition(c =>
-                {
-                    c.RelativeColumn(2);
-                    c.RelativeColumn(2);
-                    c.RelativeColumn(2);
-                    c.RelativeColumn(2);
-                });
-
-                table.Header(header =>
-                {
-                    header.Cell().Text("Compostera").Bold();
-                    header.Cell().Text("Fecha").Bold();
-                    header.Cell().Text("Acción").Bold();
-                    header.Cell().Text("Elemento").Bold();
-                });
-
-                foreach (var accion in _data.AccionesCompostera.OrderBy(a => a.FechaAccion))
-                {
-                    table.Cell().Text($"#{accion.ComposteraArtesanalId}");
-                    table.Cell().Text(accion.FechaAccion is { } fecha ? fecha.ToString("dd/MM/yyyy") : "-");
-                    table.Cell().Text(accion.TipoAccion ?? "-");
-                    table.Cell().Text(accion.TipoElemento ?? "-");
-                }
-            });
-        });
+        var parrafo = section.AddParagraph("Sin registros en el periodo.");
+        parrafo.Format.Font.Italic = true;
+        parrafo.Format.Font.Color = Colors.Gray;
     }
 
-    private void ComponerBiodigestores(IContainer container)
+    private static Table CrearTabla(Section section, params (string Texto, double AnchoCm)[] columnas)
     {
-        container.Column(col =>
+        var table = section.AddTable();
+        table.Borders.Width = 0.5;
+        table.Borders.Color = Colors.LightGray;
+        table.Format.Font.Size = 8;
+
+        foreach (var columna in columnas)
         {
-            col.Item().Text("Biodigestores").FontSize(14).Bold();
-            col.Item().Text($"{_data.Biodigestores.Count} biodigestores registrados · {_data.Procesos.Count} procesos iniciados en el periodo")
-                .FontSize(9).FontColor(Colors.Grey.Darken1);
+            var col = table.AddColumn();
+            col.Width = Unit.FromCentimeter(columna.AnchoCm);
+        }
 
-            if (_data.Procesos.Count == 0)
-            {
-                col.Item().Text("Sin procesos en el periodo.").Italic();
-                return;
-            }
+        var encabezado = table.AddRow();
+        encabezado.Shading.Color = Colors.WhiteSmoke;
+        encabezado.Format.Font.Bold = true;
 
-            col.Item().Table(table =>
-            {
-                table.ColumnsDefinition(c =>
-                {
-                    c.RelativeColumn(1);
-                    c.RelativeColumn(2);
-                    c.RelativeColumn(2);
-                    c.RelativeColumn(2);
-                    c.RelativeColumn(2);
-                });
+        for (var i = 0; i < columnas.Length; i++)
+        {
+            encabezado.Cells[i].AddParagraph(columnas[i].Texto);
+        }
 
-                table.Header(header =>
-                {
-                    header.Cell().Text("Proceso").Bold();
-                    header.Cell().Text("Biodigestor").Bold();
-                    header.Cell().Text("Inicio").Bold();
-                    header.Cell().Text("Estado").Bold();
-                    header.Cell().Text("CH₄ / CO₂ evitado").Bold();
-                });
-
-                foreach (var proceso in _data.Procesos.OrderBy(p => p.FechaInicio))
-                {
-                    var estado = proceso.EstadoFinalizado ? "Finalizado" : proceso.EstadoLlenado ? "Lleno" : "Activo";
-
-                    table.Cell().Text($"#{proceso.Id}");
-                    table.Cell().Text($"#{proceso.BiodigestorId}");
-                    table.Cell().Text(proceso.FechaInicio is { } fecha ? fecha.ToString("dd/MM/yyyy") : "-");
-                    table.Cell().Text(estado);
-                    table.Cell().Text($"{proceso.MetanoEvitado:N1} kg / {proceso.CarbonoEvitado:N1} kg");
-                }
-            });
-        });
+        return table;
     }
 
-    private void ComponerSacos(IContainer container)
+    private static void AgregarCasas(Section section, ReporteMensualData data)
     {
-        container.Column(col =>
+        AgregarTitulo(section, "Clientes (casas)");
+
+        if (data.Casas.Count == 0)
         {
-            col.Item().Text("Sacos de compost").FontSize(14).Bold();
+            AgregarSinDatos(section);
+            return;
+        }
 
-            if (_data.Sacos.Count == 0)
-            {
-                col.Item().Text("Sin movimientos en el periodo.").Italic();
-                return;
-            }
+        var table = CrearTabla(section,
+            ("Responsable", 4),
+            ("Dirección", 6),
+            ("Sector", 3),
+            ("Activo", 2));
 
-            col.Item().Table(table =>
-            {
-                table.ColumnsDefinition(c =>
-                {
-                    c.RelativeColumn(1);
-                    c.RelativeColumn(2);
-                    c.RelativeColumn(2);
-                    c.RelativeColumn(3);
-                });
+        foreach (var casa in data.Casas)
+        {
+            var fila = table.AddRow();
+            fila.Cells[0].AddParagraph(casa.NombreResponsable);
+            fila.Cells[1].AddParagraph(casa.Direccion);
+            fila.Cells[2].AddParagraph(casa.Sector ?? "-");
+            fila.Cells[3].AddParagraph(casa.Estado ? "Sí" : "No");
+        }
+    }
 
-                table.Header(header =>
-                {
-                    header.Cell().Text("Saco").Bold();
-                    header.Cell().Text("Fecha").Bold();
-                    header.Cell().Text("Estado").Bold();
-                    header.Cell().Text("Motivo / Cliente").Bold();
-                });
+    private static void AgregarRecolecciones(Section section, ReporteMensualData data)
+    {
+        AgregarTitulo(section, "Recolecciones realizadas");
 
-                foreach (var saco in _data.Sacos.OrderBy(s => s.Fecha))
-                {
-                    table.Cell().Text($"#{saco.Id}");
-                    table.Cell().Text(saco.Fecha is { } fecha ? fecha.ToString("dd/MM/yyyy") : "-");
-                    table.Cell().Text(saco.EstadoTexto);
-                    table.Cell().Text(saco.Motivo is null ? "-" : $"{saco.Motivo}{(string.IsNullOrWhiteSpace(saco.ClienteVenta) ? "" : $" · {saco.ClienteVenta}")}");
-                }
-            });
-        });
+        if (data.Recolecciones.Count == 0)
+        {
+            AgregarSinDatos(section);
+            return;
+        }
+
+        var table = CrearTabla(section,
+            ("Fecha", 3),
+            ("Casa", 5),
+            ("Punto de recolección", 5),
+            ("Cubetas", 2),
+            ("Litros", 2),
+            ("Masa (kg)", 2));
+
+        foreach (var recoleccion in data.Recolecciones.OrderBy(r => r.Fecha))
+        {
+            var fila = table.AddRow();
+            fila.Cells[0].AddParagraph(recoleccion.Fecha is { } fecha ? fecha.ToString("dd/MM/yyyy") : "-");
+            fila.Cells[1].AddParagraph(recoleccion.Casa?.NombreResponsable ?? $"#{recoleccion.CasaId}");
+            fila.Cells[2].AddParagraph(recoleccion.PuntoRecoleccion?.Direccion ?? $"#{recoleccion.PuntoRecoleccionId}");
+            fila.Cells[3].AddParagraph(recoleccion.CantidadCubetas.ToString());
+            fila.Cells[4].AddParagraph(recoleccion.LitrosEstimados.ToString("N0"));
+            fila.Cells[5].AddParagraph(recoleccion.MasaEstimada.ToString("N1"));
+        }
+    }
+
+    private static void AgregarComposteras(Section section, ReporteMensualData data)
+    {
+        AgregarTitulo(section, "Composteras artesanales");
+
+        var resumen = section.AddParagraph(
+            $"{data.Composteras.Count} composteras registradas · {data.AccionesCompostera.Count} acciones en el periodo");
+        resumen.Format.Font.Size = 8;
+        resumen.Format.Font.Color = Colors.Gray;
+        resumen.Format.SpaceAfter = Unit.FromCentimeter(0.15);
+
+        if (data.AccionesCompostera.Count == 0)
+        {
+            AgregarSinDatos(section);
+            return;
+        }
+
+        var table = CrearTabla(section,
+            ("Compostera", 3),
+            ("Fecha", 3),
+            ("Acción", 4),
+            ("Elemento", 4));
+
+        foreach (var accion in data.AccionesCompostera.OrderBy(a => a.FechaAccion))
+        {
+            var fila = table.AddRow();
+            fila.Cells[0].AddParagraph($"#{accion.ComposteraArtesanalId}");
+            fila.Cells[1].AddParagraph(accion.FechaAccion is { } fecha ? fecha.ToString("dd/MM/yyyy") : "-");
+            fila.Cells[2].AddParagraph(accion.TipoAccion ?? "-");
+            fila.Cells[3].AddParagraph(accion.TipoElemento ?? "-");
+        }
+    }
+
+    private static void AgregarBiodigestores(Section section, ReporteMensualData data)
+    {
+        AgregarTitulo(section, "Biodigestores");
+
+        var resumen = section.AddParagraph(
+            $"{data.Biodigestores.Count} biodigestores registrados · {data.Procesos.Count} procesos iniciados en el periodo");
+        resumen.Format.Font.Size = 8;
+        resumen.Format.Font.Color = Colors.Gray;
+        resumen.Format.SpaceAfter = Unit.FromCentimeter(0.15);
+
+        if (data.Procesos.Count == 0)
+        {
+            AgregarSinDatos(section);
+            return;
+        }
+
+        var table = CrearTabla(section,
+            ("Proceso", 2),
+            ("Biodigestor", 3),
+            ("Inicio", 3),
+            ("Estado", 3),
+            ("CH4 / CO2 evitado (kg)", 5));
+
+        foreach (var proceso in data.Procesos.OrderBy(p => p.FechaInicio))
+        {
+            var estado = proceso.EstadoFinalizado ? "Finalizado" : proceso.EstadoLlenado ? "Lleno" : "Activo";
+
+            var fila = table.AddRow();
+            fila.Cells[0].AddParagraph($"#{proceso.Id}");
+            fila.Cells[1].AddParagraph($"#{proceso.BiodigestorId}");
+            fila.Cells[2].AddParagraph(proceso.FechaInicio is { } fecha ? fecha.ToString("dd/MM/yyyy") : "-");
+            fila.Cells[3].AddParagraph(estado);
+            fila.Cells[4].AddParagraph($"{proceso.MetanoEvitado:N1} / {proceso.CarbonoEvitado:N1}");
+        }
+    }
+
+    private static void AgregarSacos(Section section, ReporteMensualData data)
+    {
+        AgregarTitulo(section, "Sacos de compost");
+
+        if (data.Sacos.Count == 0)
+        {
+            AgregarSinDatos(section);
+            return;
+        }
+
+        var table = CrearTabla(section,
+            ("Saco", 2),
+            ("Fecha", 3),
+            ("Estado", 3),
+            ("Motivo / Cliente", 6));
+
+        foreach (var saco in data.Sacos.OrderBy(s => s.Fecha))
+        {
+            var motivoTexto = saco.Motivo is null
+                ? "-"
+                : $"{saco.Motivo}{(string.IsNullOrWhiteSpace(saco.ClienteVenta) ? "" : $" - {saco.ClienteVenta}")}";
+
+            var fila = table.AddRow();
+            fila.Cells[0].AddParagraph($"#{saco.Id}");
+            fila.Cells[1].AddParagraph(saco.Fecha is { } fecha ? fecha.ToString("dd/MM/yyyy") : "-");
+            fila.Cells[2].AddParagraph(saco.EstadoTexto);
+            fila.Cells[3].AddParagraph(motivoTexto);
+        }
     }
 }

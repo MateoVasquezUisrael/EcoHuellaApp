@@ -58,7 +58,7 @@
                             </VerticalStackLayout>
                         </Border>
 
-                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="12">
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="12">
                             <Border Style="{StaticResource EcoMetricCard}">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="KILOS" TextColor="{StaticResource MutedText}" FontSize="11" />
@@ -87,15 +87,6 @@
                                     <Label Text="Generados" Style="{StaticResource EcoSubtitle}" />
                                 </VerticalStackLayout>
                             </Border>
-                            <Border Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource EcoMetricCard}">
-                                <Grid ColumnDefinitions="*,Auto">
-                                    <VerticalStackLayout Spacing="4">
-                                        <Label Text="Eficiencia de procesos" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" />
-                                        <ProgressBar Progress="{Binding EficienciaProgreso}" ProgressColor="{StaticResource PrimaryGreen}" HeightRequest="8" />
-                                    </VerticalStackLayout>
-                                    <Label Grid.Column="1" Text="{Binding EficienciaTexto}" TextColor="{StaticResource PrimaryGreen}" FontFamily="OpenSansSemibold" FontSize="24" VerticalOptions="Center" />
-                                </Grid>
-                            </Border>
                         </Grid>
 
                         <Border Style="{StaticResource EcoCard}">
@@ -104,23 +95,26 @@
                                     <Label Text="Evolución mensual" TextColor="{StaticResource TextDark}" FontFamily="OpenSansSemibold" />
                                     <Label Grid.Column="1" Text="kg/mes" TextColor="{StaticResource MutedText}" FontSize="11" />
                                 </Grid>
-                                <HorizontalStackLayout BindableLayout.ItemsSource="{Binding EvolucionMensual}"
-                                                       Spacing="9"
-                                                       HeightRequest="150"
-                                                       HorizontalOptions="Center">
-                                    <BindableLayout.ItemTemplate>
-                                        <DataTemplate>
-                                            <VerticalStackLayout WidthRequest="45" Spacing="6" VerticalOptions="End">
-                                                <Border BackgroundColor="{Binding Color}"
-                                                        Stroke="Transparent"
-                                                        StrokeShape="RoundRectangle 8"
-                                                        HeightRequest="{Binding Altura}"
-                                                        VerticalOptions="End" />
-                                                <Label Text="{Binding Mes}" Style="{StaticResource EcoSubtitle}" HorizontalTextAlignment="Center" FontSize="11" />
-                                            </VerticalStackLayout>
-                                        </DataTemplate>
-                                    </BindableLayout.ItemTemplate>
-                                </HorizontalStackLayout>
+                                <Label Text="{Binding RangoEvolucionTexto}" TextColor="{StaticResource MutedText}" FontSize="11" />
+                                <ScrollView Orientation="Horizontal" HeightRequest="150">
+                                    <HorizontalStackLayout BindableLayout.ItemsSource="{Binding EvolucionMensual}"
+                                                           Spacing="9"
+                                                           HeightRequest="150"
+                                                           HorizontalOptions="Start">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <VerticalStackLayout WidthRequest="45" Spacing="6" VerticalOptions="End">
+                                                    <Border BackgroundColor="{Binding Color}"
+                                                            Stroke="Transparent"
+                                                            StrokeShape="RoundRectangle 8"
+                                                            HeightRequest="{Binding Altura}"
+                                                            VerticalOptions="End" />
+                                                    <Label Text="{Binding Mes}" Style="{StaticResource EcoSubtitle}" HorizontalTextAlignment="Center" FontSize="11" />
+                                                </VerticalStackLayout>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </HorizontalStackLayout>
+                                </ScrollView>
                             </VerticalStackLayout>
                         </Border>
 

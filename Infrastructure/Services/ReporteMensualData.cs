@@ -11,6 +11,7 @@ public sealed class ReporteMensualData
     public DateTime Hasta { get; init; }
 
     public List<Casa> Casas { get; init; } = [];
+    public List<Recoleccion> Recolecciones { get; init; } = [];
     public List<ComposteraArtesanal> Composteras { get; init; } = [];
     public List<AccionCompostera> AccionesCompostera { get; init; } = [];
     public List<Biodigestor> Biodigestores { get; init; } = [];

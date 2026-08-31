@@ -4,13 +4,17 @@ using EcoHuellaApp.Domain.Models.ProcesoDegradacion;
 using EcoHuellaApp.Domain.Models.Recoleccion;
 using EcoHuellaApp.Domain.Models.Ventas;
 using EcoHuellaApp.Infrastructure.Repositories.ProcesoDegradacion;
-using QuestPDF.Fluent;
+using MigraDocCore.Rendering;
+using PdfSharpCore.Fonts;
 
 namespace EcoHuellaApp.Infrastructure.Services;
 
 public sealed class ReporteMensualPdfService
 {
+    private static bool _fuentesRegistradas;
+
     private readonly IRepositoryGeneric<Casa> _casaRepository;
+    private readonly IRepositoryGeneric<Recoleccion> _recoleccionRepository;
     private readonly IRepositoryGeneric<ComposteraArtesanal> _composteraRepository;
     private readonly IRepositoryGeneric<AccionCompostera> _accionComposteraRepository;
     private readonly IRepositoryGeneric<Biodigestor> _biodigestorRepository;
@@ -20,6 +24,7 @@ public sealed class ReporteMensualPdfService
 
     public ReporteMensualPdfService(
         IRepositoryGeneric<Casa> casaRepository,
+        IRepositoryGeneric<Recoleccion> recoleccionRepository,
         IRepositoryGeneric<ComposteraArtesanal> composteraRepository,
         IRepositoryGeneric<AccionCompostera> accionComposteraRepository,
         IRepositoryGeneric<Biodigestor> biodigestorRepository,
@@ -28,6 +33,7 @@ public sealed class ReporteMensualPdfService
         IRepositoryGeneric<SacosCompost> sacosRepository)
     {
         _casaRepository = casaRepository;
+        _recoleccionRepository = recoleccionRepository;
         _composteraRepository = composteraRepository;
         _accionComposteraRepository = accionComposteraRepository;
         _biodigestorRepository = biodigestorRepository;
@@ -38,7 +44,14 @@ public sealed class ReporteMensualPdfService
 
     public async Task<byte[]> GenerarAsync(DateTime desde, DateTime hasta)
     {
+        await AsegurarFuentesRegistradasAsync();
+
         var casas = await _casaRepository.ObtenerTodosAsync();
+
+        var recolecciones = (await _recoleccionRepository.ObtenerTodosAsync())
+            .Where(r => r.Fecha is not null && r.Fecha.Value >= desde && r.Fecha.Value <= hasta)
+            .ToList();
+
         var composteras = await _composteraRepository.ObtenerTodosAsync();
 
         var acciones = (await _accionComposteraRepository.ObtenerTodosAsync())
@@ -62,6 +75,7 @@ public sealed class ReporteMensualPdfService
             Desde = desde,
             Hasta = hasta,
             Casas = casas,
+            Recolecciones = recolecciones,
             Composteras = composteras,
             AccionesCompostera = acciones,
             Biodigestores = biodigestores,
@@ -69,6 +83,33 @@ public sealed class ReporteMensualPdfService
             Sacos = sacos
         };
 
-        return new ReporteMensualDocument(data).GeneratePdf();
+        var document = ReporteMensualDocument.Construir(data);
+
+        var renderer = new PdfDocumentRenderer(true) { Document = document };
+        renderer.RenderDocument();
+
+        using var memoria = new MemoryStream();
+        renderer.PdfDocument.Save(memoria, false);
+        return memoria.ToArray();
+    }
+
+    private static async Task AsegurarFuentesRegistradasAsync()
+    {
+        if (_fuentesRegistradas)
+            return;
+
+        var regular = await LeerFuenteAsync("Fonts/OpenSans-Regular.ttf");
+        var semibold = await LeerFuenteAsync("Fonts/OpenSans-Semibold.ttf");
+
+        GlobalFontSettings.FontResolver = new EcoHuellaFontResolver(regular, semibold);
+        _fuentesRegistradas = true;
+    }
+
+    private static async Task<byte[]> LeerFuenteAsync(string nombreArchivo)
+    {
+        using var flujo = await FileSystem.OpenAppPackageFileAsync(nombreArchivo);
+        using var memoria = new MemoryStream();
+        await flujo.CopyToAsync(memoria);
+        return memoria.ToArray();
     }
 }

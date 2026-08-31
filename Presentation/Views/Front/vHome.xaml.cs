@@ -13,7 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 public partial class vHome : ContentPage
 {
     private readonly IRepositoryGeneric<Recoleccion>? _recoleccionRepository;
-    private readonly IRepositoryGeneric<ProcesoBiodigestor>? _procesoRepository;
     private readonly ProcesoBiodigestorRepository? _procesoRepositoryEspecifico;
     private readonly IRepositoryGeneric<SacosCompost>? _sacosRepository;
     private readonly ReporteMensualPdfService? _reporteService;
@@ -24,9 +23,8 @@ public partial class vHome : ContentPage
     public string Co2EvitadoTexto { get; private set; } = "0 kg";
     public string MetanoEvitadoTexto { get; private set; } = "0 kg";
     public string SacosGeneradosTexto { get; private set; } = "Sin datos";
-    public string EficienciaTexto { get; private set; } = "0%";
-    public double EficienciaProgreso { get; private set; }
     public string ResumenImpacto { get; private set; } = "Cargando métricas reales...";
+    public string RangoEvolucionTexto { get; private set; } = string.Empty;
 
     public vHome()
     {
@@ -36,7 +34,6 @@ public partial class vHome : ContentPage
 
         var services = Application.Current?.Handler?.MauiContext?.Services;
         _recoleccionRepository = services?.GetService<IRepositoryGeneric<Recoleccion>>();
-        _procesoRepository = services?.GetService<IRepositoryGeneric<ProcesoBiodigestor>>();
         _procesoRepositoryEspecifico = services?.GetService<ProcesoBiodigestorRepository>();
         _sacosRepository = services?.GetService<IRepositoryGeneric<SacosCompost>>();
         _reporteService = services?.GetService<ReporteMensualPdfService>();
@@ -59,7 +56,6 @@ public partial class vHome : ContentPage
         var hasta = dpHasta.Date.GetValueOrDefault(DateTime.Today).Date.AddDays(1).AddTicks(-1);
 
         List<Recoleccion> recolecciones = [];
-        List<ProcesoBiodigestor> procesosActivos = [];
         List<ProcesoBiodigestor> procesosFinalizados = [];
         List<SacosCompost> sacos = [];
 
@@ -68,11 +64,6 @@ public partial class vHome : ContentPage
             recolecciones = (await _recoleccionRepository.ObtenerTodosAsync())
                 .Where(r => r.Fecha is not null && r.Fecha.Value >= desde && r.Fecha.Value <= hasta)
                 .ToList();
-        }
-
-        if (_procesoRepository is not null)
-        {
-            procesosActivos = await _procesoRepository.ObtenerTodosAsync();
         }
 
         if (_procesoRepositoryEspecifico is not null)
@@ -90,16 +81,12 @@ public partial class vHome : ContentPage
         var totalKilos = recolecciones.Sum(r => r.MasaEstimada);
         var co2Evitado = procesosFinalizados.Sum(p => p.CarbonoEvitado);
         var metanoEvitado = procesosFinalizados.Sum(p => p.MetanoEvitado);
-        var procesosTotales = procesosActivos.Count + procesosFinalizados.Count;
-        var eficiencia = procesosTotales == 0 ? 0 : (double)procesosFinalizados.Count / procesosTotales;
         var sacosGenerados = sacos.Count;
 
         TotalKilosTexto = FormatearKg(totalKilos);
         Co2EvitadoTexto = FormatearKg(co2Evitado);
         MetanoEvitadoTexto = FormatearKg(metanoEvitado);
         SacosGeneradosTexto = sacosGenerados > 0 ? $"{sacosGenerados} sacos" : "Sin datos";
-        EficienciaProgreso = eficiencia;
-        EficienciaTexto = $"{eficiencia:P0}";
         ResumenImpacto = $"{recolecciones.Count} entregas y {procesosFinalizados.Count} procesos finalizados en el rango.";
 
         CargarEvolucionMensual(recolecciones);
@@ -129,6 +116,8 @@ public partial class vHome : ContentPage
         var maximo = Math.Max(1, valores.Max(v => v.Kilos));
         var colores = new[] { "#B8EEE0", "#37D6D6", "#42B883", "#8CDDB9", "#0E6B55", "#42B883" };
 
+        RangoEvolucionTexto = $"{CapitalizarMes(meses[0])} – {CapitalizarMes(meses[^1])}";
+
         for (var i = 0; i < valores.Count; i++)
         {
             EvolucionMensual.Add(new BarraMensual
@@ -146,9 +135,14 @@ public partial class vHome : ContentPage
         OnPropertyChanged(nameof(Co2EvitadoTexto));
         OnPropertyChanged(nameof(MetanoEvitadoTexto));
         OnPropertyChanged(nameof(SacosGeneradosTexto));
-        OnPropertyChanged(nameof(EficienciaTexto));
-        OnPropertyChanged(nameof(EficienciaProgreso));
         OnPropertyChanged(nameof(ResumenImpacto));
+        OnPropertyChanged(nameof(RangoEvolucionTexto));
+    }
+
+    private static string CapitalizarMes(DateTime fecha)
+    {
+        var texto = fecha.ToString("MMMM yyyy");
+        return texto.Length == 0 ? texto : char.ToUpper(texto[0]) + texto[1..];
     }
 
     private static string FormatearKg(double valor)
