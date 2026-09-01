@@ -74,6 +74,16 @@ public partial class ProcesosBiodigestorView : ContentPage
             return;
         }
 
+        var procesosActivos = await _procesoRepository.ObtenerTodosAsync();
+        if (procesosActivos.Any(p => p.BiodigestorId == _biodigestorId))
+        {
+            await DisplayAlert(
+                "Proceso activo existente",
+                "Este biodigestor ya tiene un proceso activo. Finalízalo antes de iniciar uno nuevo.",
+                "Aceptar");
+            return;
+        }
+
         try
         {
             var nuevoProceso = new ProcesoBiodigestor
